@@ -1,90 +1,73 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Personality Styles Quiz</title>
   <style>
-    body { font-family: sans-serif; max-width: 800px; margin: auto; padding: 2rem; }
-    h3 { color: #F4BD21; }
-    .question { margin-bottom: 40px; }
-    .slider-container { display: flex; align-items: center; gap: 10px; margin: 10px 0; }
-    label { width: 80px; }
-    input[type="range"] { flex: 1; }
-    .total { font-weight: bold; color: #333; }
-    .warning { color: red; font-size: 0.9em; }
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 800px;
+      margin: auto;
+    }
+    h1 {
+      font-size: 2em;
+      margin-bottom: 5px;
+    }
+    .subtitle {
+      font-weight: bold;
+      color: goldenrod;
+    }
+    .question {
+      margin-bottom: 25px;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input[type=range] {
+      width: 60%;
+      margin: 5px 10px;
+    }
+    .total {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    .warning {
+      color: red;
+    }
+    .result {
+      font-size: 1.2em;
+      margin-top: 20px;
+    }
   </style>
 </head>
 <body>
-
   <h1>Personality Styles Quiz</h1>
-  <h3>Created by Laura Cooley</h3>
-  <p style="font-size: smaller; color: gray;">
-    Based on <a href="https://amzn.to/3W8sDg6" target="_blank">Personality Lingo by Mary Miscisin</a>
-  </p>
+  <p class="subtitle">Created by Laura Cooley</p>
+  <p>Based on <a href="https://www.personalitylingo.com/" target="_blank">Personality Lingo by Mary Miscisin</a></p>
 
-  <div class="question" data-question-id="q1">
-    <h2>What are you most likely to say?</h2>
+  <form id="quiz-form">
+    <label for="name">Name:</label>
+    <input type="text" name="name" required>
 
-    <div class="slider-container">
-      <label for="blue-q1">Blue</label>
-      <input type="range" id="blue-q1" name="blue" min="0" max="100" value="0">
-      <span id="val-blue-q1">0</span>
-    </div>
-    <div class="slider-container">
-      <label for="orange-q1">Orange</label>
-      <input type="range" id="orange-q1" name="orange" min="0" max="100" value="0">
-      <span id="val-orange-q1">0</span>
-    </div>
-    <div class="slider-container">
-      <label for="green-q1">Green</label>
-      <input type="range" id="green-q1" name="green" min="0" max="100" value="0">
-      <span id="val-green-q1">0</span>
-    </div>
-    <div class="slider-container">
-      <label for="gold-q1">Gold</label>
-      <input type="range" id="gold-q1" name="gold" min="0" max="100" value="0">
-      <span id="val-gold-q1">0</span>
-    </div>
+    <label for="email">Email:</label>
+    <input type="email" name="email" required>
 
-    <p class="total">Total: <span id="total-q1">0</span>/100</p>
-    <p class="warning" id="warning-q1" style="display: none;">Total must not exceed 100.</p>
-  </div>
+    <label for="company">Company:</label>
+    <input type="text" name="company">
 
-  <script>
-    const maxTotal = 100;
-    const sliders = document.querySelectorAll('.question input[type="range"]');
-    
-    sliders.forEach(slider => {
-      slider.addEventListener('input', handleSliderChange);
-    });
+    <label for="jobTitle">Job Title:</label>
+    <input type="text" name="jobTitle">
 
-    function handleSliderChange() {
-      const questionDiv = this.closest('.question');
-      const sliders = questionDiv.querySelectorAll('input[type="range"]');
-      const totalSpan = questionDiv.querySelector('.total span');
-      const warning = questionDiv.querySelector('.warning');
+    <div id="questions-container"></div>
 
-      let total = 0;
+    <button type="submit">Submit</button>
+  </form>
 
-      sliders.forEach(s => {
-        const val = parseInt(s.value) || 0;
-        total += val;
+  <div id="result-container" style="display:none;"></div>
 
-        const valSpan = questionDiv.querySelector(`#val-${s.name}-${questionDiv.dataset.questionId}`);
-        if (valSpan) valSpan.textContent = val;
-      });
-
-      totalSpan.textContent = total;
-
-      if (total > maxTotal) {
-        warning.style.display = 'block';
-        totalSpan.style.color = 'red';
-      } else {
-        warning.style.display = 'none';
-        totalSpan.style.color = '#333';
-      }
-    }
-  </script>
-
+  <script src="script.js"></script>
 </body>
 </html>
