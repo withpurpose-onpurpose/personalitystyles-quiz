@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard - Edit Questions</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2rem;
+      background-color: #f7f7f7;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 2rem;
+    }
+
+    th, td {
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      text-align: left;
+    }
+
+    th {
+      background-color: #eee;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 0.5rem;
+      box-sizing: border-box;
+    }
+
+    .btn {
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      background-color: #545251;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background-color: #000;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+
+    .controls .btn {
+      margin: 0;
+    }
+
+    .info {
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Edit Personality Quiz Questions</h1>
+
+<div class="controls">
+  <button class="btn" onclick="addEmptyRow()">Add New Question</button>
+  <button class="btn" onclick="saveToLocalStorage()">Save All Changes</button>
+</div>
+
+<table id="questions-table">
+  <thead>
+    <tr>
+      <th>Category (A)</th>
+      <th>Prompt (B)</th>
+      <th>Answer (C)</th>
+      <th>Description (D)</th>
+      <th>Image URL (E)</th>
+      <th>Color (F)</th>
+      <th>Status (G)</th>
+      <th>Delete</th>
+    </tr>
+  </thead>
+  <tbody id="table-body"></tbody>
+</table>
+
+<p class="info">All changes are saved locally in your browser. Visit the main quiz page to test live.</p>
+
+<script>
+  const STORAGE_KEY = "personalityQuizQuestions";
+  let rawRows = [];
+
+  function loadExisting() {
+    const grouped = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    rawRows = [];
+
+    for (const [key, options] of Object.entries(grouped)) {
+      const [cat, prompt] = key.split('||');
+      options.forEach(opt => {
+        rawRows.push([
+          cat,
+          prompt,
+          opt.answer || '',
+          opt.description || '',
+          opt.imageUrl || '',
+          opt.color || '',
+          'Ask'
+        ]);
+      });
+    }
+
+    renderTable();
+  }
+
+  function renderTable() {
+    const tbody = document.getElementById('table-body');
+    tbody.innerHTML = '';
+
+    rawRows.forEach((row, rowIndex) => {
+      const tr = document.createElement('tr');
+
+      row.forEach((val, colIndex) => {
+        const td = document.createElement('td');
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.value = val;
+        input.oninput = e => rawRows[rowIndex][colIndex] = e.target.value;
+        td.appendChild(input);
+        tr.appendChild(td);
+      });
+
+      const deleteBtn = document.createElement('button');
+      deleteBtn.textContent = 'X';
+      deleteBtn.onclick = () => {
+        rawRows.splice(rowIndex, 1);
+        renderTable();
+      };
+
+      const tdDelete = document.createElement('td');
+      tdDelete.appendChild(deleteBtn);
+      tr.appendChild(tdDelete);
+
+      tbody.appendChild(tr);
+    });
+  }
+
+  function addEmptyRow() {
+    rawRows.push(["", "", "", "", "", "", "Ask"]);
+    renderTable();
+  }
+
+  function saveToLocalStorage() {
+    const grouped = {};
+
+    rawRows.forEach(row => {
+      if (row[6] !== 'Ask') return;
+      const key = `${row[0]}||${row[1]}`;
+      if (!grouped[key]) grouped[key] = [];
+      grouped[key].push({
+        answer: row[2],
+        description: row[3],
+        imageUrl: row[4],
+        color: row[5]
+      });
+    });
+
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(grouped));
+    alert("Questions saved to localStorage!");
+  }
+
+  // On load
+  loadExisting();
+</script>
+
+</body>
+</html>
