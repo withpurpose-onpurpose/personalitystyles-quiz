@@ -19,7 +19,18 @@ function loadQuestionsFromLocal() {
 
 function renderQuiz(grouped) {
   const container = document.getElementById('questions-container');
-  container.innerHTML = '';
+container.innerHTML = `
+  <div style="background:#f0f0f0;padding:1rem;border-radius:8px;margin-bottom:2rem;">
+    <strong>Instructions:</strong>
+    <ul>
+      <li>If only one answer is <em>ALL YOU</em>, pick <strong>4</strong> for that option and <strong>0</strong> for the rest.</li>
+      <li>If you can’t decide between two, pick <strong>2</strong> for each, <strong>0</strong> for the others.</li>
+      <li>If one is dominant, pick <strong>3</strong> and <strong>1</strong>, <strong>0</strong> for others.</li>
+      <li>If they are all like you, pick <strong>1</strong> for each option.</li>
+      <li><strong>Total must always add up to 4.</strong></li>
+    </ul>
+  </div>
+`;
 
   let questionIndex = 0;
 
@@ -53,11 +64,12 @@ function renderQuiz(grouped) {
         wrapper.appendChild(img);
       }
 
-      const input = document.createElement('input');
-      input.type = 'range';
-      input.min = '0';
-      input.max = '100';
-      input.value = '0';
+        const input = document.createElement('input');
+        input.type = 'range';
+        input.min = '0';
+        input.max = '100';
+        input.step = '25';
+        input.value = '0';
       input.dataset.color = opt.color;
       input.name = `question-${questionIndex}-answer-${i}`;
       wrapper.appendChild(input);

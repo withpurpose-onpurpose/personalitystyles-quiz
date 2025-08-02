@@ -2,184 +2,178 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin Dashboard - Edit Questions</title>
+  <title>Admin Dashboard – Personality Quiz</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      margin: 2rem;
-      background-color: #f7f7f7;
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 1rem;
+      background: #f7f7f7;
+      color: #333;
     }
 
     h1 {
       text-align: center;
-      color: #333;
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 2rem;
-    }
-
-    th, td {
-      padding: 0.75rem;
+    .question-block {
+      background: #fff;
       border: 1px solid #ccc;
-      text-align: left;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 2rem;
     }
 
-    th {
-      background-color: #eee;
+    label {
+      font-weight: bold;
     }
 
-    input[type="text"] {
+    input, select, textarea {
       width: 100%;
+      margin-bottom: 0.75rem;
       padding: 0.5rem;
-      box-sizing: border-box;
     }
 
-    .btn {
-      margin-top: 1rem;
-      padding: 0.5rem 1rem;
-      background-color: #545251;
+    textarea.description {
+      height: 100px;
+      font-family: Arial, sans-serif;
+    }
+
+    .add-question-btn, .save-btn {
+      background-color: #086cb6;
       color: white;
       border: none;
+      padding: 0.7rem 1.5rem;
       border-radius: 4px;
       cursor: pointer;
+      margin-right: 1rem;
     }
 
-    .btn:hover {
-      background-color: #000;
+    .add-question-btn:hover, .save-btn:hover {
+      background-color: #005a99;
     }
 
-    .controls {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 1rem;
+    .option-block {
+      border-top: 1px dashed #aaa;
+      margin-top: 1rem;
+      padding-top: 1rem;
     }
 
-    .controls .btn {
-      margin: 0;
-    }
-
-    .info {
-      font-size: 0.9rem;
+    small {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 0.85rem;
       color: #666;
-      margin-top: 0.5rem;
     }
   </style>
 </head>
 <body>
 
-<h1>Edit Personality Quiz Questions</h1>
+<h1>Admin – Quiz Builder</h1>
 
-<div class="controls">
-  <button class="btn" onclick="addEmptyRow()">Add New Question</button>
-  <button class="btn" onclick="saveToLocalStorage()">Save All Changes</button>
-</div>
+<div id="questions-container"></div>
 
-<table id="questions-table">
-  <thead>
-    <tr>
-      <th>Category (A)</th>
-      <th>Prompt (B)</th>
-      <th>Answer (C)</th>
-      <th>Description (D)</th>
-      <th>Image URL (E)</th>
-      <th>Color (F)</th>
-      <th>Status (G)</th>
-      <th>Delete</th>
-    </tr>
-  </thead>
-  <tbody id="table-body"></tbody>
-</table>
-
-<p class="info">All changes are saved locally in your browser. Visit the main quiz page to test live.</p>
+<button class="add-question-btn" onclick="addQuestion()">+ Add Question</button>
+<button class="save-btn" onclick="saveQuestions()">💾 Save All</button>
 
 <script>
   const STORAGE_KEY = "personalityQuizQuestions";
-  let rawRows = [];
 
-  function loadExisting() {
-    const grouped = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-    rawRows = [];
+  function addQuestion() {
+    const container = document.getElementById("questions-container");
+    const questionIndex = container.children.length + 1;
 
-    for (const [key, options] of Object.entries(grouped)) {
-      const [cat, prompt] = key.split('||');
-      options.forEach(opt => {
-        rawRows.push([
-          cat,
-          prompt,
-          opt.answer || '',
-          opt.description || '',
-          opt.imageUrl || '',
-          opt.color || '',
-          'Ask'
-        ]);
-      });
-    }
+    const questionBlock = document.createElement("div");
+    questionBlock.className = "question-block";
 
-    renderTable();
+    questionBlock.innerHTML = `
+      <label>Topic:</label>
+      <input type="text" class="topic" placeholder="e.g., Childhood, Work, Beliefs" />
+
+      <label>Prompt:</label>
+      <input type="text" class="prompt" placeholder="e.g., The best description of me in childhood is:" />
+
+      <div class="options"></div>
+
+      <button onclick="addOption(this)">+ Add Option</button>
+    `;
+
+    container.appendChild(questionBlock);
   }
 
-  function renderTable() {
-    const tbody = document.getElementById('table-body');
-    tbody.innerHTML = '';
+  function addOption(btn) {
+    const optionsDiv = btn.previousElementSibling;
+    const optionIndex = optionsDiv.children.length + 1;
 
-    rawRows.forEach((row, rowIndex) => {
-      const tr = document.createElement('tr');
+    const optionBlock = document.createElement("div");
+    optionBlock.className = "option-block";
 
-      row.forEach((val, colIndex) => {
-        const td = document.createElement('td');
-        const input = document.createElement('input');
-        input.type = 'text';
-        input.value = val;
-        input.oninput = e => rawRows[rowIndex][colIndex] = e.target.value;
-        td.appendChild(input);
-        tr.appendChild(td);
+    optionBlock.innerHTML = `
+      <label>Answer ${optionIndex} Text:</label>
+      <input type="text" class="answer" />
+
+      <label>Color:</label>
+      <select class="color">
+        <option value="Blue">Blue</option>
+        <option value="Orange">Orange</option>
+        <option value="Green">Green</option>
+        <option value="Gold">Gold</option>
+      </select>
+
+      <label>Status:</label>
+      <select class="status">
+        <option value="Ask">Ask</option>
+        <option value="Ignore">Ignore</option>
+      </select>
+
+      <label>Answer ${optionIndex} Description (HTML OK):</label>
+      <textarea class="description" placeholder="You can use <strong>, <em>, etc."></textarea>
+
+      <label>Image Upload:</label>
+      <input type="file" class="imageUpload" accept="image/*" />
+      <small>(Stored filename will be saved for frontend use)</small>
+    `;
+
+    optionsDiv.appendChild(optionBlock);
+  }
+
+  function saveQuestions() {
+    const allQuestions = document.querySelectorAll(".question-block");
+    const output = {};
+
+    allQuestions.forEach(q => {
+      const topic = q.querySelector(".topic").value.trim();
+      const prompt = q.querySelector(".prompt").value.trim();
+      const key = `${topic}||${prompt}`;
+      const options = [];
+
+      q.querySelectorAll(".option-block").forEach(opt => {
+        const answer = opt.querySelector(".answer").value.trim();
+        const color = opt.querySelector(".color").value;
+        const status = opt.querySelector(".status").value;
+        const description = opt.querySelector(".description").value.trim();
+        const imageFile = opt.querySelector(".imageUpload").files[0];
+        let imageUrl = "";
+
+        if (imageFile) {
+          imageUrl = `/assets/uploads/${imageFile.name}`;
+          // Actual upload must be handled server-side
+        }
+
+        if (status === "Ask") {
+          options.push({ answer, color, description, imageUrl });
+        }
       });
 
-      const deleteBtn = document.createElement('button');
-      deleteBtn.textContent = 'X';
-      deleteBtn.onclick = () => {
-        rawRows.splice(rowIndex, 1);
-        renderTable();
-      };
-
-      const tdDelete = document.createElement('td');
-      tdDelete.appendChild(deleteBtn);
-      tr.appendChild(tdDelete);
-
-      tbody.appendChild(tr);
+      if (options.length > 0) {
+        output[key] = options;
+      }
     });
+
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(output));
+    alert("Questions saved successfully!");
   }
-
-  function addEmptyRow() {
-    rawRows.push(["", "", "", "", "", "", "Ask"]);
-    renderTable();
-  }
-
-  function saveToLocalStorage() {
-    const grouped = {};
-
-    rawRows.forEach(row => {
-      if (row[6] !== 'Ask') return;
-      const key = `${row[0]}||${row[1]}`;
-      if (!grouped[key]) grouped[key] = [];
-      grouped[key].push({
-        answer: row[2],
-        description: row[3],
-        imageUrl: row[4],
-        color: row[5]
-      });
-    });
-
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(grouped));
-    alert("Questions saved to localStorage!");
-  }
-
-  // On load
-  loadExisting();
 </script>
 
 </body>
