@@ -1,3 +1,4 @@
+<!-- Constants -->
 const SHEET_ID = '1wqtgiMNCeZ1aoR3k5oy_oHh7bvbLnkNvqrCINCQoDgA';
 const DATA_URL = `https://opensheet.elk.sh/${SHEET_ID}/PersonalityQuiz_Questions`;
 const POST_URL = `https://script.google.com/macros/s/AKfycbw28Por_s5ddFB5RRScl2BzAkt9RFwAYQRb5BuvWRJSKvz6XXrkREoSmtaqIN2G1t2IqQ/exec`;
@@ -13,18 +14,19 @@ function convertDriveLinkToImage(url) {
   return null;
 }
 
+
 document.addEventListener("DOMContentLoaded", function () {
   const questionsContainer = document.getElementById("questions-container");
 
   fetch(DATA_URL)
-    .then((response) => response.json())
+    .then((res) => res.json())
     .then((questions) => renderQuestions(questions.filter(q => q.Status === "Ask")))
-    .catch((error) => console.error("Error fetching questions:", error));
+    .catch((err) => console.error("Error fetching:", err));
 
   function renderQuestions(questions) {
     const grouped = {};
     questions.forEach(q => {
-      const qNum = q.QuestionNumber?.toString()?.trim();
+      const qNum = q.QuestionNumber?.toString().trim();
       if (!grouped[qNum]) grouped[qNum] = [];
       grouped[qNum].push(q);
     });
@@ -49,22 +51,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
           const cell = document.createElement("td");
 
-          const optionHeader = document.createElement("strong");
-          optionHeader.textContent = opt.OptionLabel || '';
-          cell.appendChild(optionHeader);
+          const header = document.createElement("strong");
+          header.textContent = opt.OptionLabel || '';
+          cell.appendChild(header);
 
-          const imageURL = convertDriveLinkToImage(opt.OptionTextOrImageURL);
-          if (imageURL) {
+          const imgURL = convertDriveLinkToImage(opt.OptionTextOrImageURL);
+          if (imgURL) {
             const img = document.createElement("img");
-            img.src = imageURL;
-            img.alt = opt.OptionLabel || "Option image";
+            img.src = imgURL;
+            img.alt = opt.OptionLabel;
             img.style.maxWidth = "200px";
             cell.appendChild(img);
           }
 
-          const text = document.createElement("div");
-          text.textContent = opt.OptionText || "";
-          cell.appendChild(text);
+          const desc = document.createElement("div");
+          desc.textContent = opt.OptionText || '';
+          cell.appendChild(desc);
 
           row.appendChild(cell);
         }
@@ -73,10 +75,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
       qDiv.appendChild(matrixTable);
 
+
       const sliders = [];
       const sliderValues = new Array(qOptions.length).fill(0);
 
-      const updateAllSliders = () => {
+      const updateSliders = () => {
         let total = sliderValues.reduce((a, b) => a + b, 0);
         if (total > 100) {
           for (let i = 0; i < sliderValues.length; i++) {
@@ -84,15 +87,15 @@ document.addEventListener("DOMContentLoaded", function () {
           }
           total = sliderValues.reduce((a, b) => a + b, 0);
         }
-        sliders.forEach((slider, i) => {
-          slider.range.value = sliderValues[i];
-          slider.valueLabel.textContent = ` (${sliderValues[i] === 0 ? "Not at all like me" : sliderValues[i] === 100 ? "Totally like me!" : sliderValues[i] + "%"})`;
+        sliders.forEach((s, i) => {
+          s.range.value = sliderValues[i];
+          s.label.textContent = ` (${sliderValues[i] === 0 ? "Not at all like me" : sliderValues[i] === 100 ? "Totally like me!" : sliderValues[i] + "%"})`;
         });
         totalDiv.innerHTML = `Total: <span class="total-value">${total}</span>/100`;
         totalDiv.classList.toggle("warning", total !== 100);
       };
 
-      qOptions.forEach((opt, i) => {
+      qOptions.forEach((_, i) => {
         const label = document.createElement("label");
         label.style.display = "block";
 
@@ -108,11 +111,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
         range.addEventListener("input", () => {
           sliderValues[i] = parseInt(range.value);
-          updateAllSliders();
+          updateSliders();
         });
 
-        sliders.push({ range, valueLabel });
-
+        sliders.push({ range, label: valueLabel });
         label.appendChild(range);
         label.appendChild(valueLabel);
         qDiv.appendChild(label);
@@ -121,12 +123,13 @@ document.addEventListener("DOMContentLoaded", function () {
       const totalDiv = document.createElement("div");
       totalDiv.className = "total";
       qDiv.appendChild(totalDiv);
-      updateAllSliders();
+      updateSliders();
 
       questionsContainer.appendChild(qDiv);
     });
   }
 });
+
 
 document.getElementById('quiz-form').addEventListener('submit', async (e) => {
   e.preventDefault();
