@@ -7,84 +7,100 @@
   <style>
     body {
       font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #fff;
+      color: #000;
+    }
+    header, footer {
+      background-color: #d4af37; /* gold */
+      color: #000;
+      text-align: center;
+      padding: 1rem;
+    }
+    footer {
+      background-color: #545251; /* dark grey */
+      color: #fff;
+      font-size: 0.8rem;
+    }
+    main {
+      padding: 2rem;
       max-width: 800px;
-      margin: auto;
-      padding: 20px;
+      margin: 0 auto;
     }
     h1 {
       text-align: center;
-      font-size: 1.8em;
-    }
-    .subtext {
-      text-align: center;
-      font-size: 0.9em;
-      margin-top: -10px;
-      margin-bottom: 20px;
-      color: #444;
-    }
-    form {
-      margin-bottom: 20px;
-    }
-    label {
-      display: block;
-      margin-top: 10px;
-    }
-    input[type="text"],
-    input[type="email"] {
-      width: 100%;
-      padding: 8px;
-      margin-top: 5px;
-      margin-bottom: 10px;
     }
     .question {
-      border-top: 1px solid #ccc;
-      padding-top: 20px;
-      margin-top: 20px;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #ccc;
     }
-    img {
+    .option-block {
+      margin-bottom: 1.5rem;
+    }
+    .option-block img {
+      max-width: 200px;
       display: block;
-      margin-top: 10px;
-      max-width: 100%;
-      height: auto;
+      margin-bottom: 0.5rem;
+    }
+    .slider-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9em;
+      color: #666;
+      margin-top: -0.5rem;
+      margin-bottom: 1rem;
+    }
+    input[type="range"] {
+      width: 100%;
     }
     .total {
-      margin-top: 10px;
       font-weight: bold;
+      margin-top: 0.5rem;
     }
-    .warning {
+    .total.warning {
       color: red;
     }
-    .result {
-      font-size: 1.2em;
-      font-weight: bold;
-      margin-top: 20px;
+    #submit-btn {
+      display: block;
+      margin: 2rem auto;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      background-color: #545251;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
     }
   </style>
 </head>
 <body>
-  <h1>Personality Style Quiz</h1>
-  <div class="subtext">Based on Personality Lingo by Mary Miscisin</div>
+  <header>
+    <h1>Personality Styles Quiz</h1>
+    <p style="font-size: smaller; margin: 0.25rem 0;">Based on Personality Lingo by Mary Miscisin</p>
+    <p><a href="https://withpurpose-onpurpose.com" target="_blank">withpurpose-onpurpose.com</a></p>
+  </header>
 
-  <form id="quiz-form">
-    <label>Name:
-      <input type="text" name="name" required />
-    </label>
-    <label>Email:
-      <input type="email" name="email" required />
-    </label>
-    <label>Company:
-      <input type="text" name="company" />
-    </label>
-    <label>Job Title:
-      <input type="text" name="jobTitle" />
-    </label>
+  <main>
+    <form id="quiz-form">
+      <div>
+        <label>Name: <input type="text" name="name" required></label><br/>
+        <label>Email: <input type="email" name="email" required></label><br/>
+        <label>Company: <input type="text" name="company"></label><br/>
+        <label>Job Title: <input type="text" name="jobTitle"></label>
+      </div>
 
-    <div id="questions-container"></div>
+      <div id="questions-container"></div>
 
-    <button type="submit">Submit</button>
-  </form>
+      <button type="submit" id="submit-btn">Submit</button>
+    </form>
 
-  <div id="result-container" style="display:none;"></div>
+    <div id="result-container" style="display:none;"></div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 withpurpose-onpurpose.com | Personality Styles Quiz</p>
+  </footer>
 
   <script src="script.js"></script>
 </body>

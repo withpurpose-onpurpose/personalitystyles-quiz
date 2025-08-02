@@ -16,12 +16,18 @@ document.addEventListener("DOMContentLoaded", function () {
     .catch((error) => console.error("Error fetching questions:", error));
 
   function renderQuestions(questions) {
-    questions.forEach((q, idx) => {
+    const grouped = {};
+    questions.forEach(q => {
+      if (!grouped[q.QuestionNumber]) grouped[q.QuestionNumber] = [];
+      grouped[q.QuestionNumber].push(q);
+    });
+
+    Object.entries(grouped).forEach(([qNum, qOptions], idx) => {
       const qDiv = document.createElement("div");
       qDiv.className = "question";
 
       const qTitle = document.createElement("p");
-      qTitle.innerHTML = `<strong>Question ${idx + 1}:</strong> ${q.QuestionText}`;
+      qTitle.innerHTML = `<strong>Question ${idx + 1}:</strong> ${qOptions[0].QuestionText}`;
       qDiv.appendChild(qTitle);
 
       const sliders = [];
@@ -37,27 +43,31 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         sliders.forEach((slider, i) => {
           slider.range.value = sliderValues[i];
-          slider.valueLabel.textContent = ` (${sliderValues[i] === 0 ? "Not like me at all" : sliderValues[i] === 100 ? "Totally like me" : sliderValues[i] + "%"})`;
+          slider.valueLabel.textContent = ` (${sliderValues[i] === 0 ? "Not at all like me" : sliderValues[i] === 100 ? "Totally like me!" : sliderValues[i] + "%"})`;
         });
         totalDiv.innerHTML = `Total: <span class="total-value">${total}</span>/100`;
         totalDiv.classList.toggle("warning", total !== 100);
       };
 
-      for (let i = 1; i <= 4; i++) {
+      qOptions.forEach((opt, i) => {
         const label = document.createElement("label");
-        const optionText = q[`Option${i}`];
-        const imageURL = convertDriveLinkToImage(q[`OptionTextOrImageURL`]);
+        label.style.display = "block";
 
+        const optionHeader = document.createElement("strong");
+        optionHeader.textContent = `Option ${opt.OptionID}`;
+        label.appendChild(optionHeader);
+
+        const imageURL = convertDriveLinkToImage(opt.OptionTextOrImageURL);
         if (imageURL) {
           const img = document.createElement("img");
           img.src = imageURL;
-          img.alt = optionText;
+          img.alt = opt.OptionText;
           img.style.maxWidth = "200px";
           label.appendChild(img);
         }
 
         const text = document.createElement("div");
-        text.textContent = optionText;
+        text.textContent = opt.OptionText;
         label.appendChild(text);
 
         const range = document.createElement("input");
@@ -68,10 +78,10 @@ document.addEventListener("DOMContentLoaded", function () {
         range.value = 0;
 
         const valueLabel = document.createElement("span");
-        valueLabel.textContent = " (Not like me at all)";
+        valueLabel.textContent = " (Not at all like me)";
 
         range.addEventListener("input", () => {
-          sliderValues[i - 1] = parseInt(range.value);
+          sliderValues[i] = parseInt(range.value);
           updateAllSliders();
         });
 
@@ -80,7 +90,7 @@ document.addEventListener("DOMContentLoaded", function () {
         label.appendChild(range);
         label.appendChild(valueLabel);
         qDiv.appendChild(label);
-      }
+      });
 
       const totalDiv = document.createElement("div");
       totalDiv.className = "total";
@@ -96,20 +106,13 @@ document.getElementById('quiz-form').addEventListener('submit', async (e) => {
   e.preventDefault();
   const form = e.target;
   const formData = new FormData(form);
-  const scores = { Thinker: 0, Connector: 0, Mover: 0, Planner: 0 };
-
   const sliders = document.querySelectorAll(".question");
-  sliders.forEach((qDiv, qIdx) => {
+  const allAnswers = [];
+
+  sliders.forEach((qDiv, idx) => {
     const inputs = qDiv.querySelectorAll("input[type='range']");
     const values = Array.from(inputs).map(i => parseInt(i.value));
-    const total = values.reduce((a, b) => a + b, 0);
-    if (total > 0) {
-      const weights = values.map(v => v / total);
-      scores.Connector += weights[0] * 100;
-      scores.Mover += weights[1] * 100;
-      scores.Thinker += weights[2] * 100;
-      scores.Planner += weights[3] * 100;
-    }
+    allAnswers.push(values);
   });
 
   const payload = {
@@ -118,7 +121,7 @@ document.getElementById('quiz-form').addEventListener('submit', async (e) => {
     email: formData.get('email'),
     company: formData.get('company'),
     jobTitle: formData.get('jobTitle'),
-    scores
+    answers: allAnswers
   };
 
   await fetch(POST_URL, {
@@ -130,13 +133,5 @@ document.getElementById('quiz-form').addEventListener('submit', async (e) => {
   document.getElementById('quiz-form').style.display = 'none';
   const result = document.getElementById('result-container');
   result.style.display = 'block';
-  result.innerHTML = `
-    <p class="result">🎉 Your Personality Style Blend:</p>
-    <ul>
-      <li><span style="color:#3b9d38">Thinker (Green)</span>: ${Math.round(scores.Thinker)}%</li>
-      <li><span style="color:#0066cc">Connector (Blue)</span>: ${Math.round(scores.Connector)}%</li>
-      <li><span style="color:#f6871f">Mover (Orange)</span>: ${Math.round(scores.Mover)}%</li>
-      <li><span style="color:#b8860b">Planner (Gold)</span>: ${Math.round(scores.Planner)}%</li>
-    </ul>
-  `;
+  result.innerHTML = `<p class="result">🎉 Thanks for taking the quiz! Your results will be shared shortly.</p>`;
 });
