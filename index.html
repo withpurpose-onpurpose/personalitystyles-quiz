@@ -81,7 +81,8 @@
       color: red;
     }
 
-    .submit-btn {
+    .submit-btn,
+    .refetch-btn {
       background-color: #545251; /* grey */
       color: white;
       border: none;
@@ -89,9 +90,12 @@
       font-size: 1rem;
       border-radius: 4px;
       cursor: pointer;
+      margin-top: 1rem;
+      margin-right: 1rem;
     }
 
-    .submit-btn:hover {
+    .submit-btn:hover,
+    .refetch-btn:hover {
       background-color: #000000;
     }
 
@@ -128,6 +132,7 @@
     <div id="questions-container"></div>
 
     <button class="submit-btn" type="submit">Submit</button>
+    <button class="refetch-btn" type="button" onclick="refetchQuestions()">Reload Questions</button>
   </form>
 
   <div id="result-container" style="display:none;"></div>

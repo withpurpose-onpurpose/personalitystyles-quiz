@@ -1,28 +1,35 @@
 const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQApNytYtR7M4-LZGhf1WTXcJxzqxSZRcW_vROMD_Lwfn9Vv89gWsenchhW0zCHGxE_cnNBtnuhyIDA/pub?gid=722482684&single=true&output=csv";
 
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', () => {
+  refetchQuestions();
+});
+
+async function refetchQuestions() {
+  const container = document.getElementById('questions-container');
+  container.innerHTML = ''; // Clear any existing questions
+
   try {
     const response = await fetch(SHEET_URL);
-    const csvText = await response.text();
-    const rows = csvText.trim().split('\n').map(line => line.split(','));
+    if (!response.ok) throw new Error("Network response was not ok");
 
+    const tsvText = await response.text();
+    const rows = tsvText.trim().split('\n').map(line => line.split('\t'));
     const headers = rows[0];
-    const dataRows = rows.slice(1).filter(row => row[6]?.trim() === 'Ask');
+    const dataRows = rows.slice(1).filter(row => row[6] === 'Ask'); // G = 6
 
     const grouped = {};
 
     dataRows.forEach(row => {
-      const key = `${row[0]?.trim()}||${row[1]?.trim()}`; // A + B
+      const key = `${row[0]}||${row[1]}`; // A + B = unique question key
       if (!grouped[key]) grouped[key] = [];
       grouped[key].push({
-        answer: row[2]?.trim(),       // C
-        description: row[3]?.trim(),  // D
-        imageUrl: convertDriveLink(row[4]?.trim()), // E
-        color: row[5]?.trim()         // F
+        answer: row[2],        // C
+        description: row[3],   // D
+        imageUrl: convertDriveLink(row[4]), // E
+        color: row[5]          // F
       });
     });
 
-    const container = document.getElementById('questions-container');
     let questionIndex = 0;
 
     for (const [questionKey, options] of Object.entries(grouped)) {
@@ -76,21 +83,24 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       sliders.forEach(slider => {
         slider.addEventListener('input', () => {
-          const sum = sliders.reduce((acc, el) => acc + Number(el.value), 0);
+          let sum = sliders.reduce((acc, el) => acc + Number(el.value), 0);
           totalDisplay.textContent = `Total: ${sum}/100`;
-          totalDisplay.classList.toggle('warning', sum !== 100);
+          if (sum !== 100) {
+            totalDisplay.classList.add('warning');
+          } else {
+            totalDisplay.classList.remove('warning');
+          }
         });
       });
 
       container.appendChild(section);
       container.appendChild(document.createElement('hr'));
     }
-  } catch (err) {
-    console.error("Error loading quiz data:", err);
-    document.getElementById('questions-container').textContent =
-      "There was an error loading the quiz. Please check the spreadsheet link or try again later.";
+  } catch (error) {
+    console.error('Error loading quiz:', error);
+    container.innerHTML = '<p style="color:red;">There was an error loading the quiz. Please check the spreadsheet link or try again later.</p>';
   }
-});
+}
 
 function convertDriveLink(url) {
   if (!url || !url.includes('drive.google.com')) return '';
