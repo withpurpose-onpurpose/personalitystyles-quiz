@@ -57,12 +57,16 @@ container.innerHTML = `
       label.textContent = `${opt.answer}: ${opt.description}`;
       wrapper.appendChild(label);
 
-      if (opt.imageUrl) {
-        const img = document.createElement('img');
-        img.src = opt.imageUrl;
-        img.alt = opt.answer;
-        wrapper.appendChild(img);
-      }
+    if (opt.imageUrl) {
+  const img = document.createElement('img');
+
+  // Normalize the path to be relative to the current HTML file
+  const relativePath = opt.imageUrl.replace(/^.*?assets\/uploads\//, 'assets/uploads/');
+  img.src = relativePath;
+  img.alt = opt.answer;
+  wrapper.appendChild(img);
+}
+
 
         const input = document.createElement('input');
         input.type = 'range';
