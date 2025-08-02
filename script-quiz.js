@@ -1,165 +1,108 @@
+// script-quiz.js
+
 document.addEventListener("DOMContentLoaded", () => {
   fetchQuestions();
 
-  document.getElementById("quiz-form").addEventListener("submit", handleSubmit);
+  document.getElementById("quiz-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+    const responses = {};
+    const name = formData.get("name");
+    const email = formData.get("email");
+    const company = formData.get("company") || "";
+    const jobTitle = formData.get("jobTitle") || "";
+
+    // Score tracking
+    const scores = {
+      Blue: 0,
+      Gold: 0,
+      Green: 0,
+      Orange: 0
+    };
+
+    for (let [key, value] of formData.entries()) {
+      if (key.startsWith("slider-")) {
+        const [_, topic, color] = key.split("-");
+        scores[color] += parseInt(value, 10);
+        if (!responses[topic]) responses[topic] = {};
+        responses[topic][color] = parseInt(value, 10);
+      }
+    }
+
+    const summary = Object.entries(scores)
+      .map(([color, score]) => `${color}: ${score}`)
+      .join("\n");
+
+    const mailtoLink = `mailto:${email}?subject=Your Personality Style Results&body=Thank you, ${name}!\n\nYour results:\n${summary}`;
+    const adminLink = `mailto:youremail@yourdomain.com?subject=New Quiz Submission&body=Name: ${name}\nEmail: ${email}\nCompany: ${company}\nJob Title: ${jobTitle}\n\nResults:\n${summary}`;
+
+    document.getElementById("result-container").innerHTML = `
+      <p class="result">Thank you for submitting your quiz!</p>
+      <p><a href="${mailtoLink}" target="_blank">📩 Email results to yourself</a></p>
+      <p><a href="${adminLink}" target="_blank">📥 Notify Admin</a></p>
+    `;
+    document.getElementById("result-container").style.display = "block";
+  });
 });
 
-async function fetchQuestions() {
+function fetchQuestions() {
   const container = document.getElementById("questions-container");
   container.innerHTML = "";
 
-  try {
-    const response = await fetch("questions.json");
-    const data = await response.json();
-
-    for (const group of data) {
-      const div = document.createElement("div");
-      div.className = "question";
-      div.dataset.topic = group.topic;
-
-      const prompt = document.createElement("label");
-      prompt.textContent = group.prompt;
-      div.appendChild(prompt);
-
-      const table = document.createElement("table");
-      table.className = "option-matrix";
-
-      let totalRow = 0;
-
-      for (const answer of group.answers) {
-        const row = table.insertRow();
-        row.dataset.color = answer.color;
-        row.dataset.answer = answer.a;
-
-        const sliderCell = row.insertCell();
-        const label = document.createElement("label");
-        label.textContent = `${answer.color}:`;
-        sliderCell.appendChild(label);
-
-        const slider = document.createElement("input");
-        slider.type = "range";
-        slider.min = 0;
-        slider.max = 100;
-        slider.value = 0;
-        slider.name = `${group.topic}-${answer.color}`;
-        slider.className = "slider";
-        slider.addEventListener("input", () => updateTotal(div));
-        sliderCell.appendChild(slider);
-
-        const valueDisplay = document.createElement("span");
-        valueDisplay.textContent = "0";
-        valueDisplay.style.marginLeft = "1rem";
-        sliderCell.appendChild(valueDisplay);
-
-        slider.addEventListener("input", () => {
-          valueDisplay.textContent = slider.value;
-        });
-
-        // optional image
-        if (answer.imageUrl) {
-          const imageCell = row.insertCell();
-          const img = document.createElement("img");
-          img.src = answer.imageUrl;
-          img.alt = "Preview Image";
-          img.style.maxWidth = "100px";
-          imageCell.appendChild(img);
-        }
-      }
-
-      const totalDisplay = document.createElement("div");
-      totalDisplay.className = "total";
-      totalDisplay.innerHTML = `Total: <span class="total-value">0</span> <span class="warning"></span>`;
-      div.appendChild(table);
-      div.appendChild(totalDisplay);
-
-      container.appendChild(div);
-    }
-  } catch (err) {
-    console.error("Failed to fetch questions:", err);
-    container.innerHTML = "<p>Could not load questions. Please try again later.</p>";
-  }
-}
-
-function updateTotal(questionDiv) {
-  const sliders = questionDiv.querySelectorAll("input[type='range']");
-  const total = [...sliders].reduce((sum, s) => sum + Number(s.value), 0);
-  questionDiv.querySelector(".total-value").textContent = total;
-
-  const warning = questionDiv.querySelector(".warning");
-  warning.textContent = total !== 100 ? "❗ Must total 100" : "";
-  warning.style.color = total !== 100 ? "red" : "green";
-}
-
-function handleSubmit(e) {
-  e.preventDefault();
-
-  const questions = document.querySelectorAll(".question");
-  const scores = { Blue: 0, Orange: 0, Green: 0, Gold: 0 };
-  let valid = true;
-
-  questions.forEach((div) => {
-    const sliders = div.querySelectorAll("input[type='range']");
-    let groupTotal = 0;
-
-    sliders.forEach((slider) => {
-      const color = slider.name.split("-")[1];
-      const value = parseInt(slider.value);
-      scores[color] += value;
-      groupTotal += value;
+  fetch("questions.json")
+    .then((res) => res.json())
+    .then((data) => {
+      data.forEach((question) => {
+        const qEl = document.createElement("div");
+        qEl.className = "question";
+        qEl.innerHTML = `
+          <label>${question.prompt}</label>
+          <table class="option-matrix">
+            ${question.answers
+              .map(
+                (a) => `
+                <tr>
+                  <td><strong>${a.color}</strong></td>
+                  <td>${a.description}</td>
+                  <td>
+                    <input
+                      type="range"
+                      min="0"
+                      max="100"
+                      value="0"
+                      step="1"
+                      name="slider-${question.topic}-${a.color}"
+                      onchange="validateTotal('${question.topic}')"
+                    />
+                    <span id="slider-value-${question.topic}-${a.color}">0</span>
+                  </td>
+                </tr>
+              `)
+              .join("")}
+          </table>
+          <div class="total">Total: <span id="total-${question.topic}">0</span>/100</div>
+          <div class="warning" id="warning-${question.topic}" style="display:none">⚠ Total must equal 100</div>
+        `;
+        container.appendChild(qEl);
+      });
     });
-
-    if (groupTotal !== 100) {
-      div.querySelector(".warning").textContent = "❗ Must total 100";
-      valid = false;
-    } else {
-      div.querySelector(".warning").textContent = "";
-    }
-  });
-
-  if (!valid) {
-    alert("Please make sure all groups total 100.");
-    return;
-  }
-
-  showResults(scores);
 }
 
-function showResults(scores) {
-  const container = document.getElementById("result-container");
-  container.innerHTML = "<h2>Your Personality Blend</h2>";
+function validateTotal(topic) {
+  const inputs = document.querySelectorAll(`input[name^=slider-${topic}-]`);
+  let total = 0;
 
-  const total = Object.values(scores).reduce((sum, val) => sum + val, 0);
-  const sorted = Object.entries(scores).sort(([, a], [, b]) => b - a);
-
-  sorted.forEach(([color, value]) => {
-    const percent = Math.round((value / total) * 100);
-    const bar = document.createElement("div");
-    bar.className = "result-bar";
-    bar.innerHTML = `
-      <strong>${color}</strong>: ${value} points (${percent}%)
-      <div style="height: 20px; background-color: #eee; border-radius: 4px;">
-        <div style="
-          width: ${percent}%;
-          height: 100%;
-          background-color: ${getColorCode(color)};
-          text-align: right;
-          padding-right: 5px;
-          color: white;
-        ">${percent > 10 ? percent + "%" : ""}</div>
-      </div>
-    `;
-    container.appendChild(bar);
+  inputs.forEach((input) => {
+    total += parseInt(input.value);
+    const color = input.name.split("-")[2];
+    document.getElementById(`slider-value-${topic}-${color}`).textContent = input.value;
   });
 
-  container.style.display = "block";
+  document.getElementById(`total-${topic}`).textContent = total;
+  const warning = document.getElementById(`warning-${topic}`);
+  warning.style.display = total !== 100 ? "block" : "none";
 }
 
-function getColorCode(color) {
-  switch (color) {
-    case "Blue": return "#1e90ff";
-    case "Orange": return "#ff9800";
-    case "Green": return "#4caf50";
-    case "Gold": return "#d4af37";
-    default: return "#ccc";
-  }
+function refetchQuestions() {
+  fetchQuestions();
 }
