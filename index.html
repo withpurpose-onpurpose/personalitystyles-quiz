@@ -4,69 +4,30 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Personality Styles Quiz</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      max-width: 800px;
-      margin: auto;
-    }
-    h1 {
-      font-size: 2em;
-      margin-bottom: 5px;
-    }
-    .subtitle {
-      font-weight: bold;
-      color: goldenrod;
-    }
-    .question {
-      margin-bottom: 25px;
-    }
-    label {
-      display: block;
-      margin-top: 10px;
-    }
-    input[type=range] {
-      width: 60%;
-      margin: 5px 10px;
-    }
-    .total {
-      margin-top: 10px;
-      font-weight: bold;
-    }
-    .warning {
-      color: red;
-    }
-    .result {
-      font-size: 1.2em;
-      margin-top: 20px;
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <h1>Personality Styles Quiz</h1>
-  <p class="subtitle">Created by Laura Cooley</p>
-  <p>Based on <a href="https://www.personalitylingo.com/" target="_blank">Personality Lingo by Mary Miscisin</a></p>
+  <div class="container">
+    <h1>Personality Styles Quiz</h1>
+    <p class="subheader">Created by <a href="https://withpurpose-onpurpose.com" target="_blank" style="color: #cc9900; text-decoration: none;">Laura Cooley</a></p>
+    <p class="source-credit"><small>Based on <a href="https://www.amazon.com/Personality-Lingo-Mary-Miscisin/dp/0974366407" target="_blank">Personality Lingo by Mary Miscisin</a></small></p>
 
-  <form id="quiz-form">
-    <label for="name">Name:</label>
-    <input type="text" name="name" required>
+    <form id="quiz-form">
+      <div id="questions-container"></div>
 
-    <label for="email">Email:</label>
-    <input type="email" name="email" required>
+      <div class="user-info">
+        <h2>Tell us about yourself</h2>
+        <label>Name: <input type="text" name="name" required /></label><br/>
+        <label>Email: <input type="email" name="email" required /></label><br/>
+        <label>Company: <input type="text" name="company" /></label><br/>
+        <label>Job Title: <input type="text" name="jobTitle" /></label><br/>
+      </div>
 
-    <label for="company">Company:</label>
-    <input type="text" name="company">
+      <button type="submit">Submit Quiz</button>
+    </form>
 
-    <label for="jobTitle">Job Title:</label>
-    <input type="text" name="jobTitle">
-
-    <div id="questions-container"></div>
-
-    <button type="submit">Submit</button>
-  </form>
-
-  <div id="result-container" style="display:none;"></div>
+    <div id="result-container" style="display:none;"></div>
+  </div>
 
   <script src="script.js"></script>
 </body>
