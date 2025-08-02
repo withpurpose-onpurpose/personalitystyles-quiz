@@ -79,7 +79,7 @@ container.innerHTML = `
       wrapper.appendChild(input);
 
       const span = document.createElement('span');
-      span.textContent = ' (Not at all like me)';
+      span.textContent = ' (The further to the right you choose, the more like you this answer is)';
       wrapper.appendChild(span);
 
       sliders.push(input);
