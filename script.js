@@ -1,167 +1,98 @@
-// Constants
-const SHEET_ID = '1wqtgiMNCeZ1aoR3k5oy_oHh7bvbLnkNvqrCINCQoDgA';
-const DATA_URL = `https://opensheet.elk.sh/${SHEET_ID}/PersonalityQuiz_Questions`;
-const POST_URL = `https://script.google.com/macros/s/AKfycbw28Por_s5ddFB5RRScl2BzAkt9RFwAYQRb5BuvWRJSKvz6XXrkREoSmtaqIN2G1t2IqQ/exec`;
+const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQApNytYtR7M4-LZGhf1WTXcJxzqxSZRcW_vROMD_Lwfn9Vv89gWsenchhW0zCHGxE_cnNBtnuhyIDA/pub?gid=722482684&single=true&output=csv";
+ // this is the publish link just to the question tab
 
+document.addEventListener('DOMContentLoaded', async () => {
+  const response = await fetch(SHEET_URL);
+  const tsvText = await response.text();
+  const rows = tsvText.trim().split('\n').map(line => line.split('\t'));
 
-function convertDriveLinkToImage(url) {
-  if (!url) return null;
-  const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
-  if (match) return `https://drive.google.com/uc?export=view&id=${match[1]}`;
-  if (url.includes("id=")) {
-    const id = new URLSearchParams(url.split("?")[1]).get("id");
-    return id ? `https://drive.google.com/uc?export=view&id=${id}` : null;
-  }
-  return null;
-}
+  const headers = rows[0];
+  const dataRows = rows.slice(1).filter(row => row[6] === 'Ask'); // G = 6
 
+  const grouped = {};
 
-document.addEventListener("DOMContentLoaded", function () {
-  const questionsContainer = document.getElementById("questions-container");
-
-  fetch(DATA_URL)
-    .then((res) => res.json())
-    .then((questions) => renderQuestions(questions.filter(q => q.Status === "Ask")))
-    .catch((err) => console.error("Error fetching:", err));
-
-  function renderQuestions(questions) {
-    const grouped = {};
-    questions.forEach(q => {
-      const qNum = q.QuestionNumber?.toString().trim();
-      if (!grouped[qNum]) grouped[qNum] = [];
-      grouped[qNum].push(q);
+  dataRows.forEach(row => {
+    const key = `${row[0]}||${row[1]}`; // A + B = unique question key
+    if (!grouped[key]) grouped[key] = [];
+    grouped[key].push({
+      answer: row[2],        // C
+      description: row[3],   // D
+      imageUrl: convertDriveLink(row[4]), // E
+      color: row[5]          // F
     });
+  });
 
-    Object.entries(grouped).forEach(([qNum, qOptions], idx) => {
-      const qDiv = document.createElement("div");
-      qDiv.className = "question";
+  const container = document.getElementById('questions-container');
+  let questionIndex = 0;
 
-      const qTitle = document.createElement("p");
-      qTitle.innerHTML = `<strong>Question ${idx + 1}:</strong> ${qOptions[0].QuestionText}`;
-      qDiv.appendChild(qTitle);
+  for (const [questionKey, options] of Object.entries(grouped)) {
+    const [topic, prompt] = questionKey.split('||');
+    const section = document.createElement('div');
+    section.className = 'question';
 
-      const matrixTable = document.createElement("table");
-      matrixTable.className = "option-matrix";
+    const heading = document.createElement('h3');
+    heading.textContent = `Question ${++questionIndex}: ${prompt}`;
+    section.appendChild(heading);
 
-      for (let i = 0; i < 2; i++) {
-        const row = document.createElement("tr");
-        for (let j = 0; j < 2; j++) {
-          const index = i * 2 + j;
-          const opt = qOptions[index];
-          if (!opt) continue;
+    const sliders = [];
+    const totalDisplay = document.createElement('div');
+    totalDisplay.className = 'total';
+    totalDisplay.textContent = 'Total: 0/100';
+    section.appendChild(totalDisplay);
 
-          const cell = document.createElement("td");
+    options.forEach((opt, i) => {
+      const wrapper = document.createElement('div');
+      wrapper.style.marginBottom = '1rem';
 
-          const header = document.createElement("strong");
-          header.textContent = opt.OptionLabel || '';
-          cell.appendChild(header);
+      const label = document.createElement('label');
+      label.textContent = `${opt.answer}: ${opt.description}`;
+      wrapper.appendChild(label);
 
-          const imgURL = convertDriveLinkToImage(opt.OptionTextOrImageURL);
-          if (imgURL) {
-            const img = document.createElement("img");
-            img.src = imgURL;
-            img.alt = opt.OptionLabel;
-            img.style.maxWidth = "200px";
-            cell.appendChild(img);
-          }
-
-          const desc = document.createElement("div");
-          desc.textContent = opt.OptionText || '';
-          cell.appendChild(desc);
-
-          row.appendChild(cell);
-        }
-        matrixTable.appendChild(row);
+      if (opt.imageUrl) {
+        const img = document.createElement('img');
+        img.src = opt.imageUrl;
+        img.alt = opt.answer;
+        wrapper.appendChild(img);
       }
 
-      qDiv.appendChild(matrixTable);
+      const input = document.createElement('input');
+      input.type = 'range';
+      input.min = '0';
+      input.max = '100';
+      input.value = '0';
+      input.dataset.color = opt.color;
+      input.name = `question-${questionIndex}-answer-${i}`;
+      wrapper.appendChild(input);
 
+      const span = document.createElement('span');
+      span.textContent = ' (Not at all like me)';
+      wrapper.appendChild(span);
 
-      const sliders = [];
-      const sliderValues = new Array(qOptions.length).fill(0);
-
-      const updateSliders = () => {
-        let total = sliderValues.reduce((a, b) => a + b, 0);
-        if (total > 100) {
-          for (let i = 0; i < sliderValues.length; i++) {
-            sliderValues[i] = Math.round((sliderValues[i] / total) * 100 / 25) * 25;
-          }
-          total = sliderValues.reduce((a, b) => a + b, 0);
-        }
-        sliders.forEach((s, i) => {
-          s.range.value = sliderValues[i];
-          s.label.textContent = ` (${sliderValues[i] === 0 ? "Not at all like me" : sliderValues[i] === 100 ? "Totally like me!" : sliderValues[i] + "%"})`;
-        });
-        totalDiv.innerHTML = `Total: <span class="total-value">${total}</span>/100`;
-        totalDiv.classList.toggle("warning", total !== 100);
-      };
-
-      qOptions.forEach((_, i) => {
-        const label = document.createElement("label");
-        label.style.display = "block";
-
-        const range = document.createElement("input");
-        range.type = "range";
-        range.min = 0;
-        range.max = 100;
-        range.step = 25;
-        range.value = 0;
-
-        const valueLabel = document.createElement("span");
-        valueLabel.textContent = " (Not at all like me)";
-
-        range.addEventListener("input", () => {
-          sliderValues[i] = parseInt(range.value);
-          updateSliders();
-        });
-
-        sliders.push({ range, label: valueLabel });
-        label.appendChild(range);
-        label.appendChild(valueLabel);
-        qDiv.appendChild(label);
-      });
-
-      const totalDiv = document.createElement("div");
-      totalDiv.className = "total";
-      qDiv.appendChild(totalDiv);
-      updateSliders();
-
-      questionsContainer.appendChild(qDiv);
+      sliders.push(input);
+      section.appendChild(wrapper);
     });
+
+    section.appendChild(totalDisplay);
+
+    sliders.forEach(slider => {
+      slider.addEventListener('input', () => {
+        let sum = sliders.reduce((acc, el) => acc + Number(el.value), 0);
+        totalDisplay.textContent = `Total: ${sum}/100`;
+        if (sum !== 100) {
+          totalDisplay.classList.add('warning');
+        } else {
+          totalDisplay.classList.remove('warning');
+        }
+      });
+    });
+
+    container.appendChild(section);
+    container.appendChild(document.createElement('hr'));
   }
 });
 
-
-document.getElementById('quiz-form').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const form = e.target;
-  const formData = new FormData(form);
-  const sliders = document.querySelectorAll(".question");
-  const allAnswers = [];
-
-  sliders.forEach((qDiv) => {
-    const inputs = qDiv.querySelectorAll("input[type='range']");
-    const values = Array.from(inputs).map(i => parseInt(i.value));
-    allAnswers.push(values);
-  });
-
-  const payload = {
-    timestamp: new Date().toISOString(),
-    name: formData.get('name'),
-    email: formData.get('email'),
-    company: formData.get('company'),
-    jobTitle: formData.get('jobTitle'),
-    answers: allAnswers
-  };
-
-  await fetch(POST_URL, {
-    method: 'POST',
-    body: JSON.stringify(payload),
-    headers: { 'Content-Type': 'application/json' }
-  });
-
-  document.getElementById('quiz-form').style.display = 'none';
-  const result = document.getElementById('result-container');
-  result.style.display = 'block';
-  result.innerHTML = `<p class="result">🎉 Thanks for taking the quiz! Your results will be shared shortly.</p>`;
-});
+function convertDriveLink(url) {
+  if (!url || !url.includes('drive.google.com')) return '';
+  const match = url.match(/\/d\/([^\/]+)\//);
+  return match ? `https://drive.google.com/uc?id=${match[1]}` : '';
+}
