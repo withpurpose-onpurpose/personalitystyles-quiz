@@ -3,8 +3,14 @@ const DATA_URL = `https://opensheet.elk.sh/${SHEET_ID}/PersonalityQuiz_Questions
 const POST_URL = `https://script.google.com/macros/s/AKfycbw28Por_s5ddFB5RRScl2BzAkt9RFwAYQRb5BuvWRJSKvz6XXrkREoSmtaqIN2G1t2IqQ/exec`;
 
 function convertDriveLinkToImage(url) {
+  if (!url) return null;
   const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
-  return match ? `https://drive.google.com/uc?export=view&id=${match[1]}` : null;
+  if (match) return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+  if (url.includes("id=")) {
+    const id = new URLSearchParams(url.split("?")[1]).get("id");
+    return id ? `https://drive.google.com/uc?export=view&id=${id}` : null;
+  }
+  return null;
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -18,8 +24,9 @@ document.addEventListener("DOMContentLoaded", function () {
   function renderQuestions(questions) {
     const grouped = {};
     questions.forEach(q => {
-      if (!grouped[q.QuestionNumber]) grouped[q.QuestionNumber] = [];
-      grouped[q.QuestionNumber].push(q);
+      const qNum = q.QuestionNumber?.toString()?.trim();
+      if (!grouped[qNum]) grouped[qNum] = [];
+      grouped[qNum].push(q);
     });
 
     Object.entries(grouped).forEach(([qNum, qOptions], idx) => {
@@ -43,20 +50,20 @@ document.addEventListener("DOMContentLoaded", function () {
           const cell = document.createElement("td");
 
           const optionHeader = document.createElement("strong");
-          optionHeader.textContent = `Option ${opt.OptionID}`;
+          optionHeader.textContent = opt.OptionLabel || '';
           cell.appendChild(optionHeader);
 
           const imageURL = convertDriveLinkToImage(opt.OptionTextOrImageURL);
           if (imageURL) {
             const img = document.createElement("img");
             img.src = imageURL;
-            img.alt = opt.OptionText;
+            img.alt = opt.OptionLabel || "Option image";
             img.style.maxWidth = "200px";
             cell.appendChild(img);
           }
 
           const text = document.createElement("div");
-          text.textContent = opt.OptionText;
+          text.textContent = opt.OptionText || "";
           cell.appendChild(text);
 
           row.appendChild(cell);
@@ -67,7 +74,7 @@ document.addEventListener("DOMContentLoaded", function () {
       qDiv.appendChild(matrixTable);
 
       const sliders = [];
-      const sliderValues = [0, 0, 0, 0];
+      const sliderValues = new Array(qOptions.length).fill(0);
 
       const updateAllSliders = () => {
         let total = sliderValues.reduce((a, b) => a + b, 0);
@@ -128,7 +135,7 @@ document.getElementById('quiz-form').addEventListener('submit', async (e) => {
   const sliders = document.querySelectorAll(".question");
   const allAnswers = [];
 
-  sliders.forEach((qDiv, idx) => {
+  sliders.forEach((qDiv) => {
     const inputs = qDiv.querySelectorAll("input[type='range']");
     const values = Array.from(inputs).map(i => parseInt(i.value));
     allAnswers.push(values);
