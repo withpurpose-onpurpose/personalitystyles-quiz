@@ -3,35 +3,82 @@ const DATA_URL = `https://opensheet.elk.sh/${SHEET_ID}/PersonalityQuiz_Questions
 const POST_URL = `https://script.google.com/macros/s/AKfycbw28Por_s5ddFB5RRScl2BzAkt9RFwAYQRb5BuvWRJSKvz6XXrkREoSmtaqIN2G1t2IqQ/exec`;
 
 
-document.addEventListener('DOMContentLoaded', async () => {
-  const container = document.getElementById('questions-container');
-  const res = await fetch(DATA_URL);
-  const questions = await res.json();
+document.addEventListener("DOMContentLoaded", function () {
+  const questionsContainer = document.getElementById("questions-container");
 
-  const grouped = {};
-  questions.forEach(q => {
-    if (!grouped[q.QuestionID]) grouped[q.QuestionID] = { text: q.QuestionText, options: [] };
-    grouped[q.QuestionID].options.push({ content: q.OptionText, style: q.Style });
-  });
+  // Replace this with your Google Apps Script endpoint
+  const QUESTIONS_ENDPOINT = "https://script.google.com/macros/s/AKfycbw28Por_s5ddFB5RRScl2BzAkt9RFwAYQRb5BuvWRJSKvz6XXrkREoSmtaqIN2G1t2IqQ/exec";
 
-  Object.entries(grouped).forEach(([id, q]) => {
-    const div = document.createElement('div');
-    div.className = 'question';
-    div.innerHTML = `<p><strong>${q.text}</strong></p>`;
+  fetch(QUESTIONS_ENDPOINT)
+    .then((response) => response.json())
+    .then((data) => renderQuestions(data.questions))
+    .catch((error) => console.error("Error fetching questions:", error));
 
-    q.options.forEach(opt => {
-      const label = document.createElement('label');
-      label.className = 'option';
-      label.innerHTML = `
-        <input type="checkbox" name="Q${id}" value="${opt.style}">
-        ${opt.content.startsWith('http') ? `<img src="${opt.content}" alt="option">` : opt.content}
-      `;
-      div.appendChild(label);
+  function renderQuestions(questions) {
+    questions.forEach((q, idx) => {
+      const qDiv = document.createElement("div");
+      qDiv.className = "question";
+
+      const qTitle = document.createElement("p");
+      qTitle.textContent = q.text;
+      qDiv.appendChild(qTitle);
+
+      const sliders = [];
+
+      q.options.forEach((option, optIdx) => {
+        const label = document.createElement("label");
+        label.textContent = option;
+
+        const range = document.createElement("input");
+        range.type = "range";
+        range.min = 0;
+        range.max = 100;
+        range.step = 25;
+        range.value = 0;
+        range.dataset.questionIndex = idx;
+
+        const valueLabel = document.createElement("span");
+        valueLabel.textContent = " (Not like me at all)";
+        range.addEventListener("input", () => {
+          updateTotal(sliders, totalDiv);
+          const val = parseInt(range.value);
+          valueLabel.textContent = ` (${val === 0 ? "Not like me at all" : val === 100 ? "Totally like me" : val + "%"})`;
+        });
+
+        sliders.push(range);
+
+        label.appendChild(range);
+        label.appendChild(valueLabel);
+        qDiv.appendChild(label);
+      });
+
+      const totalDiv = document.createElement("div");
+      totalDiv.className = "total";
+      qDiv.appendChild(totalDiv);
+      updateTotal(sliders, totalDiv);
+
+      questionsContainer.appendChild(qDiv);
+    });
+  }
+
+  function updateTotal(sliders, displayEl) {
+    const total = sliders.reduce((sum, r) => sum + parseInt(r.value), 0);
+    displayEl.innerHTML = `Total: ${total}%`;
+
+    sliders.forEach((slider) => {
+      const currentVal = parseInt(slider.value);
+      const othersTotal = total - currentVal;
+      slider.max = 100 - othersTotal;
     });
 
-    container.appendChild(div);
-  });
+    if (total !== 100) {
+      displayEl.classList.add("warning");
+    } else {
+      displayEl.classList.remove("warning");
+    }
+  }
 });
+
 
 document.getElementById('quiz-form').addEventListener('submit', async (e) => {
   e.preventDefault();
