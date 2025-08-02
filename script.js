@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
       qDiv.className = "question";
 
       const qTitle = document.createElement("p");
-      qTitle.textContent = q.Question;
+      qTitle.innerHTML = `<strong>Question ${idx + 1}:</strong> ${q.Question}`;
       qDiv.appendChild(qTitle);
 
       const sliders = [];
