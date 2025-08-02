@@ -30,6 +30,42 @@ document.addEventListener("DOMContentLoaded", function () {
       qTitle.innerHTML = `<strong>Question ${idx + 1}:</strong> ${qOptions[0].QuestionText}`;
       qDiv.appendChild(qTitle);
 
+      const matrixTable = document.createElement("table");
+      matrixTable.className = "option-matrix";
+
+      for (let i = 0; i < 2; i++) {
+        const row = document.createElement("tr");
+        for (let j = 0; j < 2; j++) {
+          const index = i * 2 + j;
+          const opt = qOptions[index];
+          if (!opt) continue;
+
+          const cell = document.createElement("td");
+
+          const optionHeader = document.createElement("strong");
+          optionHeader.textContent = `Option ${opt.OptionID}`;
+          cell.appendChild(optionHeader);
+
+          const imageURL = convertDriveLinkToImage(opt.OptionTextOrImageURL);
+          if (imageURL) {
+            const img = document.createElement("img");
+            img.src = imageURL;
+            img.alt = opt.OptionText;
+            img.style.maxWidth = "200px";
+            cell.appendChild(img);
+          }
+
+          const text = document.createElement("div");
+          text.textContent = opt.OptionText;
+          cell.appendChild(text);
+
+          row.appendChild(cell);
+        }
+        matrixTable.appendChild(row);
+      }
+
+      qDiv.appendChild(matrixTable);
+
       const sliders = [];
       const sliderValues = [0, 0, 0, 0];
 
@@ -52,23 +88,6 @@ document.addEventListener("DOMContentLoaded", function () {
       qOptions.forEach((opt, i) => {
         const label = document.createElement("label");
         label.style.display = "block";
-
-        const optionHeader = document.createElement("strong");
-        optionHeader.textContent = `Option ${opt.OptionID}`;
-        label.appendChild(optionHeader);
-
-        const imageURL = convertDriveLinkToImage(opt.OptionTextOrImageURL);
-        if (imageURL) {
-          const img = document.createElement("img");
-          img.src = imageURL;
-          img.alt = opt.OptionText;
-          img.style.maxWidth = "200px";
-          label.appendChild(img);
-        }
-
-        const text = document.createElement("div");
-        text.textContent = opt.OptionText;
-        label.appendChild(text);
 
         const range = document.createElement("input");
         range.type = "range";
