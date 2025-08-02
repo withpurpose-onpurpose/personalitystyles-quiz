@@ -3,9 +3,9 @@ const STORAGE_KEY = "personalityQuizQuestions";
 function sanitizeFilename(filename) {
   return filename
     .toLowerCase()
-    .replace(/\s+/g, '-')              // spaces to dashes
-    .replace(/[^a-z0-9\-\.]/g, '')     // remove unsafe characters
-    .replace(/\-+/g, '-');             // remove multiple dashes
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9\-\.]/g, '')
+    .replace(/\-+/g, '-');
 }
 
 function handleImageUpload(input, previewImg, hiddenInput) {
@@ -53,11 +53,10 @@ function addNewQuestion(existing = null) {
   table.appendChild(thead);
 
   const tbody = document.createElement("tbody");
-
   const options = existing?.options || [{}, {}, {}, {}];
+
   for (let i = 0; i < 4; i++) {
     const row = document.createElement("tr");
-
     const opt = options[i] || {};
     const colorOptions = ['Blue', 'Orange', 'Green', 'Gold'];
     const statusOptions = ['Ask', 'Ignore'];
