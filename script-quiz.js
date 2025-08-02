@@ -1,91 +1,165 @@
-// Load questions from localStorage
-const STORAGE_KEY = "personalityQuizQuestions";
-const quizContainer = document.getElementById("quiz-container");
-const form = document.getElementById("quiz-form");
-const resultDiv = document.getElementById("result");
+document.addEventListener("DOMContentLoaded", () => {
+  fetchQuestions();
 
-function loadQuiz() {
-  const stored = localStorage.getItem(STORAGE_KEY);
-  if (!stored) {
-    quizContainer.innerHTML = "<p>No quiz questions found.</p>";
+  document.getElementById("quiz-form").addEventListener("submit", handleSubmit);
+});
+
+async function fetchQuestions() {
+  const container = document.getElementById("questions-container");
+  container.innerHTML = "";
+
+  try {
+    const response = await fetch("questions.json");
+    const data = await response.json();
+
+    for (const group of data) {
+      const div = document.createElement("div");
+      div.className = "question";
+      div.dataset.topic = group.topic;
+
+      const prompt = document.createElement("label");
+      prompt.textContent = group.prompt;
+      div.appendChild(prompt);
+
+      const table = document.createElement("table");
+      table.className = "option-matrix";
+
+      let totalRow = 0;
+
+      for (const answer of group.answers) {
+        const row = table.insertRow();
+        row.dataset.color = answer.color;
+        row.dataset.answer = answer.a;
+
+        const sliderCell = row.insertCell();
+        const label = document.createElement("label");
+        label.textContent = `${answer.color}:`;
+        sliderCell.appendChild(label);
+
+        const slider = document.createElement("input");
+        slider.type = "range";
+        slider.min = 0;
+        slider.max = 100;
+        slider.value = 0;
+        slider.name = `${group.topic}-${answer.color}`;
+        slider.className = "slider";
+        slider.addEventListener("input", () => updateTotal(div));
+        sliderCell.appendChild(slider);
+
+        const valueDisplay = document.createElement("span");
+        valueDisplay.textContent = "0";
+        valueDisplay.style.marginLeft = "1rem";
+        sliderCell.appendChild(valueDisplay);
+
+        slider.addEventListener("input", () => {
+          valueDisplay.textContent = slider.value;
+        });
+
+        // optional image
+        if (answer.imageUrl) {
+          const imageCell = row.insertCell();
+          const img = document.createElement("img");
+          img.src = answer.imageUrl;
+          img.alt = "Preview Image";
+          img.style.maxWidth = "100px";
+          imageCell.appendChild(img);
+        }
+      }
+
+      const totalDisplay = document.createElement("div");
+      totalDisplay.className = "total";
+      totalDisplay.innerHTML = `Total: <span class="total-value">0</span> <span class="warning"></span>`;
+      div.appendChild(table);
+      div.appendChild(totalDisplay);
+
+      container.appendChild(div);
+    }
+  } catch (err) {
+    console.error("Failed to fetch questions:", err);
+    container.innerHTML = "<p>Could not load questions. Please try again later.</p>";
+  }
+}
+
+function updateTotal(questionDiv) {
+  const sliders = questionDiv.querySelectorAll("input[type='range']");
+  const total = [...sliders].reduce((sum, s) => sum + Number(s.value), 0);
+  questionDiv.querySelector(".total-value").textContent = total;
+
+  const warning = questionDiv.querySelector(".warning");
+  warning.textContent = total !== 100 ? "❗ Must total 100" : "";
+  warning.style.color = total !== 100 ? "red" : "green";
+}
+
+function handleSubmit(e) {
+  e.preventDefault();
+
+  const questions = document.querySelectorAll(".question");
+  const scores = { Blue: 0, Orange: 0, Green: 0, Gold: 0 };
+  let valid = true;
+
+  questions.forEach((div) => {
+    const sliders = div.querySelectorAll("input[type='range']");
+    let groupTotal = 0;
+
+    sliders.forEach((slider) => {
+      const color = slider.name.split("-")[1];
+      const value = parseInt(slider.value);
+      scores[color] += value;
+      groupTotal += value;
+    });
+
+    if (groupTotal !== 100) {
+      div.querySelector(".warning").textContent = "❗ Must total 100";
+      valid = false;
+    } else {
+      div.querySelector(".warning").textContent = "";
+    }
+  });
+
+  if (!valid) {
+    alert("Please make sure all groups total 100.");
     return;
   }
 
-  const grouped = JSON.parse(stored);
-  let qIndex = 0;
-
-  for (const [key, options] of Object.entries(grouped)) {
-    const [topic, prompt] = key.split("||");
-    const block = document.createElement("div");
-    block.className = "question-block";
-
-    const header = document.createElement("h3");
-    header.textContent = prompt;
-    block.appendChild(header);
-
-    options.forEach((opt, i) => {
-      const id = `q${qIndex}_${i}`;
-      const option = document.createElement("div");
-      option.className = "option";
-
-      option.innerHTML = `
-        <label>
-          <input type="radio" name="q${qIndex}" value="${opt.color}" required>
-          ${opt.answer}
-        </label>
-      `;
-      block.appendChild(option);
-    });
-
-    quizContainer.appendChild(block);
-    qIndex++;
-  }
+  showResults(scores);
 }
 
-function calculateResult(data) {
-  const counts = {
-    Blue: 0,
-    Orange: 0,
-    Green: 0,
-    Gold: 0
-  };
+function showResults(scores) {
+  const container = document.getElementById("result-container");
+  container.innerHTML = "<h2>Your Personality Blend</h2>";
 
-  data.forEach(color => {
-    if (counts[color] !== undefined) counts[color]++;
+  const total = Object.values(scores).reduce((sum, val) => sum + val, 0);
+  const sorted = Object.entries(scores).sort(([, a], [, b]) => b - a);
+
+  sorted.forEach(([color, value]) => {
+    const percent = Math.round((value / total) * 100);
+    const bar = document.createElement("div");
+    bar.className = "result-bar";
+    bar.innerHTML = `
+      <strong>${color}</strong>: ${value} points (${percent}%)
+      <div style="height: 20px; background-color: #eee; border-radius: 4px;">
+        <div style="
+          width: ${percent}%;
+          height: 100%;
+          background-color: ${getColorCode(color)};
+          text-align: right;
+          padding-right: 5px;
+          color: white;
+        ">${percent > 10 ? percent + "%" : ""}</div>
+      </div>
+    `;
+    container.appendChild(bar);
   });
 
-  // Sort colors by count
-  const sorted = Object.entries(counts)
-    .sort((a, b) => b[1] - a[1]);
-
-  return {
-    raw: counts,
-    sorted
-  };
+  container.style.display = "block";
 }
 
-form.addEventListener("submit", function (e) {
-  e.preventDefault();
-
-  const formData = new FormData(form);
-  const answers = [];
-
-  for (let entry of formData.entries()) {
-    answers.push(entry[1]); // just the color
+function getColorCode(color) {
+  switch (color) {
+    case "Blue": return "#1e90ff";
+    case "Orange": return "#ff9800";
+    case "Green": return "#4caf50";
+    case "Gold": return "#d4af37";
+    default: return "#ccc";
   }
-
-  const results = calculateResult(answers);
-
-  // Display top 4 ranked colors
-  let output = `<h2>Your Personality Blend</h2>`;
-  output += `<ol>`;
-  results.sorted.forEach(([color, count]) => {
-    output += `<li><strong>${color}</strong> - ${count} point(s)</li>`;
-  });
-  output += `</ol>`;
-
-  resultDiv.innerHTML = output;
-  resultDiv.style.display = "block";
-});
-
-loadQuiz();
+}
