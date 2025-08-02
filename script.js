@@ -2,12 +2,17 @@ const SHEET_ID = '1wqtgiMNCeZ1aoR3k5oy_oHh7bvbLnkNvqrCINCQoDgA';
 const DATA_URL = `https://opensheet.elk.sh/${SHEET_ID}/PersonalityQuiz_Questions`;
 const POST_URL = `https://script.google.com/macros/s/AKfycbw28Por_s5ddFB5RRScl2BzAkt9RFwAYQRb5BuvWRJSKvz6XXrkREoSmtaqIN2G1t2IqQ/exec`;
 
+function convertDriveLinkToImage(url) {
+  const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+  return match ? `https://drive.google.com/uc?export=view&id=${match[1]}` : null;
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   const questionsContainer = document.getElementById("questions-container");
 
   fetch(DATA_URL)
     .then((response) => response.json())
-    .then((questions) => renderQuestions(questions))
+    .then((questions) => renderQuestions(questions.filter(q => q.Status === "Ask")))
     .catch((error) => console.error("Error fetching questions:", error));
 
   function renderQuestions(questions) {
@@ -16,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
       qDiv.className = "question";
 
       const qTitle = document.createElement("p");
-      qTitle.innerHTML = `<strong>Question ${idx + 1}:</strong> ${q.Question}`;
+      qTitle.innerHTML = `<strong>Question ${idx + 1}:</strong> ${q.QuestionText}`;
       qDiv.appendChild(qTitle);
 
       const sliders = [];
@@ -25,23 +30,35 @@ document.addEventListener("DOMContentLoaded", function () {
       const updateAllSliders = () => {
         let total = sliderValues.reduce((a, b) => a + b, 0);
         if (total > 100) {
-          // scale proportionally
           for (let i = 0; i < sliderValues.length; i++) {
             sliderValues[i] = Math.round((sliderValues[i] / total) * 100 / 25) * 25;
           }
           total = sliderValues.reduce((a, b) => a + b, 0);
         }
         sliders.forEach((slider, i) => {
-          slider.value = sliderValues[i];
-          slider.nextSibling.textContent = ` (${sliderValues[i] === 0 ? "Not like me at all" : sliderValues[i] === 100 ? "Totally like me" : sliderValues[i] + "%"})`;
+          slider.range.value = sliderValues[i];
+          slider.valueLabel.textContent = ` (${sliderValues[i] === 0 ? "Not like me at all" : sliderValues[i] === 100 ? "Totally like me" : sliderValues[i] + "%"})`;
         });
         totalDiv.innerHTML = `Total: <span class="total-value">${total}</span>/100`;
         totalDiv.classList.toggle("warning", total !== 100);
       };
 
-      for (let i = 0; i < 4; i++) {
+      for (let i = 1; i <= 4; i++) {
         const label = document.createElement("label");
-        label.textContent = q[`Option${i + 1}`];
+        const optionText = q[`Option${i}`];
+        const imageURL = convertDriveLinkToImage(q[`OptionTextOrImageURL`]);
+
+        if (imageURL) {
+          const img = document.createElement("img");
+          img.src = imageURL;
+          img.alt = optionText;
+          img.style.maxWidth = "200px";
+          label.appendChild(img);
+        }
+
+        const text = document.createElement("div");
+        text.textContent = optionText;
+        label.appendChild(text);
 
         const range = document.createElement("input");
         range.type = "range";
@@ -54,11 +71,11 @@ document.addEventListener("DOMContentLoaded", function () {
         valueLabel.textContent = " (Not like me at all)";
 
         range.addEventListener("input", () => {
-          sliderValues[i] = parseInt(range.value);
+          sliderValues[i - 1] = parseInt(range.value);
           updateAllSliders();
         });
 
-        sliders.push(range);
+        sliders.push({ range, valueLabel });
 
         label.appendChild(range);
         label.appendChild(valueLabel);
@@ -88,7 +105,6 @@ document.getElementById('quiz-form').addEventListener('submit', async (e) => {
     const total = values.reduce((a, b) => a + b, 0);
     if (total > 0) {
       const weights = values.map(v => v / total);
-      // Assuming fixed mapping order: Option1 = Connector, Option2 = Mover, Option3 = Thinker, Option4 = Planner
       scores.Connector += weights[0] * 100;
       scores.Mover += weights[1] * 100;
       scores.Thinker += weights[2] * 100;
@@ -97,6 +113,7 @@ document.getElementById('quiz-form').addEventListener('submit', async (e) => {
   });
 
   const payload = {
+    timestamp: new Date().toISOString(),
     name: formData.get('name'),
     email: formData.get('email'),
     company: formData.get('company'),
