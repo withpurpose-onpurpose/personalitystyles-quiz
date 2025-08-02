@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Personality Styles Quiz</title>
   <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -15,24 +16,38 @@
 
 <div class="container">
   <form id="quiz-form">
-    <label>Name: <input type="text" name="name" required></label>
-    <label>Email: <input type="email" name="email" required></label>
-    <label>Company: <input type="text" name="company"></label>
-    <label>Job Title: <input type="text" name="jobTitle"></label>
+    <div class="form-group">
+      <label>Name:</label>
+      <input type="text" name="name" required>
+    </div>
+    <div class="form-group">
+      <label>Email:</label>
+      <input type="email" name="email" required>
+    </div>
+    <div class="form-group">
+      <label>Company:</label>
+      <input type="text" name="company">
+    </div>
+    <div class="form-group">
+      <label>Job Title:</label>
+      <input type="text" name="jobTitle">
+    </div>
 
     <div id="questions-container"></div>
 
-    <button class="submit-btn" type="submit">Submit</button>
-    <button class="refetch-btn" type="button" onclick="refetchQuestions()">Reload Questions</button>
+    <div class="button-group">
+      <button class="submit-btn" type="submit">Submit</button>
+      <button class="refetch-btn" type="button" onclick="refetchQuestions()">Reload Questions</button>
+    </div>
   </form>
 
   <div id="result-container" style="display:none;"></div>
 </div>
 
 <footer>
-  © 2025 withpurpose-onpurpose.com | Powered by Laura Cooley
+  © 2025 <a href="https://withpurpose-onpurpose.com">withpurpose-onpurpose.com</a> | Powered by Laura Cooley
   <br>
-  <a href="admin-login.html" style="font-size: 0.75rem; color: #545251; text-decoration: none; display: inline-block; margin-top: 0.5rem;">🔒 Admin Login</a>
+  <a href="admin-login.html" class="admin-link">🔒 Admin Login</a>
 </footer>
 
 <script src="script-quiz.js"></script>
