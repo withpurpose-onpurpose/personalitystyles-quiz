@@ -1,0 +1,90 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #ffffff;
+  color: #000000;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background-color: #d4af37;
+  color: #000000;
+  padding: 1rem;
+  text-align: center;
+}
+
+h1, h2, h3 {
+  margin: 0;
+  padding-bottom: 0.5rem;
+}
+
+.container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  background-color: #f9f9f9;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 0.75rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  background-color: #d4af37;
+  color: #000000;
+  font-weight: bold;
+}
+
+td select,
+td input[type="text"],
+td input[type="file"],
+td textarea {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  margin-top: 0.25rem;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+button {
+  background-color: #545251;
+  color: #ffffff;
+  border: none;
+  padding: 0.75rem 1.25rem;
+  margin-top: 1rem;
+  font-size: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #000000;
+}
+
+footer {
+  text-align: center;
+  font-size: 0.85rem;
+  color: #545251;
+  padding: 2rem;
+  background-color: #eeeeee;
+}
+
+img.preview {
+  max-width: 100px;
+  display: block;
+  margin-top: 0.5rem;
+  border: 1px solid #ccc;
+}

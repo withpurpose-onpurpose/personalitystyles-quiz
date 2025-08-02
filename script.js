@@ -104,3 +104,59 @@ container.innerHTML = `
     container.appendChild(document.createElement('hr'));
   }
 }
+document.getElementById('quiz-form').addEventListener('submit', function (e) {
+  e.preventDefault();
+
+  const formData = new FormData(e.target);
+  const name = formData.get('name');
+  const email = formData.get('email');
+  const company = formData.get('company');
+  const jobTitle = formData.get('jobTitle');
+
+  const colorScores = { Blue: 0, Orange: 0, Green: 0, Gold: 0 };
+
+  const inputs = document.querySelectorAll('input[type="range"]');
+  inputs.forEach(input => {
+    const color = input.dataset.color;
+    const value = parseInt(input.value, 10);
+    if (color && colorScores.hasOwnProperty(color)) {
+      colorScores[color] += value;
+    }
+  });
+
+  // Sort colors by score descending
+  const sortedColors = Object.entries(colorScores)
+    .sort((a, b) => b[1] - a[1]);
+
+  const rankedColors = sortedColors.map(c => c[0]); // Primary → Quadternary
+
+  showResultReport(name, email, company, jobTitle, colorScores, rankedColors);
+});
+function showResultReport(name, email, company, jobTitle, colorScores, rankedColors) {
+  const resultEl = document.getElementById('result-container');
+  resultEl.style.display = 'block';
+
+  let colorBars = '';
+  for (const color in colorScores) {
+    colorBars += `
+      <div style="margin:0.5rem 0;">
+        <div style="font-weight:bold;">${color}</div>
+        <div style="height:20px;background:${color.toLowerCase()};width:${colorScores[color]}%;max-width:100%;"></div>
+        <div>${colorScores[color]}%</div>
+      </div>
+    `;
+  }
+
+  const mailtoLink = `mailto:${email}?subject=Your Personality Quiz Results&body=Hi ${name},%0D%0A%0D%0AThanks for taking the quiz! Here are your results:%0D%0A${rankedColors.join(' > ')}%0D%0A%0D%0ARegards,%0D%0ALaura`;
+
+  const notifyAdminLink = `mailto:laura@yourdomain.com?subject=New Quiz Submission&body=${name} (${email}) just completed the quiz.%0D%0ACompany: ${company}%0D%0AJob Title: ${jobTitle}%0D%0AResults: ${rankedColors.join(' > ')}`;
+
+  resultEl.innerHTML = `
+    <h2>Thanks, ${name}!</h2>
+    <p><strong>Your top style:</strong> ${rankedColors[0]}</p>
+    <p><strong>Ranked blend:</strong> ${rankedColors.join(' > ')}</p>
+    ${colorBars}
+    <p><a href="${mailtoLink}" style="display:inline-block;margin:1rem 0;" target="_blank">📧 Email these results to yourself</a></p>
+    <p><a href="${notifyAdminLink}" style="display:inline-block;margin:1rem 0;" target="_blank">🔔 Notify Admin</a></p>
+  `;
+}
