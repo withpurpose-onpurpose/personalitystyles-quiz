@@ -1,6 +1,7 @@
 const SHEET_ID = '1wqtgiMNCeZ1aoR3k5oy_oHh7bvbLnkNvqrCINCQoDgA';
 const DATA_URL = `https://opensheet.elk.sh/${SHEET_ID}/PersonalityQuiz_Questions`;
-const POST_URL = `https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec`; // we'll update this in a later step
+const POST_URL = `https://script.google.com/macros/s/AKfycbw28Por_s5ddFB5RRScl2BzAkt9RFwAYQRb5BuvWRJSKvz6XXrkREoSmtaqIN2G1t2IqQ/exec`;
+
 
 document.addEventListener('DOMContentLoaded', async () => {
   const container = document.getElementById('questions-container');
