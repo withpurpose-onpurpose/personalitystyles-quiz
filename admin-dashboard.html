@@ -80,19 +80,38 @@
 <script>
   const STORAGE_KEY = "personalityQuizQuestions";
 
-  function addQuestion() {
+  document.addEventListener('DOMContentLoaded', () => {
+    loadQuestions();
+  });
+
+  function loadQuestions() {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (!stored) return;
+
+    const grouped = JSON.parse(stored);
+    for (const [key, options] of Object.entries(grouped)) {
+      const [topic, prompt] = key.split("||");
+      const questionEl = addQuestion(topic, prompt);
+      const optionsDiv = questionEl.querySelector(".options");
+
+      options.forEach(opt => {
+        addOption(null, optionsDiv, opt);
+      });
+    }
+  }
+
+  function addQuestion(topic = "", prompt = "") {
     const container = document.getElementById("questions-container");
-    const questionIndex = container.children.length + 1;
 
     const questionBlock = document.createElement("div");
     questionBlock.className = "question-block";
 
     questionBlock.innerHTML = `
       <label>Topic:</label>
-      <input type="text" class="topic" placeholder="e.g., Childhood, Work, Beliefs" />
+      <input type="text" class="topic" value="${topic}" placeholder="e.g., Childhood, Work, Beliefs" />
 
       <label>Prompt:</label>
-      <input type="text" class="prompt" placeholder="e.g., The best description of me in childhood is:" />
+      <input type="text" class="prompt" value="${prompt}" placeholder="e.g., The best description of me in childhood is:" />
 
       <div class="options"></div>
 
@@ -100,39 +119,45 @@
     `;
 
     container.appendChild(questionBlock);
+    return questionBlock;
   }
 
-  function addOption(btn) {
-    const optionsDiv = btn.previousElementSibling;
-    const optionIndex = optionsDiv.children.length + 1;
+  function addOption(btn = null, containerOverride = null, existing = null) {
+    const optionsDiv = containerOverride || btn.previousElementSibling;
+
+    const answer = existing?.answer || "";
+    const color = existing?.color || "Blue";
+    const status = "Ask"; // All options loaded for editing; saving filters this
+    const description = existing?.description || "";
+    const imageUrl = existing?.imageUrl || "";
 
     const optionBlock = document.createElement("div");
     optionBlock.className = "option-block";
 
     optionBlock.innerHTML = `
-      <label>Answer ${optionIndex} Text:</label>
-      <input type="text" class="answer" />
+      <label>Answer Text:</label>
+      <input type="text" class="answer" value="${answer}" />
 
       <label>Color:</label>
       <select class="color">
-        <option value="Blue">Blue</option>
-        <option value="Orange">Orange</option>
-        <option value="Green">Green</option>
-        <option value="Gold">Gold</option>
+        <option ${color === "Blue" ? "selected" : ""}>Blue</option>
+        <option ${color === "Orange" ? "selected" : ""}>Orange</option>
+        <option ${color === "Green" ? "selected" : ""}>Green</option>
+        <option ${color === "Gold" ? "selected" : ""}>Gold</option>
       </select>
 
       <label>Status:</label>
       <select class="status">
-        <option value="Ask">Ask</option>
-        <option value="Ignore">Ignore</option>
+        <option ${status === "Ask" ? "selected" : ""}>Ask</option>
+        <option ${status === "Ignore" ? "selected" : ""}>Ignore</option>
       </select>
 
-      <label>Answer ${optionIndex} Description (HTML OK):</label>
-      <textarea class="description" placeholder="You can use <strong>, <em>, etc."></textarea>
+      <label>Description (HTML allowed):</label>
+      <textarea class="description">${description}</textarea>
 
       <label>Image Upload:</label>
       <input type="file" class="imageUpload" accept="image/*" />
-      <small>(Stored filename will be saved for frontend use)</small>
+      <small>${imageUrl ? "Previously saved image: " + imageUrl : "Upload new image (optional)"}</small>
     `;
 
     optionsDiv.appendChild(optionBlock);
@@ -158,7 +183,11 @@
 
         if (imageFile) {
           imageUrl = `/assets/uploads/${imageFile.name}`;
-          // Actual upload must be handled server-side
+          // Upload handling is still manual or via server
+        } else {
+          const small = opt.querySelector("small");
+          const match = small?.textContent?.match(/Previously saved image: (.+)/);
+          if (match) imageUrl = match[1];
         }
 
         if (status === "Ask") {
