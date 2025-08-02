@@ -2,12 +2,9 @@ const SHEET_ID = '1wqtgiMNCeZ1aoR3k5oy_oHh7bvbLnkNvqrCINCQoDgA';
 const DATA_URL = `https://opensheet.elk.sh/${SHEET_ID}/PersonalityQuiz_Questions`;
 const POST_URL = `https://script.google.com/macros/s/AKfycbw28Por_s5ddFB5RRScl2BzAkt9RFwAYQRb5BuvWRJSKvz6XXrkREoSmtaqIN2G1t2IqQ/exec`;
 
-
 document.addEventListener("DOMContentLoaded", function () {
   const questionsContainer = document.getElementById("questions-container");
-
-  // Replace this with your Google Apps Script endpoint
-  const QUESTIONS_ENDPOINT = "https://script.google.com/macros/s/AKfycbw28Por_s5ddFB5RRScl2BzAkt9RFwAYQRb5BuvWRJSKvz6XXrkREoSmtaqIN2G1t2IqQ/exec";
+  const QUESTIONS_ENDPOINT = POST_URL;
 
   fetch(QUESTIONS_ENDPOINT)
     .then((response) => response.json())
@@ -79,7 +76,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-
 document.getElementById('quiz-form').addEventListener('submit', async (e) => {
   e.preventDefault();
   const form = e.target;
@@ -109,14 +105,12 @@ document.getElementById('quiz-form').addEventListener('submit', async (e) => {
     scores
   };
 
-  // Optional: post to Apps Script web app
   await fetch(POST_URL, {
     method: 'POST',
     body: JSON.stringify(payload),
     headers: { 'Content-Type': 'application/json' }
   });
 
-  // Show result
   document.getElementById('quiz-form').style.display = 'none';
   const result = document.getElementById('result-container');
   result.style.display = 'block';
