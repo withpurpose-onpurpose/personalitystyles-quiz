@@ -18,10 +18,11 @@
 <div class="container">
   <form id="quiz-form">
     <div class="form-group">
-      <label>Name: <span class="required">*</span></label>
-      <input type="text" name="name" required>
+      <label for="name">Name: <span class="required">*</span></label>
+      <input id="name" type="text" name="name" required>
     </div>
 
+    <!-- Email opt-in -->
     <div class="form-group">
       <label>
         <input type="checkbox" id="wantEmail">
@@ -29,19 +30,20 @@
       </label>
     </div>
 
+    <!-- Email field (shown only if opted in) -->
     <div class="form-group" id="email-container">
-      <label>Email: <span class="required">*</span></label>
-      <input type="email" name="email">
+      <label for="email">Email: <span class="required">*</span></label>
+      <input id="email" type="email" name="email">
     </div>
 
     <div class="form-group">
-      <label>Company:</label>
-      <input type="text" name="company">
+      <label for="company">Company:</label>
+      <input id="company" type="text" name="company">
     </div>
 
     <div class="form-group">
-      <label>Job Title:</label>
-      <input type="text" name="jobTitle">
+      <label for="jobTitle">Job Title:</label>
+      <input id="jobTitle" type="text" name="jobTitle">
     </div>
 
     <div id="questions-container"></div>
@@ -65,7 +67,7 @@
   document.addEventListener('DOMContentLoaded', () => {
     const checkbox = document.getElementById('wantEmail');
     const emailGroup = document.getElementById('email-container');
-    const emailInput = emailGroup.querySelector('input[name="email"]');
+    const emailInput = document.getElementById('email');
 
     // Initialize hidden
     emailGroup.style.display = 'none';
