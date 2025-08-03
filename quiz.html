@@ -1,25 +1,42 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Personality Quiz Results</title>
+  <title>Personality Styles Quiz</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
 <header>
-  <h1>Personality Quiz Results</h1>
-  <p>Adapted by Laura Cooley, Act with purpose, on purpose</p>
+  <h1>Personality Styles Quiz</h1>
   <p>Based on <a href="https://www.amazon.com/Personality-Lingo-Transform-Relationships-Communication/dp/1502718383?crid=2OS7IBUNAURNY&dib=eyJ2IjoiMSJ9.vNtjODRcE8Elc6mTzCCwZyWRxmN1nP03qN8DDjZAFe3ooQp3Q3pcKukRP2ZIeI4yi6DioR2t4OFNe4-fqnyH3uAP6F8yfJGh-XGjBQPyg7g.kKMuVnnYmNtAqUAnDadBmPGVKdSyvbaQIIdumUa46T4&dib_tag=se&keywords=personality+lingo&qid=1754227843&sprefix=%2Caps%2C119&sr=8-1&linkCode=ll1&tag=thezipsyndica-20&linkId=579a06d9d359c1e115ca1d2ef48ab60d&language=en_US&ref_=as_li_ss_tl" target="_blank">Personality Lingo by Mary Miscisin</a></p>
 </header>
 
 <div class="container">
   <form id="quiz-form">
-    <label>Name:<span class="required">*</span> <input type="text" name="name" required></label>
-    <label><input type="checkbox" id="wantEmail"> Email me my results</label>
-    <label id="email-label" class="hidden">Email:<span class="required">*</span> <input type="email" id="email" name="email"></label>
-    <label>Company: <input type="text" name="company"></label>
-    <label>Job Title: <input type="text" name="jobTitle"></label>
+    <label>
+      Name:<span class="required">*</span>
+      <input type="text" name="name" required>
+    </label>
+
+    <label class="checkbox-label">
+      <input type="checkbox" id="wantEmail">
+      Email me my results
+    </label>
+
+    <label id="email-label" class="hidden">
+      Email:<span class="required">*</span>
+      <input type="email" id="email" name="email">
+    </label>
+
+    <label>Company:
+      <input type="text" name="company">
+    </label>
+    <label>Job Title:
+      <input type="text" name="jobTitle">
+    </label>
 
     <div id="questions-container"></div>
 
@@ -31,7 +48,7 @@
 </div>
 
 <footer>
-  © 2025 withpurpose‑onpurpose.com | Powered by Laura Cooley<br>
+  © 2025 withpurpose-onpurpose.com | Powered by Laura Cooley<br>
   <a href="admin-login.html" class="admin-link">🔒 Admin Login</a>
 </footer>
 
