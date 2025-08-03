@@ -1,26 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-
-  <header>
- 
-
-
-  <h1>Admin - Personality Quiz Builder</h1>
-  <p> Configure questions</p>
-
-  <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin – Personality Quiz Builder</title>
+  <!-- Load Poppins and your CSS -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
-  </header>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Admin Dashboard</h1>
-  <button onclick="addNewQuestion()">Add Question</button>
-  <button onclick="saveAllQuestions()">Save Questions</button>
-  <br><br>
+  <header class="admin-header">
+    <h1>Admin – Personality Quiz Builder</h1>
+    <p>Configure questions</p>
+  </header>
 
-  <div id="question-container"></div>
+  <main class="admin-main">
+    <div class="admin-controls">
+      <button onclick="addNewQuestion()">➕ Add Question</button>
+      <button onclick="saveAllQuestions()">💾 Save Questions</button>
+    </div>
+
+    <div id="question-container"></div>
+  </main>
 
   <script src="script-admin.js"></script>
 </body>
