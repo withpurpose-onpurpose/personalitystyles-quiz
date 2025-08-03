@@ -136,3 +136,8 @@ footer a {
   display: block;
   margin-top: 0.4rem;
 }
+
+/** === Conditional Email Field === */
+#email-container {
+  display: none;
+}
