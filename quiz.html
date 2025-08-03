@@ -5,77 +5,59 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Personality Styles Quiz</title>
   <link rel="stylesheet" href="styles.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <!-- Poppins from Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
 <header>
   <h1>Personality Styles Quiz</h1>
-  <p>Based on Personality Lingo by Mary Miscisin | <a href="https://withpurpose-onpurpose.com" target="_blank">withpurpose-onpurpose.com</a></p>
+  <p>Based on Personality Lingo by Mary Miscisin | 
+     <a href="https://withpurpose-onpurpose.com" target="_blank">withpurpose-onpurpose.com</a></p>
 </header>
 
 <div class="container">
   <form id="quiz-form">
     <div class="form-group">
-      <label>Name: <span class="required">*</span></label>
-      <input type="text" name="name" required>
-    </div>
-
-    <div class="form-group">
-      <label>Company:</label>
-      <input type="text" name="company">
-    </div>
-
-    <div class="form-group">
-      <label>Job Title:</label>
-      <input type="text" name="jobTitle">
-    </div>
-
-    <div class="form-group">
-      <label>
-        <input type="checkbox" id="wantEmail" onchange="toggleEmailField()">
-        I would like the results emailed to me
+      <label>Name: <span class="required">*</span>
+        <input type="text" name="name" required>
       </label>
     </div>
-
-    <div class="form-group" id="email-group" style="display:none">
-      <label>Email: <span class="required">*</span></label>
-      <input type="email" name="email" id="emailField">
+    <div class="form-group">
+      <label>
+        <input type="checkbox" id="want-email"> 
+        Send me my results by email
+      </label>
+    </div>
+    <div class="form-group" id="email-container">
+      <label>Email: <span class="required">*</span>
+        <input type="email" name="email">
+      </label>
+    </div>
+    <div class="form-group">
+      <label>Company:
+        <input type="text" name="company">
+      </label>
+    </div>
+    <div class="form-group">
+      <label>Job Title:
+        <input type="text" name="jobTitle">
+      </label>
     </div>
 
     <div id="questions-container"></div>
 
-    <div class="button-group">
-      <button class="submit-btn" type="submit">Submit</button>
-      <button class="refetch-btn" type="button" onclick="refetchQuestions()">Reload Questions</button>
-    </div>
+    <button class="submit-btn" type="submit">Submit Quiz</button>
   </form>
 
   <div id="result-container" style="display:none;"></div>
 </div>
 
 <footer>
-  © 2025 <a href="https://withpurpose-onpurpose.com">withpurpose-onpurpose.com</a> | Powered by Laura Cooley
-  <br>
+  © 2025 withpurpose-onpurpose.com | Powered by Laura Cooley
   <a href="admin-login.html" class="admin-link">🔒 Admin Login</a>
 </footer>
 
 <script src="script-quiz.js"></script>
-<script>
-  function toggleEmailField() {
-    const checkbox = document.getElementById('wantEmail');
-    const emailGroup = document.getElementById('email-group');
-    const emailField = document.getElementById('emailField');
-
-    if (checkbox.checked) {
-      emailGroup.style.display = 'block';
-      emailField.required = true;
-    } else {
-      emailGroup.style.display = 'none';
-      emailField.required = false;
-    }
-  }
-</script>
-
 </body>
 </html>
