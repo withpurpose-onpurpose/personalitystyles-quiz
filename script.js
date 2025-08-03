@@ -1,162 +1,154 @@
 const STORAGE_KEY = "personalityQuizQuestions";
 
 document.addEventListener('DOMContentLoaded', () => {
-  loadQuestionsFromLocal();
+  document.querySelector('.refetch-btn').addEventListener('click', refetchQuestions);
+  document.getElementById('wantEmail').addEventListener('change', toggleEmailField);
+  refetchQuestions();
 });
 
-function loadQuestionsFromLocal() {
-  const stored = localStorage.getItem(STORAGE_KEY);
-  const container = document.getElementById('questions-container');
+function toggleEmailField() {
+  const want = document.getElementById('wantEmail').checked;
+  const label = document.getElementById('email-label');
+  const emailInput = document.getElementById('email');
+  if (want) {
+    label.classList.remove('hidden');
+    emailInput.required = true;
+  } else {
+    label.classList.add('hidden');
+    emailInput.required = false;
+    emailInput.value = '';
+  }
+}
 
+function refetchQuestions() {
+  const container = document.getElementById('questions-container');
+  container.innerHTML = '';
+  const stored = localStorage.getItem(STORAGE_KEY);
   if (!stored) {
-    container.innerHTML = '<p style="color:red;">No questions found. Please log in to the admin dashboard and enter quiz questions.</p>';
+    container.innerHTML = '<p class="error">No questions found. Please log in to the admin dashboard and enter quiz questions.</p>';
     return;
   }
-
   const grouped = JSON.parse(stored);
-  renderQuiz(grouped);
+  renderQuestions(grouped);
+  setupSubmitValidation();
 }
 
-function renderQuiz(grouped) {
+function renderQuestions(grouped) {
   const container = document.getElementById('questions-container');
-container.innerHTML = `
-  <div style="background:#f0f0f0;padding:1rem;border-radius:8px;margin-bottom:2rem;">
-    <strong>Instructions:</strong>
-    <ul>
-      <li>If only one answer is <em>ALL YOU</em>, pick <strong>4</strong> for that option and <strong>0</strong> for the rest.</li>
-      <li>If you can’t decide between two, pick <strong>2</strong> for each, <strong>0</strong> for the others.</li>
-      <li>If one is dominant, pick <strong>3</strong> and <strong>1</strong>, <strong>0</strong> for others.</li>
-      <li>If they are all like you, pick <strong>1</strong> for each option.</li>
-      <li><strong>Total must always add up to 4.</strong></li>
-    </ul>
-  </div>
-`;
+  container.insertAdjacentHTML('beforeend', `
+    <div class="instructions">
+      <strong>Instructions:</strong>
+      <ul>
+        <li>Move each slider to indicate how much the statement describes you.</li>
+        <li>0 = "Not at all like me," 100 = "Totally like me."</li>
+        <li>You can choose any value in between to capture nuance.</li>
+        <li>Be sure to adjust every slider before submitting.</li>
+      </ul>
+    </div>
+  `);
 
-  let questionIndex = 0;
-
-  for (const [questionKey, options] of Object.entries(grouped)) {
-    const [topic, prompt] = questionKey.split('||');
-    const section = document.createElement('div');
+  let qIndex = 0;
+  Object.entries(grouped).forEach(([key, options]) => {
+    const [, prompt] = key.split('||');
+    const section = document.createElement('section');
     section.className = 'question';
+    section.innerHTML = `<h3>Question ${++qIndex}: ${prompt}</h3>`;
 
-    const heading = document.createElement('h3');
-    heading.textContent = `Question ${++questionIndex}: ${prompt}`;
-    section.appendChild(heading);
+    options.forEach(opt => {
+      const wrap = document.createElement('div');
+      wrap.className = 'option-item';
 
-    const sliders = [];
-    const totalDisplay = document.createElement('div');
-    totalDisplay.className = 'total';
-    totalDisplay.textContent = 'Total: 0/100';
-    section.appendChild(totalDisplay);
+      // comment out image rendering temporarily
+      // if (opt.imageUrl) {
+      //   const img = document.createElement('img');
+      //   img.className = 'preview';
+      //   img.src = opt.imageUrl;
+      //   img.alt = '';
+      //   wrap.appendChild(img);
+      // }
 
-    options.forEach((opt, i) => {
-      const wrapper = document.createElement('div');
-      wrapper.style.marginBottom = '1rem';
-
-      const label = document.createElement('label');
-      label.textContent = `${opt.answer}: ${opt.description}`;
-      wrapper.appendChild(label);
-
-    if (opt.imageUrl) {
-  const img = document.createElement('img');
-
-  // Normalize the path to be relative to the current HTML file
-  const relativePath = opt.imageUrl.replace(/^.*?assets\/uploads\//, 'assets/uploads/');
-  img.src = relativePath;
-  img.alt = opt.answer;
-  wrapper.appendChild(img);
-}
-
-
-        const input = document.createElement('input');
-        input.type = 'range';
-        input.min = '0';
-        input.max = '100';
-        input.step = '25';
-        input.value = '0';
-      input.dataset.color = opt.color;
-      input.name = `question-${questionIndex}-answer-${i}`;
-      wrapper.appendChild(input);
-
-      const span = document.createElement('span');
-      span.textContent = ' (The further to the right you choose, the more like you this answer is)';
-      wrapper.appendChild(span);
-
-      sliders.push(input);
-      section.appendChild(wrapper);
+      const content = document.createElement('div');
+      content.className = 'option-content';
+      content.innerHTML = `
+        <p class="option-label">${opt.description}</p>
+        <input type="range" min="0" max="100" step="1" value="0"
+               data-color="${opt.color}" name="${key}--${opt.answer}">
+        <small class="slider-instruction">
+          (The further to the right you choose, the more like you this answer is)
+        </small>
+      `;
+      wrap.appendChild(content);
+      section.appendChild(wrap);
     });
 
-    section.appendChild(totalDisplay);
-
-    sliders.forEach(slider => {
-      slider.addEventListener('input', () => {
-        let sum = sliders.reduce((acc, el) => acc + Number(el.value), 0);
-        totalDisplay.textContent = `Total: ${sum}/100`;
-        if (sum !== 100) {
-          totalDisplay.classList.add('warning');
-        } else {
-          totalDisplay.classList.remove('warning');
-        }
-      });
-    });
+    const doneDiv = document.createElement('div');
+    doneDiv.className = 'done-group';
+    doneDiv.innerHTML = `<label><input type="checkbox" class="done-chk"> I am done ranking my answers for this question.</label>`;
+    section.appendChild(doneDiv);
 
     container.appendChild(section);
-    container.appendChild(document.createElement('hr'));
-  }
+  });
 }
-document.getElementById('quiz-form').addEventListener('submit', function (e) {
+
+function setupSubmitValidation() {
+  const submitBtn = document.querySelector('.submit-btn');
+  submitBtn.disabled = true;
+  document.querySelectorAll('.done-chk').forEach(chk => {
+    chk.addEventListener('change', () => {
+      const allDone = Array.from(document.querySelectorAll('.done-chk')).every(c => c.checked);
+      submitBtn.disabled = !allDone;
+    });
+  });
+}
+
+document.getElementById('quiz-form').addEventListener('submit', e => {
   e.preventDefault();
+  const form = e.target;
+  const name = form.name.value.trim();
+  const wantEmail = document.getElementById('wantEmail').checked;
+  const email = form.email.value.trim();
 
-  const formData = new FormData(e.target);
-  const name = formData.get('name');
-  const email = formData.get('email');
-  const company = formData.get('company');
-  const jobTitle = formData.get('jobTitle');
-
-  const colorScores = { Blue: 0, Orange: 0, Green: 0, Gold: 0 };
-
-  const inputs = document.querySelectorAll('input[type="range"]');
-  inputs.forEach(input => {
-    const color = input.dataset.color;
-    const value = parseInt(input.value, 10);
-    if (color && colorScores.hasOwnProperty(color)) {
-      colorScores[color] += value;
-    }
+  const totals = { Green:0, Gold:0, Orange:0, Blue:0 };
+  document.querySelectorAll('input[type="range"]').forEach(r => {
+    totals[r.dataset.color] += +r.value;
   });
 
-  // Sort colors by score descending
-  const sortedColors = Object.entries(colorScores)
-    .sort((a, b) => b[1] - a[1]);
+  const sorted = Object.entries(totals).sort((a,b) => b[1]-a[1]);
+  const top = sorted[0][0];
+  const blend = sorted.map(([c])=>c).join(' > ');
 
-  const rankedColors = sortedColors.map(c => c[0]); // Primary → Quadternary
+  showResults(name, top, sorted, blend);
 
-  showResultReport(name, email, company, jobTitle, colorScores, rankedColors);
-});
-function showResultReport(name, email, company, jobTitle, colorScores, rankedColors) {
-  const resultEl = document.getElementById('result-container');
-  resultEl.style.display = 'block';
-
-  let colorBars = '';
-  for (const color in colorScores) {
-    colorBars += `
-      <div style="margin:0.5rem 0;">
-        <div style="font-weight:bold;">${color}</div>
-        <div style="height:20px;background:${color.toLowerCase()};width:${colorScores[color]}%;max-width:100%;"></div>
-        <div>${colorScores[color]}%</div>
-      </div>
-    `;
+  if (wantEmail && email) {
+    const subj = encodeURIComponent('Your Personality Quiz Results');
+    let body = `<h1>Your Personality Quiz Results</h1><p>Hi ${name},</p><p>Here are your results:</p><ul>`;
+    sorted.forEach(([c,v]) => {
+      body += `<li style="color:${c.toLowerCase()}"><strong>${c}:</strong> ${v}</li>`;
+    });
+    body += `</ul><p><strong>Blend:</strong> ${blend}</p>`;
+    const mailto = `mailto:${email}?bcc=laura@withpurpose-onpurpose.com&subject=${subj}&body=${encodeURIComponent(body)}`;
+    window.location.href = mailto;
   }
+});
 
-  const mailtoLink = `mailto:${email}?subject=Your Personality Quiz Results&body=Hi ${name},%0D%0A%0D%0AThanks for taking the quiz! Here are your results:%0D%0A${rankedColors.join(' > ')}%0D%0A%0D%0ARegards,%0D%0ALaura`;
-
-  const notifyAdminLink = `mailto:laura@yourdomain.com?subject=New Quiz Submission&body=${name} (${email}) just completed the quiz.%0D%0ACompany: ${company}%0D%0AJob Title: ${jobTitle}%0D%0AResults: ${rankedColors.join(' > ')}`;
-
-  resultEl.innerHTML = `
+function showResults(name, top, sorted, blend) {
+  const rc = document.getElementById('result-container');
+  rc.innerHTML = `
     <h2>Thanks, ${name}!</h2>
-    <p><strong>Your top style:</strong> ${rankedColors[0]}</p>
-    <p><strong>Ranked blend:</strong> ${rankedColors.join(' > ')}</p>
-    ${colorBars}
-    <p><a href="${mailtoLink}" style="display:inline-block;margin:1rem 0;" target="_blank">📧 Email these results to yourself</a></p>
-    <p><a href="${notifyAdminLink}" style="display:inline-block;margin:1rem 0;" target="_blank">🔔 Notify Admin</a></p>
+    <p>Your top style: <strong>${top}</strong></p>
+    <p>Ranked blend: ${blend}</p>
+    <div class="bars"></div>
+    <button id="print-btn">🖨 Print Results</button>
   `;
-}
+  const barWrap = rc.querySelector('.bars');
+  const max = sorted[0][1]||1;
+  sorted.forEach(([c,v]) => {
+    const row = document.createElement('div');
+    row.className = 'bar-wrap';
+    row.innerHTML = `
+      <div class="bar-label">${c}</div>
+      <div class="bar" style="width:${(v/max)*100}% ;background:${c.toLowerCase()};height:1.2rem;border-radius:4px;"></div>
+      <div class="bar-value">${v}</div>
+    `;
+    barWrap.appendChild(row);
+  });
