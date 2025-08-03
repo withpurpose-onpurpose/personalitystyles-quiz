@@ -28,7 +28,8 @@ function refetchQuestions() {
     container.innerHTML = '<p class="error">No questions found. Please log in to the admin dashboard and enter quiz questions.</p>';
     return;
   }
-  renderQuestions(JSON.parse(stored));
+  const grouped = JSON.parse(stored);
+  renderQuestions(grouped);
   setupSubmitValidation();
 }
 
@@ -40,6 +41,7 @@ function renderQuestions(grouped) {
       <ul>
         <li>Move each slider to indicate how much the statement describes you.</li>
         <li>0 = "Not at all like me," 100 = "Totally like me."</li>
+        <li>You can choose any value in between to capture nuance.</li>
         <li>Be sure to adjust every slider before submitting.</li>
       </ul>
     </div>
@@ -56,9 +58,10 @@ function renderQuestions(grouped) {
       const wrap = document.createElement('div');
       wrap.className = 'option-item';
 
-      // (images are commented out)
+      // comment out image rendering temporarily
       // if (opt.imageUrl) {
       //   const img = document.createElement('img');
+      //   img.className = 'preview';
       //   img.src = opt.imageUrl;
       //   img.alt = opt.answer;
       //   wrap.appendChild(img);
@@ -80,12 +83,7 @@ function renderQuestions(grouped) {
 
     const doneDiv = document.createElement('div');
     doneDiv.className = 'done-group';
-    doneDiv.innerHTML = `
-      <label>
-        <input type="checkbox" class="done-chk">
-        I am done ranking my answers for this question.
-      </label>
-    `;
+    doneDiv.innerHTML = `<label><input type="checkbox" class="done-chk"> I am done ranking my answers for this question.</label>`;
     section.appendChild(doneDiv);
 
     container.appendChild(section);
@@ -97,8 +95,7 @@ function setupSubmitValidation() {
   submitBtn.disabled = true;
   document.querySelectorAll('.done-chk').forEach(chk => {
     chk.addEventListener('change', () => {
-      const allDone = Array.from(document.querySelectorAll('.done-chk'))
-                           .every(c => c.checked);
+      const allDone = Array.from(document.querySelectorAll('.done-chk')).every(c => c.checked);
       submitBtn.disabled = !allDone;
     });
   });
@@ -111,33 +108,25 @@ document.getElementById('quiz-form').addEventListener('submit', e => {
   const wantEmail = document.getElementById('wantEmail').checked;
   const email = form.email.value.trim();
 
-  // tally per color
   const totals = { Green:0, Gold:0, Orange:0, Blue:0 };
   document.querySelectorAll('input[type="range"]').forEach(r => {
-    const col = r.dataset.color;
-    totals[col] += +r.value;
+    totals[r.dataset.color] += +r.value;
   });
 
-  // sort descending
   const sorted = Object.entries(totals).sort((a,b) => b[1]-a[1]);
   const top = sorted[0][0];
-  const blend = sorted.map(([c]) => c).join(' > ');
+  const blend = sorted.map(([c])=>c).join(' > ');
 
   showResults(name, top, sorted, blend);
 
   if (wantEmail && email) {
-    // build plain-text mailto body
     const subj = encodeURIComponent('Your Personality Quiz Results');
-    let body = `Hi ${name},\n\nHere are your results:\n\n`;
+    let body = `<h1>Your Personality Quiz Results</h1><p>Hi ${name},</p><p>Here are your results:</p><ul>`;
     sorted.forEach(([c,v]) => {
-      body += `${c}: ${v}\n`;
+      body += `<li style="color:${c.toLowerCase()}"><strong>${c}:</strong> ${v}</li>`;
     });
-    body += `\nBlend: ${blend}\n\nRegards,\nLaura Cooley`;
-    const mailto =
-      `mailto:${email}`
-      + `?bcc=laura@withpurpose-onpurpose.com`
-      + `&subject=${subj}`
-      + `&body=${encodeURIComponent(body)}`;
+    body += `</ul><p><strong>Blend:</strong> ${blend}</p>`;
+    const mailto = `mailto:${email}?bcc=laura@withpurpose-onpurpose.com&subject=${subj}&body=${encodeURIComponent(body)}`;
     window.location.href = mailto;
   }
 });
@@ -152,26 +141,19 @@ function showResults(name, top, sorted, blend) {
     <button id="print-btn">🖨 Print Results</button>
   `;
   const barWrap = rc.querySelector('.bars');
-  const max = sorted[0][1] || 1;
+  const max = sorted[0][1]||1;
   sorted.forEach(([c,v]) => {
     const row = document.createElement('div');
     row.className = 'bar-wrap';
     row.innerHTML = `
       <div class="bar-label">${c}</div>
-      <div class="bar"
-           style="
-             width:${(v/max)*100}%;
-             background:${c.toLowerCase()};
-           ">
-      </div>
+      <div class="bar" style="width:${(v/max)*100}% ;background:${c.toLowerCase()};height:1.2rem;border-radius:4px;"></div>
       <div class="bar-value">${v}</div>
     `;
     barWrap.appendChild(row);
   });
-
   rc.classList.remove('hidden');
   document.getElementById('quiz-form').classList.add('hidden');
 
-  document.getElementById('print-btn')
-          .addEventListener('click', () => window.print());
+  document.getElementById('print-btn').addEventListener('click', () => window.print());
 }
