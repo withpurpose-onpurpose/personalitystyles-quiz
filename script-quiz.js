@@ -40,7 +40,7 @@ function renderQuestions(grouped) {
       <strong>Instructions:</strong>
       <ul>
         <li>Move each slider to indicate how much the statement describes you.</li>
-        <li>0 = "Not at all like me," 100 = "Totally like me."</li>
+        <li>far left = "Not at all like me," far right = "Totally like me."</li>
         <li>You can choose any value in between to capture nuance.</li>
         <li>Be sure to adjust every slider before submitting.</li>
       </ul>
