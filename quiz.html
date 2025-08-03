@@ -4,15 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Personality Styles Quiz</title>
-
-  <!-- Google Font -->
+  <link rel="stylesheet" href="styles.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-
-  <!-- Your main stylesheet -->
-  <link rel="stylesheet" href="style.css" />
-
-  <!-- Quiz logic -->
-  <script src="script-quiz.js" defer></script>
 </head>
 <body>
 
@@ -23,48 +16,67 @@
     </p>
   </header>
 
-  <div class="container">
+  <main class="container">
     <form id="quiz-form">
-      <!-- Name -->
       <label>
         Name <span class="required">*</span>:
-        <input type="text" name="name" required />
+        <input type="text" name="name" required>
       </label>
 
-      <!-- Email opt-in -->
-      <label>
-        <input type="checkbox" id="wantEmail" />
-        Email me my results
-      </label>
-      <label id="emailField" style="display:none;">
-        Email <span class="required">*</span>:
-        <input type="email" name="email" />
-      </label>
+      <div class="email-opt-in">
+        <input type="checkbox" id="wantEmail">
+        <label for="wantEmail">Email me my results</label>
+      </div>
+      <div id="email-container" class="hidden">
+        <label>
+          Email <span class="required">*</span>:
+          <input type="email" name="email" id="email">
+        </label>
+      </div>
 
-      <!-- Other profile fields -->
       <label>
         Company:
-        <input type="text" name="company" />
+        <input type="text" name="company">
       </label>
       <label>
         Job Title:
-        <input type="text" name="jobTitle" />
+        <input type="text" name="jobTitle">
       </label>
 
-      <!-- Questions will be injected here -->
-      <div id="questions-container"></div>
+      <div id="questions-container">
+        <!-- questions get injected here -->
+      </div>
 
       <button class="submit-btn" type="submit" disabled>Submit</button>
-      <button class="refetch-btn" type="button" onclick="refetchQuestions()">Reload Questions</button>
+      <button type="button" class="refetch-btn" onclick="refetchQuestions()">Reload Questions</button>
     </form>
 
-    <!-- Results area -->
-    <div id="result-container" style="display:none;"></div>
-  </div>
+    <div id="result-container" class="result-container" style="display:none;"></div>
+  </main>
 
   <footer>
-    © 2025 withpurpose-onpurpose.com | Powered by Laura Cooley<br>
+    © 2025 withpurpose-onpurpose.com | Powered by Laura Cooley  
+    <br>
     <a href="admin-login.html" class="admin-link">🔒 Admin Login</a>
   </footer>
+
+  <script src="script-quiz.js"></script>
+  <script>
+    // Show / require email field only if opted in
+    document.getElementById('wantEmail').addEventListener('change', e => {
+      const ec = document.getElementById('email-container');
+      const emailInput = document.getElementById('email');
+      if (e.target.checked) {
+        ec.classList.remove('hidden');
+        emailInput.required = true;
+      } else {
+        ec.classList.add('hidden');
+        emailInput.required = false;
+      }
+    });
+
+    // Initial load
+    refetchQuestions();
+  </script>
 </body>
 </html>

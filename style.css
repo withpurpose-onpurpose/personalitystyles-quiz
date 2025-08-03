@@ -1,139 +1,188 @@
-/* === Base Styles === */
+/* === Import Poppins === */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+:root {
+  --gold: #d4af37;
+  --grey: #545251;
+  --light-grey: #f5f5f5;
+  --border-grey: #ccc;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
   font-family: 'Poppins', sans-serif;
   background: #ffffff;
   color: #000000;
-  margin: 2rem;
+  margin: 0;
+  padding: 0;
 }
 
-h1 {
-  color: #000000;
-  border-bottom: 2px solid #ccc;
-  padding-bottom: 0.5rem;
-  margin-bottom: 1.5rem;
-  font-size: 1.6rem;
+header {
+  background: var(--gold);
+  padding: 1rem;
+  text-align: center;
+}
+header h1 {
+  margin: 0;
+  font-weight: 600;
+  font-size: 2rem;
+}
+header p {
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
+}
+header a {
+  color: #000;
+  text-decoration: underline;
 }
 
+.container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+label {
+  display: block;
+  margin-top: 1rem;
+  font-weight: 600;
+}
 .required {
   color: red;
 }
 
-/* === Buttons === */
-button {
-  background-color: #d4af37; /* gold */
-  color: #000;
-  border: 1px solid #999;
-  padding: 0.5rem 1.2rem;
-  margin: 0.4rem 0.6rem 1rem 0;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 1rem;
-  border-radius: 4px;
-}
-
-button:hover {
-  background-color: #c49f2f;
-}
-
-/* === Inputs === */
 input[type="text"],
 input[type="email"],
 select,
 textarea {
   width: 100%;
-  padding: 0.4rem;
-  font-size: 0.95rem;
-  font-family: 'Poppins', sans-serif;
-  border: 1px solid #aaa;
+  padding: 0.5rem;
+  border: 1px solid var(--border-grey);
   border-radius: 4px;
-  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
 }
 
-/* === Form Layout === */
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.form-group {
-  margin-bottom: 1.2rem;
-}
-
-label {
-  display: block;
-  margin-bottom: 0.3rem;
-  font-weight: 500;
-}
-
-/* === Question Blocks === */
-.question-block {
-  border: 1px solid #ccc;
-  background: #f5f5f5;
-  padding: 1rem;
-  border-radius: 6px;
-  margin-bottom: 2rem;
-}
-
-.question-title {
+button {
+  background-color: var(--grey);
+  color: #fff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  margin: 1rem 0.5rem 1rem 0;
+  border-radius: 4px;
+  cursor: pointer;
   font-weight: 600;
-  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+button:hover:not(:disabled) {
+  background-color: #000;
 }
 
-/* === Answer Option Layout === */
-.answer-option {
+.question {
+  background: var(--light-grey);
+  border: 1px solid var(--border-grey);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 2rem 0;
+}
+
+.option-item {
   display: flex;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin: 1rem 0;
 }
 
-.answer-option img {
-  width: 140px;
-  height: auto;
+.option-item img {
+  max-width: 120px;
   margin-right: 1rem;
+  border: 1px solid var(--border-grey);
   border-radius: 4px;
 }
 
-.answer-content {
+.option-content {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
 }
 
-.answer-content .quote {
+.option-label {
+  margin: 0;
   font-size: 0.95rem;
-  margin-bottom: 0.4rem;
-  font-weight: 500;
 }
 
-.answer-content input[type="range"] {
+input[type="range"] {
   width: 100%;
-  margin: 0.4rem 0 0 0;
+  margin: 0.5rem 0;
 }
 
-.slider-hint {
-  font-size: 0.75rem;
-  text-align: right;
-  color: #666;
-  margin-top: 0.1rem;
-}
-
-/* === Footer === */
-footer {
-  margin-top: 3rem;
-  font-size: 0.85rem;
-  text-align: center;
-  color: #333;
-}
-
-footer a {
-  color: #000;
-  text-decoration: underline;
-}
-
-.admin-link {
-  font-size: 0.85rem;
-  color: #999;
+.slider-instruction {
   display: block;
-  margin-top: 0.4rem;
+  font-size: 0.8rem;
+  color: #666;
+  text-align: right;
+  margin-bottom: 0.5rem;
+}
+
+.done-group {
+  margin-top: 1rem;
+  font-size: 0.95rem;
+}
+
+.refetch-btn {
+  background-color: var(--gold);
+}
+
+.result-container {
+  padding: 2rem;
+  text-align: center;
+}
+
+.bars {
+  margin-top: 1rem;
+}
+
+.bar-wrap {
+  margin: 0.5rem 0;
+  display: flex;
+  align-items: center;
+}
+
+.bar-wrap > div:first-child {
+  width: 100px;
+  text-align: left;
+  font-weight: 600;
+}
+
+.bar {
+  height: 1.2rem;
+  border-radius: 4px;
+  margin: 0 1rem;
+}
+
+.bar-wrap span {
+  font-weight: 600;
+}
+
+footer {
+  background: #eeeeee;
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.9rem;
+}
+
+footer .admin-link {
+  font-size: 0.75rem;
+  color: var(--grey);
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 0.5rem;
+}
+
+.hidden {
+  display: none;
 }
