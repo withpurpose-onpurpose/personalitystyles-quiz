@@ -58,33 +58,36 @@ function renderQuestions(grouped) {
     section.dataset.qKey = key;
     section.innerHTML = `<h3>Question ${++qIndex}: ${prompt}</h3>`;
 
-    options.forEach(opt => {
-      const wrap = document.createElement('div');
-      wrap.className = 'option-item';
+    // script-quiz.js (inside renderQuestions)
+options.forEach(opt => {
+  const wrap = document.createElement('div');
+  wrap.className = 'option-item';
 
-      // image
-      if (opt.imageUrl) {
-         const img = document.createElement('img');
+  // image
+  if (opt.imageUrl) {
+    const img = document.createElement('img');
     img.className = 'preview';
-    img.src = opt.imageUrl;   // <-- this is your base64 Data-URL
+    img.src = opt.imageUrl;   // this is your Data-URL
     img.alt = opt.answer;
-    wrapper.appendChild(img);
-      }
+    wrap.appendChild(img);    // ← use wrap, not wrapper
+  }
 
-      // right-side content
-      const content = document.createElement('div');
-      content.className = 'option-content';
-      content.innerHTML = `
-        <p class="option-label">${opt.answer}: ${opt.description}</p>
-        <input type="range" min="0" max="4" step="1" value="0"
-               data-color="${opt.color}" name="${key}--${opt.answer}">
-        <small class="slider-instruction">
-          (The further to the right you choose, the more like you this answer is)
-        </small>
-      `;
-      wrap.appendChild(content);
-      section.appendChild(wrap);
-    });
+  // right-side content
+  const content = document.createElement('div');
+  content.className = 'option-content';
+  content.innerHTML = `
+    <p class="option-label">${opt.answer}: ${opt.description}</p>
+    <input type="range" min="0" max="4" step="1" value="0"
+           data-color="${opt.color}" name="${key}--${opt.answer}">
+    <small class="slider-instruction">
+      (The further to the right you choose, the more like you this answer is)
+    </small>
+  `;
+  wrap.appendChild(content);
+
+  section.appendChild(wrap);
+});
+
 
     // done checkbox
     const done = document.createElement('div');
