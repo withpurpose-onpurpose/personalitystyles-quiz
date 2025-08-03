@@ -4,94 +4,67 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Personality Styles Quiz</title>
-  <link rel="stylesheet" href="styles.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Your main stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Quiz logic -->
+  <script src="script-quiz.js" defer></script>
 </head>
 <body>
 
-<header>
-  <h1>Personality Styles Quiz</h1>
-  <p>Based on Personality Lingo by Mary Miscisin | 
-     <a href="https://withpurpose-onpurpose.com" target="_blank">withpurpose-onpurpose.com</a></p>
-</header>
+  <header>
+    <h1>Personality Styles Quiz</h1>
+    <p>Based on Personality Lingo by Mary Miscisin | 
+      <a href="https://withpurpose-onpurpose.com" target="_blank">withpurpose-onpurpose.com</a>
+    </p>
+  </header>
 
-<div class="container">
-  <form id="quiz-form">
-    <div class="form-group">
-      <label for="name">Name: <span class="required">*</span></label>
-      <input id="name" type="text" name="name" required>
-    </div>
+  <div class="container">
+    <form id="quiz-form">
+      <!-- Name -->
+      <label>
+        Name <span class="required">*</span>:
+        <input type="text" name="name" required />
+      </label>
 
-    <div class="form-group">
-      <label><input type="checkbox" id="wantEmail" /> Send me my results by email</label>
-    </div>
+      <!-- Email opt-in -->
+      <label>
+        <input type="checkbox" id="wantEmail" />
+        Email me my results
+      </label>
+      <label id="emailField" style="display:none;">
+        Email <span class="required">*</span>:
+        <input type="email" name="email" />
+      </label>
 
-    <div class="form-group" id="email-container">
-      <label for="email">Email: <span class="required">*</span></label>
-      <input id="email" type="email" name="email">
-    </div>
+      <!-- Other profile fields -->
+      <label>
+        Company:
+        <input type="text" name="company" />
+      </label>
+      <label>
+        Job Title:
+        <input type="text" name="jobTitle" />
+      </label>
 
-    <div class="form-group">
-      <label for="company">Company:</label>
-      <input id="company" type="text" name="company">
-    </div>
+      <!-- Questions will be injected here -->
+      <div id="questions-container"></div>
 
-    <div class="form-group">
-      <label for="jobTitle">Job Title:</label>
-      <input id="jobTitle" type="text" name="jobTitle">
-    </div>
-
-    <div class="instructions">
-      <strong>Instructions:</strong>
-      <ul>
-        <li>If only one answer is <em>ALL YOU</em>, pick <strong>4</strong> for that option and <strong>0</strong> for the rest.</li>
-        <li>If you can’t decide between two, pick <strong>2</strong> for each, <strong>0</strong> for the others.</li>
-        <li>If one is dominant, pick <strong>3</strong> and <strong>1</strong>, <strong>0</strong> for others.</li>
-        <li>If they are all like you, pick <strong>1</strong> for each option.</li>
-        <li>Total must always add up to <strong>4</strong>.</li>
-      </ul>
-    </div>
-
-    <div id="questions-container"></div>
-
-    <div class="button-group">
-      <button class="submit-btn" type="submit">Submit Quiz</button>
+      <button class="submit-btn" type="submit" disabled>Submit</button>
       <button class="refetch-btn" type="button" onclick="refetchQuestions()">Reload Questions</button>
-    </div>
-  </form>
+    </form>
 
-  <div id="result-container" style="display:none;"></div>
-</div>
+    <!-- Results area -->
+    <div id="result-container" style="display:none;"></div>
+  </div>
 
-<footer>
-  © 2025 withpurpose-onpurpose.com | Powered by Laura Cooley
-  <br>
-  <a href="admin-login.html" class="admin-link">🔒 Admin Login</a>
-</footer>
-
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const checkbox = document.getElementById('wantEmail');
-    const emailGroup = document.getElementById('email-container');
-    const emailInput = document.getElementById('email');
-
-    emailGroup.style.display = 'none';
-    emailInput.required = false;
-
-    checkbox.addEventListener('change', () => {
-      if (checkbox.checked) {
-        emailGroup.style.display = 'block';
-        emailInput.required = true;
-      } else {
-        emailGroup.style.display = 'none';
-        emailInput.required = false;
-      }
-    });
-
-    refetchQuestions();
-  });
-</script>
-
-<script src="script-quiz.js"></script>
+  <footer>
+    © 2025 withpurpose-onpurpose.com | Powered by Laura Cooley<br>
+    <a href="admin-login.html" class="admin-link">🔒 Admin Login</a>
+  </footer>
 </body>
 </html>
