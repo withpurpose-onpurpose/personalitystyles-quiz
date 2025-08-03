@@ -64,10 +64,11 @@ function renderQuestions(grouped) {
 
       // image
       if (opt.imageUrl) {
-        const img = document.createElement('img');
-        img.src = opt.imageUrl;
-        img.alt = opt.answer;
-        wrap.appendChild(img);
+         const img = document.createElement('img');
+    img.className = 'preview';
+    img.src = opt.imageUrl;   // <-- this is your base64 Data-URL
+    img.alt = opt.answer;
+    wrapper.appendChild(img);
       }
 
       // right-side content

@@ -14,12 +14,13 @@ function handleImageUpload(input, previewImg, hiddenInput) {
   const file = input.files[0];
   if (!file) return;
 
-  const sanitized = sanitizeFilename(file.name);
   const reader = new FileReader();
   reader.onload = () => {
+    // 1) show preview in the admin UI
     previewImg.src = reader.result;
-    previewImg.style.display = 'inline-block';
-    hiddenInput.value = `assets/uploads/${sanitized}`;
+    previewImg.style.display = 'inline';
+    // 2) store the entire Data-URL in localStorage JSON
+    hiddenInput.value = reader.result;
   };
   reader.readAsDataURL(file);
 }
