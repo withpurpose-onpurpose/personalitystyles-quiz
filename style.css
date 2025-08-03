@@ -210,3 +210,53 @@ hr.topic-separator {
   border-top: 1px solid var(--border-grey);
   margin: 2rem 0;
 }
+
+/* === your existing styles above === */
+/* … */
+
+.bars {
+  margin-top: 1rem;
+}
+
+.bar-wrap {
+  margin: 0.5rem 0;
+  display: flex;
+  align-items: center;
+}
+
+.bar-label {
+  width: 100px;
+  font-weight: 600;
+}
+
+.bar {
+  height: 1.2rem;
+  border-radius: 4px;
+  margin: 0 1rem;
+}
+
+/* === PRINT STYLING === */
+@media print {
+  /* keep the color bars colored when printing */
+  .bar {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  /* hide all controls */
+  .submit-btn,
+  .refetch-btn,
+  .done-group,
+  #print-btn,
+  input[type="checkbox"] {
+    display: none !important;
+  }
+  /* ensure footer shows on every page */
+  @page {
+    margin: 1in;
+  }
+  footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+  }
+}
