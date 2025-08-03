@@ -22,15 +22,10 @@
       <input id="name" type="text" name="name" required>
     </div>
 
-    <!-- Email opt-in -->
     <div class="form-group">
-      <label>
-        <input type="checkbox" id="wantEmail">
-        Send me my results by email
-      </label>
+      <label><input type="checkbox" id="wantEmail" /> Send me my results by email</label>
     </div>
 
-    <!-- Email field (shown only if opted in) -->
     <div class="form-group" id="email-container">
       <label for="email">Email: <span class="required">*</span></label>
       <input id="email" type="email" name="email">
@@ -46,6 +41,17 @@
       <input id="jobTitle" type="text" name="jobTitle">
     </div>
 
+    <div class="instructions">
+      <strong>Instructions:</strong>
+      <ul>
+        <li>If only one answer is <em>ALL YOU</em>, pick <strong>4</strong> for that option and <strong>0</strong> for the rest.</li>
+        <li>If you can’t decide between two, pick <strong>2</strong> for each, <strong>0</strong> for the others.</li>
+        <li>If one is dominant, pick <strong>3</strong> and <strong>1</strong>, <strong>0</strong> for others.</li>
+        <li>If they are all like you, pick <strong>1</strong> for each option.</li>
+        <li>Total must always add up to <strong>4</strong>.</li>
+      </ul>
+    </div>
+
     <div id="questions-container"></div>
 
     <div class="button-group">
@@ -59,17 +65,16 @@
 
 <footer>
   © 2025 withpurpose-onpurpose.com | Powered by Laura Cooley
+  <br>
   <a href="admin-login.html" class="admin-link">🔒 Admin Login</a>
 </footer>
 
 <script>
-  // Toggle email field visibility & requirement
   document.addEventListener('DOMContentLoaded', () => {
     const checkbox = document.getElementById('wantEmail');
     const emailGroup = document.getElementById('email-container');
     const emailInput = document.getElementById('email');
 
-    // Initialize hidden
     emailGroup.style.display = 'none';
     emailInput.required = false;
 
@@ -82,8 +87,12 @@
         emailInput.required = false;
       }
     });
+
+    // load questions
+    refetchQuestions();
   });
 </script>
+
 <script src="script-quiz.js"></script>
 </body>
 </html>
