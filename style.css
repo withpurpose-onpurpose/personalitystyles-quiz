@@ -11,57 +11,16 @@ h1 {
   border-bottom: 2px solid #ccc;
   padding-bottom: 0.5rem;
   margin-bottom: 1.5rem;
+  font-size: 1.6rem;
 }
 
-/* === Header === */
-header {
-  background-color: #d4af37;
-  color: #000;
-  padding: 1rem;
-  text-align: center;
-}
-
-header a {
-  color: #5d9f44;
-  text-decoration: none;
-}
-
-/* === Container === */
-.container {
-  max-width: 900px;
-  margin: 2rem auto;
-  padding: 1rem;
-}
-
-.form-group {
-  margin-bottom: 1rem;
-}
-
-input[type="text"],
-input[type="email"],
-select,
-textarea {
-  width: 100%;
-  max-width: 400px;
-  padding: 0.5rem;
-  font-size: 1rem;
-  font-family: 'Poppins', sans-serif;
-  border: 1px solid #aaa;
-  border-radius: 4px;
-  margin-top: 0.25rem;
-  box-sizing: border-box;
-}
-
-textarea.description-input {
-  min-height: 100px;
-  resize: vertical;
+.required {
+  color: red;
 }
 
 /* === Buttons === */
-button,
-.submit-btn,
-.refetch-btn {
-  background-color: #d4af37;
+button {
+  background-color: #d4af37; /* gold */
   color: #000;
   border: 1px solid #999;
   padding: 0.5rem 1.2rem;
@@ -72,84 +31,107 @@ button,
   border-radius: 4px;
 }
 
-button:hover,
-.submit-btn:hover,
-.refetch-btn:hover {
+button:hover {
   background-color: #c49f2f;
 }
 
-/* === Slider-Based Questions === */
-.question {
-  background: #f8f8f8;
-  padding: 1.2rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  margin-top: 2rem;
+/* === Inputs === */
+input[type="text"],
+input[type="email"],
+select,
+textarea {
+  width: 100%;
+  padding: 0.4rem;
+  font-size: 0.95rem;
+  font-family: 'Poppins', sans-serif;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  box-sizing: border-box;
 }
 
-.slider-row {
+/* === Form Layout === */
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.form-group {
+  margin-bottom: 1.2rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-weight: 500;
+}
+
+/* === Questions Styling === */
+.question-block {
+  border: 1px solid #ccc;
+  background: #f5f5f5;
+  padding: 1rem;
+  border-radius: 6px;
+  margin-bottom: 2rem;
+}
+
+.question-title {
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.answer-option {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  margin: 0.75rem 0;
+  margin-bottom: 1.5rem;
 }
 
-.slider {
-  flex-grow: 1;
+.answer-option img {
+  width: 140px;
+  height: auto;
+  margin-right: 1rem;
+  border-radius: 4px;
 }
 
-.slider-value {
-  width: 40px;
-  text-align: right;
+.answer-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.total {
-  margin-top: 1rem;
-  font-weight: bold;
-}
-
-/* === Question Table Styling (for admin input / legacy mode) === */
-#question-container table {
-  width: 100%;
-  border: 2px solid #ccc;
-  margin-bottom: 2rem;
-  border-collapse: collapse;
-  background: #f9f9f9;
-  box-shadow: 0 0 5px rgba(0,0,0,0.05);
-}
-
-#question-container th,
-#question-container td {
-  border: 1px solid #bbb;
-  padding: 0.8rem;
-  vertical-align: top;
+.answer-content .quote {
   font-size: 0.95rem;
+  margin-bottom: 0.4rem;
+  font-weight: 500;
 }
 
-#question-container th {
-  background-color: #eee;
-  font-weight: 600;
-  text-align: left;
+.answer-content input[type=range] {
+  width: 100%;
+  margin: 0.4rem 0;
 }
 
-/* === Image Preview (optional) === */
-img {
-  max-height: 40px;
-  display: none;
+.slider-hint {
+  font-size: 0.75rem;
+  text-align: right;
+  color: #666;
 }
 
 /* === Footer === */
 footer {
-  text-align: center;
-  padding: 1rem;
-  background: #eee;
+  margin-top: 3rem;
   font-size: 0.85rem;
+  text-align: center;
+  color: #333;
+}
+
+footer a {
+  color: #000;
+  text-decoration: underline;
 }
 
 .admin-link {
-  color: #545251;
-  font-size: 0.75rem;
+  font-size: 0.85rem;
+  color: #999;
   display: block;
-  margin-top: 0.5rem;
-  text-decoration: none;
+  margin-top: 0.4rem;
 }
