@@ -40,7 +40,7 @@ function renderQuestions(grouped) {
       <strong>Instructions:</strong>
       <ul>
         <li>Move each slider to indicate how much the statement describes you.</li>
-        <li>far left = "Not at all like me," far right = "Totally like me."</li>
+        <li>far LEFT of slider = "Not at all like me," far RIGHT of slider = "Totally like me."</li>
         <li>You can choose any value in between to capture nuance.</li>
         <li>Be sure to adjust every slider before submitting.</li>
       </ul>
@@ -58,19 +58,18 @@ function renderQuestions(grouped) {
       const wrap = document.createElement('div');
       wrap.className = 'option-item';
 
-      // comment out image rendering temporarily
+      // images commented out
       // if (opt.imageUrl) {
       //   const img = document.createElement('img');
       //   img.className = 'preview';
       //   img.src = opt.imageUrl;
-      //   img.alt = opt.answer;
       //   wrap.appendChild(img);
       // }
 
       const content = document.createElement('div');
       content.className = 'option-content';
       content.innerHTML = `
-        <p class="option-label">${opt.answer}: ${opt.description}</p>
+        <p class="option-label">${opt.description}</p>
         <input type="range" min="0" max="100" step="1" value="0"
                data-color="${opt.color}" name="${key}--${opt.answer}">
         <small class="slider-instruction">
@@ -147,13 +146,12 @@ function showResults(name, top, sorted, blend) {
     row.className = 'bar-wrap';
     row.innerHTML = `
       <div class="bar-label">${c}</div>
-      <div class="bar" style="width:${(v/max)*100}% ;background:${c.toLowerCase()};height:1.2rem;border-radius:4px;"></div>
+      <div class="bar" style="width:${(v/max)*100}% ;background:${c.toLowerCase()};"></div>
       <div class="bar-value">${v}</div>
     `;
     barWrap.appendChild(row);
   });
+  document.getElementById('quiz-form').style.display='none';
   rc.classList.remove('hidden');
-  document.getElementById('quiz-form').classList.add('hidden');
-
   document.getElementById('print-btn').addEventListener('click', () => window.print());
 }
