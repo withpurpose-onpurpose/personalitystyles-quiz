@@ -4,35 +4,32 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Personality Styles Quiz</title>
-  <link rel="stylesheet" href="styles.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- Poppins font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <header>
     <h1>Personality Styles Quiz</h1>
-    <p>Based on Personality Lingo by Mary Miscisin | 
-      <a href="https://withpurpose-onpurpose.com" target="_blank">withpurpose-onpurpose.com</a>
-    </p>
+    <p>Based on Personality Lingo by Mary Miscisin | <a href="https://withpurpose-onpurpose.com" target="_blank">withpurpose-onpurpose.com</a></p>
   </header>
 
-  <main class="container">
+  <div class="container">
     <form id="quiz-form">
       <label>
-        Name <span class="required">*</span>:
+        Name:<span class="required">*</span>
         <input type="text" name="name" required>
       </label>
 
-      <div class="email-opt-in">
+      <label class="email-toggle">
         <input type="checkbox" id="wantEmail">
-        <label for="wantEmail">Email me my results</label>
-      </div>
-      <div id="email-container" class="hidden">
-        <label>
-          Email <span class="required">*</span>:
-          <input type="email" name="email" id="email">
-        </label>
-      </div>
+        Email me my results
+      </label>
+      <label id="email-label" class="hidden">
+        Email:<span class="required">*</span>
+        <input type="email" name="email" id="email" >
+      </label>
 
       <label>
         Company:
@@ -43,40 +40,21 @@
         <input type="text" name="jobTitle">
       </label>
 
-      <div id="questions-container">
-        <!-- questions get injected here -->
-      </div>
+      <div id="questions-container"></div>
 
       <button class="submit-btn" type="submit" disabled>Submit</button>
-      <button type="button" class="refetch-btn" onclick="refetchQuestions()">Reload Questions</button>
+      <button class="refetch-btn" type="button">Reload Questions</button>
     </form>
 
-    <div id="result-container" class="result-container" style="display:none;"></div>
-  </main>
+    <div id="result-container" style="display:none;"></div>
+  </div>
 
   <footer>
     © 2025 withpurpose-onpurpose.com | Powered by Laura Cooley  
     <br>
-    <a href="admin-login.html" class="admin-link">🔒 Admin Login</a>
+    <a href="admin-login.html" class="admin-login">🔒 Admin Login</a>
   </footer>
 
   <script src="script-quiz.js"></script>
-  <script>
-    // Show / require email field only if opted in
-    document.getElementById('wantEmail').addEventListener('change', e => {
-      const ec = document.getElementById('email-container');
-      const emailInput = document.getElementById('email');
-      if (e.target.checked) {
-        ec.classList.remove('hidden');
-        emailInput.required = true;
-      } else {
-        ec.classList.add('hidden');
-        emailInput.required = false;
-      }
-    });
-
-    // Initial load
-    refetchQuestions();
-  </script>
 </body>
 </html>
