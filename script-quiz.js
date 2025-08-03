@@ -2,105 +2,95 @@
 
 document.addEventListener("DOMContentLoaded", () => {
   fetchQuestions();
-
-  document.getElementById("quiz-form").addEventListener("submit", function (e) {
-    e.preventDefault();
-    const formData = new FormData(this);
-    const responses = {};
-    const name = formData.get("name");
-    const email = formData.get("email");
-    const company = formData.get("company") || "";
-    const jobTitle = formData.get("jobTitle") || "";
-
-    // Score tracking
-    const scores = {
-      Blue: 0,
-      Gold: 0,
-      Green: 0,
-      Orange: 0
-    };
-
-    for (let [key, value] of formData.entries()) {
-      if (key.startsWith("slider-")) {
-        const [_, topic, color] = key.split("-");
-        scores[color] += parseInt(value, 10);
-        if (!responses[topic]) responses[topic] = {};
-        responses[topic][color] = parseInt(value, 10);
-      }
-    }
-
-    const summary = Object.entries(scores)
-      .map(([color, score]) => `${color}: ${score}`)
-      .join("\n");
-
-    const mailtoLink = `mailto:${email}?subject=Your Personality Style Results&body=Thank you, ${name}!\n\nYour results:\n${summary}`;
-    const adminLink = `mailto:youremail@yourdomain.com?subject=New Quiz Submission&body=Name: ${name}\nEmail: ${email}\nCompany: ${company}\nJob Title: ${jobTitle}\n\nResults:\n${summary}`;
-
-    document.getElementById("result-container").innerHTML = `
-      <p class="result">Thank you for submitting your quiz!</p>
-      <p><a href="${mailtoLink}" target="_blank">📩 Email results to yourself</a></p>
-      <p><a href="${adminLink}" target="_blank">📥 Notify Admin</a></p>
-    `;
-    document.getElementById("result-container").style.display = "block";
-  });
+  document.getElementById("quiz-form").addEventListener("submit", handleSubmit);
 });
 
 function fetchQuestions() {
+  fetch('questions.json') // or use a real backend endpoint
+    .then(response => response.json())
+    .then(data => renderQuestions(data))
+    .catch(error => console.error("Error loading questions:", error));
+}
+
+function renderQuestions(questions) {
   const container = document.getElementById("questions-container");
   container.innerHTML = "";
 
-  fetch("questions.json")
-    .then((res) => res.json())
-    .then((data) => {
-      data.forEach((question) => {
-        const qEl = document.createElement("div");
-        qEl.className = "question";
-        qEl.innerHTML = `
-          <label>${question.prompt}</label>
-          <table class="option-matrix">
-            ${question.answers
-              .map(
-                (a) => `
-                <tr>
-                  <td><strong>${a.color}</strong></td>
-                  <td>${a.description}</td>
-                  <td>
-                    <input
-                      type="range"
-                      min="0"
-                      max="100"
-                      value="0"
-                      step="1"
-                      name="slider-${question.topic}-${a.color}"
-                      onchange="validateTotal('${question.topic}')"
-                    />
-                    <span id="slider-value-${question.topic}-${a.color}">0</span>
-                  </td>
-                </tr>
-              `)
-              .join("")}
-          </table>
-          <div class="total">Total: <span id="total-${question.topic}">0</span>/100</div>
-          <div class="warning" id="warning-${question.topic}" style="display:none">⚠ Total must equal 100</div>
-        `;
-        container.appendChild(qEl);
+  questions.forEach((question, qIndex) => {
+    const wrapper = document.createElement("div");
+    wrapper.className = "question";
+
+    const heading = document.createElement("h3");
+    heading.textContent = `Question ${qIndex + 1}: ${question.prompt}`;
+    wrapper.appendChild(heading);
+
+    const totalDisplay = document.createElement("div");
+    totalDisplay.className = "total";
+    totalDisplay.innerHTML = `Total: <span id="total-${qIndex}">0</span>/100`;
+    wrapper.appendChild(totalDisplay);
+
+    question.options.forEach((option, oIndex) => {
+      const row = document.createElement("div");
+      row.className = "slider-row";
+
+      const label = document.createElement("label");
+      label.innerHTML = `<strong>${option.code}</strong>: ${option.text}`;
+
+      const input = document.createElement("input");
+      input.type = "range";
+      input.min = 0;
+      input.max = 100;
+      input.value = 0;
+      input.className = "slider";
+      input.name = `q${qIndex}-${oIndex}`;
+      input.dataset.question = qIndex;
+
+      const valueSpan = document.createElement("span");
+      valueSpan.className = "slider-value";
+      valueSpan.textContent = "0";
+
+      input.addEventListener("input", () => {
+        valueSpan.textContent = input.value;
+        updateTotal(qIndex);
       });
+
+      row.appendChild(label);
+      row.appendChild(input);
+      row.appendChild(valueSpan);
+
+      wrapper.appendChild(row);
     });
+
+    container.appendChild(wrapper);
+    container.appendChild(document.createElement("hr"));
+  });
 }
 
-function validateTotal(topic) {
-  const inputs = document.querySelectorAll(`input[name^=slider-${topic}-]`);
-  let total = 0;
+function updateTotal(qIndex) {
+  const inputs = document.querySelectorAll(`input[data-question="${qIndex}"]`);
+  let sum = 0;
+  inputs.forEach(input => sum += parseInt(input.value));
+  document.getElementById(`total-${qIndex}`).textContent = sum;
 
-  inputs.forEach((input) => {
-    total += parseInt(input.value);
-    const color = input.name.split("-")[2];
-    document.getElementById(`slider-value-${topic}-${color}`).textContent = input.value;
-  });
+  if (sum > 100) {
+    document.getElementById(`total-${qIndex}`).parentElement.style.color = 'red';
+  } else {
+    document.getElementById(`total-${qIndex}`).parentElement.style.color = '';
+  }
+}
 
-  document.getElementById(`total-${topic}`).textContent = total;
-  const warning = document.getElementById(`warning-${topic}`);
-  warning.style.display = total !== 100 ? "block" : "none";
+function handleSubmit(event) {
+  event.preventDefault();
+
+  const totals = document.querySelectorAll('.total span');
+  for (let total of totals) {
+    if (parseInt(total.textContent) !== 100) {
+      alert("Each question must total exactly 100.");
+      return;
+    }
+  }
+
+  alert("Form submitted successfully!");
 }
 
 function refetchQuestions() {
