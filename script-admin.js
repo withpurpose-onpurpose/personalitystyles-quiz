@@ -1,5 +1,6 @@
 const STORAGE_KEY = "personalityQuizQuestions";
 
+// Sanitize uploaded filename
 function sanitizeFilename(filename) {
   return filename
     .toLowerCase()
@@ -8,87 +9,98 @@ function sanitizeFilename(filename) {
     .replace(/\-+/g, '-');
 }
 
+// Handle image file upload & preview
 function handleImageUpload(input, previewImg, hiddenInput) {
   const file = input.files[0];
   if (!file) return;
 
   const sanitized = sanitizeFilename(file.name);
-  const uploadPath = `assets/uploads/${sanitized}`;
-
   const reader = new FileReader();
   reader.onload = () => {
     previewImg.src = reader.result;
-    previewImg.style.display = 'inline';
-    hiddenInput.value = uploadPath;
+    previewImg.style.display = 'inline-block';
+    hiddenInput.value = `assets/uploads/${sanitized}`;
   };
   reader.readAsDataURL(file);
 }
 
+// Add a new question block (or load existing)
 function addNewQuestion(existing = null) {
   const container = document.getElementById("question-container");
   const table = document.createElement("table");
 
-  const questionId = `Q${Date.now()}`;
   const topic = existing?.topic || "";
   const prompt = existing?.prompt || "";
 
-  const thead = document.createElement("thead");
-  thead.innerHTML = `
-    <tr>
-      <th colspan="7">
-        Topic: <input type="text" value="${topic}" class="topic-input">
-        Prompt: <input type="text" value="${prompt}" class="prompt-input">
-      </th>
-    </tr>
-    <tr>
-      <th>Answer (A)</th>
-      <th>Color (F)</th>
-      <th>Status (G)</th>
-      <th>Description (D)</th>
-      <th>Image</th>
-      <th>Preview</th>
-      <th>Image URL</th>
-    </tr>
+  // Header row
+  table.innerHTML = `
+    <thead>
+      <tr>
+        <th colspan="7">
+          Topic: <input type="text" value="${topic}" class="topic-input">
+          Prompt: <input type="text" value="${prompt}" class="prompt-input">
+        </th>
+      </tr>
+      <tr>
+        <th>Answer (A)</th>
+        <th>Color (F)</th>
+        <th>Status (G)</th>
+        <th>Description (D)</th>
+        <th>Image</th>
+        <th>Preview</th>
+        <th>Image URL</th>
+      </tr>
+    </thead>
   `;
-  table.appendChild(thead);
 
+  // Body rows
   const tbody = document.createElement("tbody");
-  const options = existing?.options || [{}, {}, {}, {}];
+  const options = existing?.options || [{},{},{},{}];
 
-  for (let i = 0; i < 4; i++) {
+  options.forEach((opt, i) => {
     const row = document.createElement("tr");
-    const opt = options[i] || {};
-    const colorOptions = ['Blue', 'Orange', 'Green', 'Gold'];
-    const statusOptions = ['Ask', 'Ignore'];
+
+    const colors = ['Blue','Orange','Green','Gold'];
+    const statuses = ['Ask','Ignore'];
 
     row.innerHTML = `
-      <td><input type="text" value="${opt.answer || ''}" class="answer-input"></td>
+      <td><input type="text" class="answer-input" value="${opt.answer||''}"></td>
       <td>
         <select class="color-select">
-          ${colorOptions.map(c => `<option${opt.color === c ? ' selected' : ''}>${c}</option>`).join('')}
+          ${colors.map(c=>`<option${opt.color===c?' selected':''}>${c}</option>`).join('')}
         </select>
       </td>
       <td>
         <select class="status-select">
-          ${statusOptions.map(s => `<option${(opt.status || 'Ask') === s ? ' selected' : ''}>${s}</option>`).join('')}
+          ${statuses.map(s=>`<option${(opt.status||'Ask')===s?' selected':''}>${s}</option>`).join('')}
         </select>
       </td>
-      <td><textarea class="description-input">${opt.description || ''}</textarea></td>
+      <td>
+        <textarea class="description-input">${opt.description||''}</textarea>
+      </td>
       <td>
         <input type="file" accept="image/*"
           onchange="handleImageUpload(this, this.nextElementSibling, this.nextElementSibling.nextElementSibling)">
       </td>
-      <td><img src="${opt.imageUrl || ''}" ${opt.imageUrl ? 'style="display:inline;"' : 'style="display:none;"'}></td>
-      <td><input type="hidden" class="image-url-input" value="${opt.imageUrl || ''}"></td>
+      <td>
+        <img class="preview" src="${opt.imageUrl||''}" style="${opt.imageUrl?'display:inline-block;':''}">
+      </td>
+      <td>
+        <input type="hidden" class="image-url-input" value="${opt.imageUrl||''}">
+      </td>
     `;
     tbody.appendChild(row);
-  }
+  });
 
   table.appendChild(tbody);
   container.appendChild(table);
-  container.appendChild(document.createElement("br"));
+  // add a separator after each question
+  const hr = document.createElement('hr');
+  hr.className = 'topic-separator';
+  container.appendChild(hr);
 }
 
+// Save all questions to localStorage
 function saveAllQuestions() {
   const tables = document.querySelectorAll("#question-container table");
   const questions = {};
@@ -98,34 +110,33 @@ function saveAllQuestions() {
     const prompt = table.querySelector(".prompt-input").value.trim();
     const key = `${topic}||${prompt}`;
     const rows = table.querySelectorAll("tbody tr");
-    const options = [];
+    const opts = [];
 
     rows.forEach(row => {
-      options.push({
+      opts.push({
         answer: row.querySelector(".answer-input").value.trim(),
-        color: row.querySelector(".color-select").value,
+        color:  row.querySelector(".color-select").value,
         status: row.querySelector(".status-select").value,
         description: row.querySelector(".description-input").value.trim(),
-        imageUrl: row.querySelector(".image-url-input").value.trim()
+        imageUrl: row.querySelector(".image-url-input").value.trim(),
       });
     });
-
-    questions[key] = options;
+    questions[key] = opts;
   });
 
   localStorage.setItem(STORAGE_KEY, JSON.stringify(questions));
   alert("Questions saved successfully!");
 }
 
+// Load on page start
 function loadQuestionsFromLocal() {
   const stored = localStorage.getItem(STORAGE_KEY);
   if (!stored) return;
-
   const grouped = JSON.parse(stored);
-  for (const [key, options] of Object.entries(grouped)) {
+  Object.entries(grouped).forEach(([key, opts]) => {
     const [topic, prompt] = key.split("||");
-    addNewQuestion({ topic, prompt, options });
-  }
+    addNewQuestion({ topic, prompt, options: opts });
+  });
 }
 
 document.addEventListener("DOMContentLoaded", loadQuestionsFromLocal);
