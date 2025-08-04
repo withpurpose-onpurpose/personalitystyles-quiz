@@ -42,7 +42,6 @@ const QUESTIONS = [
   }
 ];
 
-// ————— Feedback blocks —————
 const FEEDBACK = {
   Green: `
   <section class="feedback-section">
@@ -58,58 +57,27 @@ const FEEDBACK = {
       <li>Logical and analytical</li>
       <li>Creative and ingenious</li>
     </ul>
-    <p><strong>How you describe yourself</strong><br>
-    You might catch yourself saying:</p>
-    <ul>
-      <li>“I am a designer and inventor.”</li>
-      <li>“I shine when I contribute my best.”</li>
-      <li>“I excel at analysis and abstract thinking.”</li>
-      <li>“I value intelligence, rigor, and principle.”</li>
-      <li>“I thrive on complex systems and ideas.”</li>
-      <li>“My approach is scientific and objective.”</li>
-    </ul>
     <p><strong>When you’re stressed or off-balance</strong><br>
     Even the keenest Thinker can get fatigued and slip into:</p>
     <ul>
-      <li>Indecision or “analysis paralysis”</li>
-      <li>Withdrawal and silent aloofness</li>
-      <li>Sarcastic or put-down remarks</li>
-      <li>Refusal to communicate (the “silent treatment”)</li>
-      <li>Perfectionism tied to performance anxiety</li>
-      <li>Harsh self-criticism (and criticism of others)</li>
+      <li>Analysis paralysis</li>
+      <li>Withdrawal and aloofness</li>
+      <li>Sarcastic remarks</li>
+      <li>Silent treatment</li>
+      <li>Perfectionism tied to anxiety</li>
+      <li>Harsh self-criticism</li>
     </ul>
-    <p><strong>Strategies to regain your best self</strong><br>
-    When you notice you’ve drifted into stress mode, try:</p>
+    <p><strong>Get back on track</strong><br>
+    Try:</p>
     <ul>
-      <li>Balancing your critiques with encouragement</li>
+      <li>Balancing critiques with encouragement</li>
       <li>Honoring your need for independence</li>
-      <li>Validating your curiosity—allow yourself to explore</li>
-      <li>Checking in on your physical well-being (move, stretch)</li>
-      <li>Taking a pause to smile or breathe deeply</li>
-      <li>Prioritizing tasks instead of perfection</li>
-      <li>Inviting yourself to make (and learn from) mistakes</li>
-      <li>Remembering you can only change yourself, not others</li>
-      <li>Reaching out to a trusted friend or colleague for feedback</li>
-    </ul>
-    <p><strong>Common communication pitfalls</strong><br>
-    You’re brilliant with data, but watch for these:</p>
-    <ul>
-      <li>Leading with criticism before rapport</li>
-      <li>“Data dumping”—overwhelming others with facts</li>
-      <li>Diving too deeply into technical minutiae</li>
-      <li>Using humor at someone else’s expense</li>
-      <li>Setting unrealistic expectations of others</li>
-      <li>Getting stuck “in your head” and losing the personal angle</li>
-    </ul>
-    <p><strong>Likely alignment on other personality systems</strong><br>
-    If you’re a Green Thinker, you often map to:</p>
-    <ul>
-      <li>Hippocrates: Choleric</li>
-      <li>Jungian Type: Thinking (ENTJ | INTJ | ENTP | INTP)</li>
-      <li>Myers-Briggs: ENTJ, INTJ, ENTP, or INTP</li>
-      <li>Keirsey: Promethean (NT)</li>
-      <li>Lowry: Green</li>
-      <li>DISC: Dominant (D)</li>
+      <li>Validating your curiosity—explore freely</li>
+      <li>Checking in on your physical well-being</li>
+      <li>Pausing to smile or breathe deeply</li>
+      <li>Prioritizing progress over perfection</li>
+      <li>Inviting yourself to make mistakes</li>
+      <li>Reaching out to a trusted friend</li>
     </ul>
   </section>`,
 
@@ -117,7 +85,7 @@ const FEEDBACK = {
   <section class="feedback-section">
     <h4>Connector (Blue) Feedback</h4>
     <p><strong>Who you are at your best</strong><br>
-    Your driving force is relationship—you’re the “True Blue” trooper who naturally puts people first. Before you make any decision, you check in on how it will affect those involved. In those moments, you are:</p>
+    Your driving force is relationship—you’re the “True Blue” trooper who naturally puts people first. Before any decision, you check how it will affect others. In those moments, you are:</p>
     <ul>
       <li>Friendly and welcoming</li>
       <li>Helpful and supportive</li>
@@ -127,60 +95,29 @@ const FEEDBACK = {
       <li>Imaginative and creative</li>
       <li>Affectionate and warm</li>
     </ul>
-    <p><strong>How you describe yourself</strong><br>
-    You might catch yourself saying:</p>
-    <ul>
-      <li>“I value personal relationships above all.”</li>
-      <li>“I take a people-centered point of view.”</li>
-      <li>“I seek harmony and cooperation.”</li>
-      <li>“I intuitively focus on others’ strengths.”</li>
-      <li>“I embrace democratic decision-making.”</li>
-      <li>“I enjoy activating people’s potential.”</li>
-      <li>“I’m an optimistic, enthusiastic spokesperson.”</li>
-    </ul>
     <p><strong>When you’re stressed or off-balance</strong><br>
     Even the most generous Connector can slip into stress-mode and:</p>
     <ul>
-      <li>Misbehave to get attention</li>
-      <li>Tell little white lies to save face</li>
+      <li>Seek attention through drama</li>
+      <li>Tell white lies to save face</li>
       <li>Pretend to agree rather than speak up</li>
-      <li>Withdraw and lose track of your own priorities</li>
-      <li>Fantasize or daydream excessively</li>
-      <li>Cry often or appear depressed</li>
-      <li>Resort to passive-resistance (“silent treatment”)</li>
-      <li>Express emotions by yelling or impatience</li>
+      <li>Withdraw from priorities</li>
+      <li>Daydream excessively</li>
+      <li>Cry or appear depressed</li>
+      <li>Use passive-resistance</li>
+      <li>Express frustration loudly</li>
     </ul>
-    <p><strong>Strategies to regain your best self</strong><br>
-    When you notice stress creeping in, try:</p>
+    <p><strong>Get back on track</strong><br>
+    Try:</p>
     <ul>
-      <li>Accepting that negative emotions aren’t about you</li>
-      <li>Practicing saying “no” and setting healthy boundaries</li>
-      <li>Focusing on growth in others—sometimes “helping” means stepping back</li>
-      <li>Acknowledging that struggle is part of growth</li>
-      <li>Letting go of the need for universal approval</li>
-      <li>Validating your own feelings and contributions</li>
-      <li>Honoring your unique talents and gifts</li>
+      <li>Accepting negative emotions aren’t about you</li>
+      <li>Practicing saying “no” and setting boundaries</li>
+      <li>Stepping back to let others grow</li>
+      <li>Recognizing struggle is part of growth</li>
+      <li>Letting go of need for universal approval</li>
+      <li>Validating your own feelings</li>
       <li>Pausing to think before you leap</li>
       <li>Taking deliberate self-care breaks</li>
-    </ul>
-    <p><strong>Common communication pitfalls</strong><br>
-    Watch out for these overused Connector habits:</p>
-    <ul>
-      <li>Relying too heavily on emotional appeals</li>
-      <li>Mistaking intensity for anger or hostility</li>
-      <li>Taking feedback too personally</li>
-      <li>Over-apologizing</li>
-      <li>Beating around the bush instead of stating needs</li>
-    </ul>
-    <p><strong>Likely alignment on other personality systems</strong><br>
-    As a Blue Connector, you often map to:</p>
-    <ul>
-      <li>Hippocrates: Melancholic</li>
-      <li>Jungian Type: Feeling preference</li>
-      <li>Myers-Briggs: ENFJ | INFJ | ENFP | INFP</li>
-      <li>Keirsey: Apollonian (NF)</li>
-      <li>Lowry: Blue</li>
-      <li>DISC: Influence (I)</li>
     </ul>
   </section>`,
 
@@ -188,68 +125,36 @@ const FEEDBACK = {
   <section class="feedback-section">
     <h4>Mover (Orange) Feedback</h4>
     <p><strong>Who you are at your best</strong><br>
-    Your driving force is freedom—you “squeeze the juice” out of every moment. Rules are merely guidelines and you often carve out your own path. In those moments, you are:</p>
+    Your driving force is freedom—you “squeeze the juice” out of every moment. Rules feel like guidelines and you often carve your own path. In those moments, you are:</p>
     <ul>
       <li>Active and energized</li>
-      <li>Take-charge instinctively</li>
+      <li>Instinctive take-charge personality</li>
       <li>Competitive and driven</li>
-      <li>Skilled negotiator</li>
-      <li>Spontaneous in your choices</li>
-      <li>A natural performer—you love entertaining</li>
+      <li>A skilled negotiator</li>
+      <li>Spontaneous and adventurous</li>
+      <li>A natural performer</li>
       <li>Expert at multi-tasking</li>
-    </ul>
-    <p><strong>How you describe yourself</strong><br>
-    You might catch yourself saying:</p>
-    <ul>
-      <li>“I thrive on action.”</li>
-      <li>“I live in the here and now.”</li>
-      <li>“I must have the freedom to act.”</li>
-      <li>“I welcome change and take risks.”</li>
-      <li>“I crave variety.”</li>
-      <li>“I seek fun and peak performance.”</li>
-      <li>“I solve concrete problems quickly.”</li>
-      <li>“I’m a flexible, practical diplomat.”</li>
     </ul>
     <p><strong>When you’re stressed or off-balance</strong><br>
     Even the boldest Mover can slip into stress-mode and:</p>
     <ul>
       <li>Act rude or defiant</li>
       <li>Break rules on purpose</li>
-      <li>Fail to finish tasks—run away or quit</li>
-      <li>Joke or tease inappropriately</li>
-      <li>Become overly compulsive or manipulative</li>
+      <li>Fail to complete tasks</li>
+      <li>Joke inappropriately</li>
+      <li>Become overly controlling</li>
     </ul>
-    <p><strong>Strategies to regain your best self</strong><br>
-    When you notice stress creeping in, try:</p>
+    <p><strong>Get back on track</strong><br>
+    Try:</p>
     <ul>
-      <li>Go have some fun—seek new experiences outside work</li>
-      <li>Get hands on—create or build something to channel energy</li>
-      <li>Move your body—prioritize physical activity and self-care</li>
-      <li>Find fellow Oranges—they’ll appreciate your candor and energy</li>
-      <li>Focus on one task—complete it before moving on</li>
-      <li>Prioritize what’s truly important</li>
-      <li>Make an impression—use your flair for innovation to inspire others</li>
-      <li>Reward yourself—celebrate small wins before chasing the next big goal</li>
-      <li>Compete—join games or challenges to satisfy your drive</li>
-    </ul>
-    <p><strong>Common communication pitfalls</strong><br>
-    Watch out for these overused Mover habits:</p>
-    <ul>
-      <li>Multi-tasking at the expense of depth</li>
-      <li>Coming across as self-centered</li>
-      <li>Bulldozing intensity that overwhelms others</li>
-      <li>“Ready, FIRE, Aim”—acting before planning</li>
-      <li>Interrupting others</li>
-    </ul>
-    <p><strong>Likely alignment on other personality systems</strong><br>
-    As an Orange Mover, you often map to:</p>
-    <ul>
-      <li>Hippocrates: Sanguine</li>
-      <li>Jungian Type: Intuition preference</li>
-      <li>Myers-Briggs: ESFP | ISFP | ESTP | ISTP</li>
-      <li>Keirsey: Dionysian (SP)</li>
-      <li>Lowry: Orange</li>
-      <li>DISC: Conscientiousness (C)</li>
+      <li>Go have some fun—seek new experiences</li>
+      <li>Channel energy into building something</li>
+      <li>Move your body—prioritize physical self-care</li>
+      <li>Connect with fellow Oranges</li>
+      <li>Focus on completing one task</li>
+      <li>Prioritize what truly matters</li>
+      <li>Celebrate small wins</li>
+      <li>Join games or competitions</li>
     </ul>
   </section>`,
 
@@ -257,75 +162,34 @@ const FEEDBACK = {
   <section class="feedback-section">
     <h4>Planner (Gold) Feedback</h4>
     <p><strong>Who you are at your best</strong><br>
-    Your driving force is responsibility—you regularly “set the gold standard” and strive to be “as good as gold.” Conscientious and dependable, you want to do the right thing by following established standards and honoring your commitments.</p>
+    Your driving force is responsibility—you regularly set the gold standard and strive to be “as good as gold.” Conscientious and dependable, you honor commitments and established standards.</p>
     <h5>Attributes When Shining</h5>
     <ul>
       <li>Prepared and proactive</li>
       <li>Reliable—others count on you</li>
       <li>Punctual—you respect people’s time</li>
-      <li>Appropriate in every setting</li>
-      <li>Rule-following—you honor structure</li>
-      <li>Detail-oriented—you catch the small stuff</li>
-      <li>Organized—you bring order to chaos</li>
-    </ul>
-    <p><strong>How you describe yourself</strong><br>
-    You might catch yourself saying:</p>
-    <ul>
-      <li>“I am conventional and steady.”</li>
-      <li>“Family and home are my top priorities.”</li>
-      <li>“I am accountable, thorough, and precise.”</li>
-      <li>“I value belonging and loyalty.”</li>
-      <li>“I have a sense of social responsibility.”</li>
-      <li>“I reward dedication and consistency.”</li>
-      <li>“I appreciate order and punctuality.”</li>
+      <li>Appropriate and structured</li>
+      <li>Detail-oriented and organized</li>
     </ul>
     <p><strong>When you’re stressed or off-balance</strong><br>
     Even the most organized Planner can slip into stress-mode and:</p>
     <ul>
       <li>Complain or act self-pitying</li>
-      <li>Worry excessively and exhibit anxiety</li>
-      <li>React physically to pressure (tension, headaches)</li>
-      <li>Judge yourself and others too harshly</li>
-      <li>Slip into “blind herd” mentality, following without question</li>
-      <li>Become overly controlling, rigid, or closed-minded</li>
-      <li>Display a negative attitude toward new ideas</li>
+      <li>Worry excessively</li>
+      <li>Become rigid and closed-minded</li>
+      <li>Exhibit harsh judgment</li>
     </ul>
-    <p><strong>Strategies to regain your best self</strong><br>
-    When you feel stress mounting, try:</p>
+    <p><strong>Get back on track</strong><br>
+    Try:</p>
     <ul>
-      <li>Validate yourself—acknowledge all you’ve accomplished</li>
-      <li>Find community—get involved in groups where you belong</li>
-      <li>Care for yourself—make “me time” a priority</li>
-      <li>Set realistic limits—recognize when “good enough” is enough</li>
-      <li>Focus on controllables—let go of what’s outside your influence</li>
-      <li>Create new traditions—update routines that feel draining</li>
-      <li>Give yourself a break—stop driving others as hard as you drive yourself</li>
-      <li>Close past loops—resolve lingering issues so you can move on</li>
-      <li>Build in leeway—avoid over-scheduling every minute</li>
-      <li>Lighten up—enjoy the process, not just the end result</li>
-    </ul>
-    <p><strong>Common communication pitfalls</strong><br>
-    Watch out for these overused Planner habits:</p>
-    <ul>
-      <li>Being closed-minded to change</li>
-      <li>Wagging your finger instead of guiding</li>
-      <li>Wearing “check-it-off” blinders, missing the big picture</li>
-      <li>Getting stuck on specifics and losing flexibility</li>
-      <li>Falling into martyrdom and complaining—“no one else does it right”</li>
-    </ul>
-    <p><strong>Likely alignment on other personality systems</strong><br>
-    As a Gold Planner, you often map to:</p>
-    <ul>
-      <li>Hippocrates: Phlegmatic</li>
-      <li>Jungian Type: Sensation preference</li>
-      <li>Myers-Briggs: ESTJ | ISTJ | ESFJ | ISFJ</li>
-      <li>Keirsey: Epimethean (SJ)</li>
-      <li>Lowry: Gold</li>
-      <li>DISC: Steadiness (S)</li>
+      <li>Validate your accomplishments</li>
+      <li>Set realistic limits</li>
+      <li>Create new, energizing routines</li>
+      <li>Build in leeway—avoid over-scheduling</li>
+      <li>Enjoy the process, not just the result</li>
     </ul>
   </section>`
 };
-
 
 // ————— Main setup —————
 document.addEventListener('DOMContentLoaded', () => {
