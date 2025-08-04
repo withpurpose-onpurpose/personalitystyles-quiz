@@ -4,7 +4,7 @@
 :root {
   --gold: #d4af37;
   --grey: #545251;
-  --light-grey: #f9f9f5;
+  --light-grey: #f5f5f5;
   --border-grey: #ccc;
 }
 
@@ -15,28 +15,27 @@
 body {
   font-family: 'Poppins', sans-serif;
   background: #ffffff;
-  color: #000000;
+  color: #000;
   margin: 0;
   padding: 0;
 }
 
-h1 {
+header {
+  background: var(--gold);
+  padding: 1rem;
+  text-align: center;
+}
+header h1 {
+  margin: 0;
+  font-size: 1.6rem;
   font-weight: 600;
-  margin-bottom: 1rem;
 }
-
-button {
-  background-color: var(--grey);
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  margin: 0.5rem 0.5rem 1rem 0;
-  border-radius: 4px;
-  cursor: pointer;
-  font-family: 'Poppins', sans-serif;
+header p {
+  margin: 0.5rem 0 0;
 }
-button:hover {
-  background-color: #000;
+header a {
+  color: #000;
+  text-decoration: underline;
 }
 
 .container {
@@ -45,36 +44,56 @@ button:hover {
   padding: 0 1rem;
 }
 
-label {
-  display: block;
-  margin-top: 1rem;
-  font-weight: 600;
-}
-.required {
-  color: red;
+.required { color: red; }
+.hidden   { display: none; }
+
+.form-group {
+  margin-bottom: 1.2rem;
 }
 
-/* === Quiz Page Styling === */
+/* Buttons */
+button,
+.email-link {
+  background-color: var(--grey);
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  margin: 0.5rem 0.5rem 1rem 0;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none; /* for links */
+}
+button:hover,
+.email-link:hover {
+  background-color: #000;
+}
+
+/* === Questions === */
+.instructions {
+  background: #f0f0f0;
+  padding: 1rem;
+  border-radius: 6px;
+  margin-bottom: 1.5rem;
+}
+.instructions ul {
+  margin: 0.5rem 0 0 1.2rem;
+}
 
 .question {
   background: var(--light-grey);
   border: 1px solid var(--border-grey);
   border-radius: 8px;
   padding: 1.5rem;
-  margin: 2rem 0;
+  margin-bottom: 2rem;
 }
 
 .option-item {
   display: flex;
   align-items: center;
   margin: 1rem 0;
-}
-
-.option-item img {
-  max-width: 120px;
-  margin-right: 1rem;
-  border: 1px solid var(--border-grey);
-  border-radius: 4px;
 }
 
 .option-content {
@@ -92,11 +111,9 @@ input[type="range"] {
 }
 
 .slider-instruction {
-  display: block;
   font-size: 0.8rem;
   color: #666;
   text-align: right;
-  margin-bottom: 0.5rem;
 }
 
 .done-group {
@@ -104,12 +121,9 @@ input[type="range"] {
   font-size: 0.95rem;
 }
 
-.refetch-btn {
-  background-color: var(--gold);
-}
-
-.result-container {
-  padding: 2rem;
+/* === Results === */
+#result-container {
+  padding: 2rem 0;
   text-align: center;
 }
 
@@ -118,13 +132,13 @@ input[type="range"] {
 }
 
 .bar-wrap {
-  margin: 0.5rem 0;
   display: flex;
   align-items: center;
+  margin: 0.5rem 0;
 }
 
-.bar-wrap > div:first-child {
-  width: 100px;
+.bar-label {
+  width: 120px;
   text-align: left;
   font-weight: 600;
 }
@@ -135,18 +149,18 @@ input[type="range"] {
   margin: 0 1rem;
 }
 
-.bar-wrap span {
+.bar-value {
   font-weight: 600;
 }
 
+/* Footer */
 footer {
-  background: #eeeeee;
+  background: #eee;
   text-align: center;
   padding: 1rem;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
 }
-
-footer .admin-link {
+.admin-link {
   font-size: 0.75rem;
   color: var(--grey);
   text-decoration: none;
@@ -154,105 +168,21 @@ footer .admin-link {
   margin-top: 0.5rem;
 }
 
-.hidden {
-  display: none;
-}
-
-/* === Admin Dashboard Overrides === */
-
-.admin-main #question-container table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 2rem 0;
-}
-
-.admin-main #question-container th,
-.admin-main #question-container td {
-  border: 1px solid var(--border-grey);
-  padding: 0.75rem;
-  vertical-align: top;
-  font-family: 'Poppins', sans-serif;
-  font-size: 0.95rem;
-}
-
-/* Narrow the "Answer (A)" column */
-.admin-main #question-container th:nth-child(1),
-.admin-main #question-container td:nth-child(1) {
-  width: 15%;
-}
-
-/* Expand the "Description (D)" column */
-.admin-main #question-container th:nth-child(4),
-.admin-main #question-container td:nth-child(4) {
-  width: 45%;
-}
-
-textarea.description-input {
-  width: 100%;
-  min-height: 180px;
-  resize: vertical;
-  font-family: 'Poppins', sans-serif;
-  font-size: 0.95rem;
-  padding: 0.5rem;
-  border: 1px solid var(--border-grey);
-  border-radius: 4px;
-}
-
-img.preview {
-  max-height: 40px;
-  display: inline-block;
-  border: 1px solid var(--border-grey);
-  border-radius: 4px;
-}
-
-hr.topic-separator {
-  border: none;
-  border-top: 1px solid var(--border-grey);
-  margin: 2rem 0;
-}
-
-/* === your existing styles above === */
-/* … */
-
-.bars {
-  margin-top: 1rem;
-}
-
-.bar-wrap {
-  margin: 0.5rem 0;
-  display: flex;
-  align-items: center;
-}
-
-.bar-label {
-  width: 100px;
-  font-weight: 600;
-}
-
-.bar {
-  height: 1.2rem;
-  border-radius: 4px;
-  margin: 0 1rem;
-}
-
-/* === PRINT STYLING === */
+/* === PRINT STYLES === */
 @media print {
-  /* keep the color bars colored when printing */
+  /* preserve bar colors */
   .bar {
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
-  /* hide all controls */
+  /* hide controls */
   .submit-btn,
   .refetch-btn,
+  .email-link,
   .done-group,
-  #print-btn,
-  input[type="checkbox"] {
+  input[type="checkbox"],
+  #print-btn {
     display: none !important;
-  }
-  /* ensure footer shows on every page */
-  @page {
-    margin: 1in;
   }
   footer {
     position: fixed;
