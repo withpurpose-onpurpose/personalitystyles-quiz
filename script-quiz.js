@@ -43,268 +43,289 @@ const QUESTIONS = [
 ];
 
 // ————— Feedback blocks —————
-const FEEDBACK_MAP = {
+const FEEDBACK = {
   Green: `
-    <section class="feedback-section">
-      <h4>Thinker (Green) Feedback</h4>
-      <p>The driving force for Greens is competency. Naturally curious, you thirst for knowledge and information and like to come up with solutions and systems for solving problems and inventing a better future. Preferring to keep your emotions to yourself, you approach situations objectively. Remember “Keen Green.”</p>
-      <h5>When you’re at your best, you are:</h5>
-      <ul>
-        <li>Problem-solvers</li>
-        <li>Independent</li>
-        <li>Tenacious</li>
-        <li>Self-assured</li>
-        <li>Witty sense of humor</li>
-        <li>Logical, Analytical</li>
-        <li>Creative, Ingenious</li>
-      </ul>
-      <h5>You may see yourself as:</h5>
-      <ul>
-        <li>I am a designer and inventor</li>
-        <li>I contribute my best</li>
-        <li>I am an excellent analyst</li>
-        <li>I am principled</li>
-        <li>I enjoy complex systems</li>
-        <li>I value intelligence and competence</li>
-        <li>My attitudes are scientific</li>
-        <li>I think abstractly</li>
-      </ul>
-      <h5>When you’re tired or stressed, you may find yourself:</h5>
-      <ul>
-        <li>Behaving indecisively</li>
-        <li>Refusing to comply or cooperate</li>
-        <li>Withdrawing, aloofness</li>
-        <li>Put-downs, sarcastic remarks</li>
-        <li>Refusing to communicate (silent treatment)</li>
-        <li>Perfection tied to performance anxiety</li>
-        <li>Highly critical of self and others</li>
-      </ul>
-      <h5>Strategies to get back on track:</h5>
-      <ul>
-        <li>Balance your critiques</li>
-        <li>Honor your independence</li>
-        <li>Validate your interests – allow yourself to explore</li>
-        <li>Pay attention to your physical well-being</li>
-        <li>Smile</li>
-        <li>Prioritize</li>
-        <li>Invite yourself to make mistakes</li>
-        <li>Recognize you can only change yourself</li>
-        <li>Reach out to others</li>
-      </ul>
-      <h5>Common Communication Mistakes:</h5>
-      <ul>
-        <li>Pointing out mistakes first</li>
-        <li>Data dumping</li>
-        <li>Data diving</li>
-        <li>Humor at others’ expense</li>
-        <li>Unreasonable expectations</li>
-        <li>Living in your head</li>
-      </ul>
-      <h5>Alignment with other systems:</h5>
-      <ul>
-        <li>Hippocrates – CHOLERIC</li>
-        <li>Carl Jung – THINKING</li>
-        <li>Myers-Briggs – ENTJ | INTJ | ENTP | INTP</li>
-        <li>Keirsey – PROMETHEAN (NT)</li>
-        <li>Lowry – Green</li>
-        <li>DISC – Dominant (D)</li>
-      </ul>
-    </section>
-  `,
+  <section class="feedback-section">
+    <h4>Thinker (Green) Feedback</h4>
+    <p><strong>Who you are at your best</strong><br>
+    When you’re in your element, your driving force is competence—you love diving into complexity, inventing new solutions, and mastering systems. In those moments, you are:</p>
+    <ul>
+      <li>A natural problem-solver</li>
+      <li>Independent and self-directed</li>
+      <li>Tenacious in pursuit of answers</li>
+      <li>Self-assured in your expertise</li>
+      <li>Witty, with a dry sense of humor</li>
+      <li>Logical and analytical</li>
+      <li>Creative and ingenious</li>
+    </ul>
+    <p><strong>How you describe yourself</strong><br>
+    You might catch yourself saying:</p>
+    <ul>
+      <li>“I am a designer and inventor.”</li>
+      <li>“I shine when I contribute my best.”</li>
+      <li>“I excel at analysis and abstract thinking.”</li>
+      <li>“I value intelligence, rigor, and principle.”</li>
+      <li>“I thrive on complex systems and ideas.”</li>
+      <li>“My approach is scientific and objective.”</li>
+    </ul>
+    <p><strong>When you’re stressed or off-balance</strong><br>
+    Even the keenest Thinker can get fatigued and slip into:</p>
+    <ul>
+      <li>Indecision or “analysis paralysis”</li>
+      <li>Withdrawal and silent aloofness</li>
+      <li>Sarcastic or put-down remarks</li>
+      <li>Refusal to communicate (the “silent treatment”)</li>
+      <li>Perfectionism tied to performance anxiety</li>
+      <li>Harsh self-criticism (and criticism of others)</li>
+    </ul>
+    <p><strong>Strategies to regain your best self</strong><br>
+    When you notice you’ve drifted into stress mode, try:</p>
+    <ul>
+      <li>Balancing your critiques with encouragement</li>
+      <li>Honoring your need for independence</li>
+      <li>Validating your curiosity—allow yourself to explore</li>
+      <li>Checking in on your physical well-being (move, stretch)</li>
+      <li>Taking a pause to smile or breathe deeply</li>
+      <li>Prioritizing tasks instead of perfection</li>
+      <li>Inviting yourself to make (and learn from) mistakes</li>
+      <li>Remembering you can only change yourself, not others</li>
+      <li>Reaching out to a trusted friend or colleague for feedback</li>
+    </ul>
+    <p><strong>Common communication pitfalls</strong><br>
+    You’re brilliant with data, but watch for these:</p>
+    <ul>
+      <li>Leading with criticism before rapport</li>
+      <li>“Data dumping”—overwhelming others with facts</li>
+      <li>Diving too deeply into technical minutiae</li>
+      <li>Using humor at someone else’s expense</li>
+      <li>Setting unrealistic expectations of others</li>
+      <li>Getting stuck “in your head” and losing the personal angle</li>
+    </ul>
+    <p><strong>Likely alignment on other personality systems</strong><br>
+    If you’re a Green Thinker, you often map to:</p>
+    <ul>
+      <li>Hippocrates: Choleric</li>
+      <li>Jungian Type: Thinking (ENTJ | INTJ | ENTP | INTP)</li>
+      <li>Myers-Briggs: ENTJ, INTJ, ENTP, or INTP</li>
+      <li>Keirsey: Promethean (NT)</li>
+      <li>Lowry: Green</li>
+      <li>DISC: Dominant (D)</li>
+    </ul>
+  </section>`,
+
   Blue: `
-    <section class="feedback-section">
-      <h4>Connector (Blue) Feedback</h4>
-      <p>Blues are “True Blue troopers”; your driving force is relationship. Before you decide, you check how it will affect everyone involved, often putting others’ needs ahead of your own.</p>
-      <h5>When you’re at your best, you are:</h5>
-      <ul>
-        <li>Friendly</li>
-        <li>Helpful</li>
-        <li>Compassionate, considerate</li>
-        <li>Cooperative</li>
-        <li>Emotional, expressive</li>
-        <li>Imaginative, creative</li>
-        <li>Affectionate</li>
-      </ul>
-      <h5>You might catch yourself saying:</h5>
-      <ul>
-        <li>I value personal relationships</li>
-        <li>I have a people-centered point of view</li>
-        <li>I value harmony and cooperation</li>
-        <li>I intuitively focus on personal strengths</li>
-        <li>I am naturally democratic</li>
-        <li>I enjoy activating people’s potential</li>
-        <li>I am an optimistic, dramatic spokesperson</li>
-      </ul>
-      <h5>When stressed or off-balance, you may:</h5>
-      <ul>
-        <li>Misbehave to get attention</li>
-        <li>Lie to save face</li>
-        <li>Pretend to agree</li>
-        <li>Withdraw, lose track of priorities</li>
-        <li>Daydream excessively</li>
-        <li>Cry often, appear depressed</li>
-        <li>Become passive-resistant</li>
-        <li>Yell or scream</li>
-      </ul>
-      <h5>Strategies to regain balance:</h5>
-      <ul>
-        <li>Accept “negative” emotions</li>
-        <li>Learn to say “no”</li>
-        <li>Do less “helping”</li>
-        <li>Recognize life’s struggles</li>
-        <li>Let it go – most people like you!</li>
-        <li>Validate yourself</li>
-        <li>Use your talents</li>
-        <li>Set boundaries</li>
-        <li>Look before leaping</li>
-        <li>Take care of yourself</li>
-        <li>Express your unique self</li>
-      </ul>
-      <h5>Common Communication Pitfalls:</h5>
-      <ul>
-        <li>Using emotional appeals</li>
-        <li>Mistaking intensity for anger</li>
-        <li>Taking things personally</li>
-        <li>Over-apologizing</li>
-        <li>Beating around the bush</li>
-      </ul>
-      <h5>Alignment with other systems:</h5>
-      <ul>
-        <li>Hippocrates – MELANCHOLIC</li>
-        <li>Carl Jung – FEELING</li>
-        <li>Myers-Briggs – ENFJ | INFJ | ENFP | INFP</li>
-        <li>Keirsey – APOLLONIAN (NF)</li>
-        <li>Lowry – Blue</li>
-        <li>DISC – Influence (I)</li>
-      </ul>
-    </section>
-  `,
+  <section class="feedback-section">
+    <h4>Connector (Blue) Feedback</h4>
+    <p><strong>Who you are at your best</strong><br>
+    Your driving force is relationship—you’re the “True Blue” trooper who naturally puts people first. Before you make any decision, you check in on how it will affect those involved. In those moments, you are:</p>
+    <ul>
+      <li>Friendly and welcoming</li>
+      <li>Helpful and supportive</li>
+      <li>Compassionate and considerate</li>
+      <li>Cooperative and team-oriented</li>
+      <li>Emotional and expressive</li>
+      <li>Imaginative and creative</li>
+      <li>Affectionate and warm</li>
+    </ul>
+    <p><strong>How you describe yourself</strong><br>
+    You might catch yourself saying:</p>
+    <ul>
+      <li>“I value personal relationships above all.”</li>
+      <li>“I take a people-centered point of view.”</li>
+      <li>“I seek harmony and cooperation.”</li>
+      <li>“I intuitively focus on others’ strengths.”</li>
+      <li>“I embrace democratic decision-making.”</li>
+      <li>“I enjoy activating people’s potential.”</li>
+      <li>“I’m an optimistic, enthusiastic spokesperson.”</li>
+    </ul>
+    <p><strong>When you’re stressed or off-balance</strong><br>
+    Even the most generous Connector can slip into stress-mode and:</p>
+    <ul>
+      <li>Misbehave to get attention</li>
+      <li>Tell little white lies to save face</li>
+      <li>Pretend to agree rather than speak up</li>
+      <li>Withdraw and lose track of your own priorities</li>
+      <li>Fantasize or daydream excessively</li>
+      <li>Cry often or appear depressed</li>
+      <li>Resort to passive-resistance (“silent treatment”)</li>
+      <li>Express emotions by yelling or impatience</li>
+    </ul>
+    <p><strong>Strategies to regain your best self</strong><br>
+    When you notice stress creeping in, try:</p>
+    <ul>
+      <li>Accepting that negative emotions aren’t about you</li>
+      <li>Practicing saying “no” and setting healthy boundaries</li>
+      <li>Focusing on growth in others—sometimes “helping” means stepping back</li>
+      <li>Acknowledging that struggle is part of growth</li>
+      <li>Letting go of the need for universal approval</li>
+      <li>Validating your own feelings and contributions</li>
+      <li>Honoring your unique talents and gifts</li>
+      <li>Pausing to think before you leap</li>
+      <li>Taking deliberate self-care breaks</li>
+    </ul>
+    <p><strong>Common communication pitfalls</strong><br>
+    Watch out for these overused Connector habits:</p>
+    <ul>
+      <li>Relying too heavily on emotional appeals</li>
+      <li>Mistaking intensity for anger or hostility</li>
+      <li>Taking feedback too personally</li>
+      <li>Over-apologizing</li>
+      <li>Beating around the bush instead of stating needs</li>
+    </ul>
+    <p><strong>Likely alignment on other personality systems</strong><br>
+    As a Blue Connector, you often map to:</p>
+    <ul>
+      <li>Hippocrates: Melancholic</li>
+      <li>Jungian Type: Feeling preference</li>
+      <li>Myers-Briggs: ENFJ | INFJ | ENFP | INFP</li>
+      <li>Keirsey: Apollonian (NF)</li>
+      <li>Lowry: Blue</li>
+      <li>DISC: Influence (I)</li>
+    </ul>
+  </section>`,
+
   Orange: `
-    <section class="feedback-section">
-      <h4>Mover (Orange) Feedback</h4>
-      <p>Oranges “squeeze the juice” out of life; your driving force is freedom. If you lack choices you’ll create them. Rules are just guidelines, and risk-taking is natural.</p>
-      <h5>When you’re at your best, you are:</h5>
-      <ul>
-        <li>Active</li>
-        <li>Take-Charge</li>
-        <li>Competitive</li>
-        <li>Negotiator</li>
-        <li>Spontaneous</li>
-        <li>Performer</li>
-        <li>Multi-tasker</li>
-      </ul>
-      <h5>You might catch yourself saying:</h5>
-      <ul>
-        <li>I thrive on action</li>
-        <li>I live in the here and now</li>
-        <li>I must have freedom to act</li>
-        <li>I welcome change and risks</li>
-        <li>I like variety</li>
-        <li>I seek fun and performance</li>
-        <li>I deal quickly with concrete problems</li>
-        <li>I am a flexible, practical diplomat</li>
-      </ul>
-      <h5>When stressed, you may:</h5>
-      <ul>
-        <li>Act rude or defiant</li>
-        <li>Break rules on purpose</li>
-        <li>Quit halfway</li>
-        <li>Joke inappropriately</li>
-        <li>Become compulsive, manipulative</li>
-      </ul>
-      <h5>Strategies to regain balance:</h5>
-      <ul>
-        <li>Go have some fun</li>
-        <li>Get hands on – build something</li>
-        <li>Move your body</li>
-        <li>Find fellow Oranges</li>
-        <li>Focus on one thing at a time</li>
-        <li>Prioritize</li>
-        <li>Make an impression</li>
-        <li>Reward yourself</li>
-        <li>Compete</li>
-      </ul>
-      <h5>Common Pitfalls:</h5>
-      <ul>
-        <li>Multi-tasking</li>
-        <li>Self-centeredness</li>
-        <li>Bulldozing intensity</li>
-        <li>Interrupting</li>
-        <li>“Ready, FIRE, aim”</li>
-      </ul>
-      <h5>Alignment with other systems:</h5>
-      <ul>
-        <li>Hippocrates – SANGUINE</li>
-        <li>Carl Jung – INTUITION</li>
-        <li>Myers-Briggs – ESFP | ISFP | ESTP | ISTP</li>
-        <li>Keirsey – DIONYSIAN (SP)</li>
-        <li>Lowry – Orange</li>
-        <li>DISC – Conscientiousness (C)</li>
-      </ul>
-    </section>
-  `,
+  <section class="feedback-section">
+    <h4>Mover (Orange) Feedback</h4>
+    <p><strong>Who you are at your best</strong><br>
+    Your driving force is freedom—you “squeeze the juice” out of every moment. Rules are merely guidelines and you often carve out your own path. In those moments, you are:</p>
+    <ul>
+      <li>Active and energized</li>
+      <li>Take-charge instinctively</li>
+      <li>Competitive and driven</li>
+      <li>Skilled negotiator</li>
+      <li>Spontaneous in your choices</li>
+      <li>A natural performer—you love entertaining</li>
+      <li>Expert at multi-tasking</li>
+    </ul>
+    <p><strong>How you describe yourself</strong><br>
+    You might catch yourself saying:</p>
+    <ul>
+      <li>“I thrive on action.”</li>
+      <li>“I live in the here and now.”</li>
+      <li>“I must have the freedom to act.”</li>
+      <li>“I welcome change and take risks.”</li>
+      <li>“I crave variety.”</li>
+      <li>“I seek fun and peak performance.”</li>
+      <li>“I solve concrete problems quickly.”</li>
+      <li>“I’m a flexible, practical diplomat.”</li>
+    </ul>
+    <p><strong>When you’re stressed or off-balance</strong><br>
+    Even the boldest Mover can slip into stress-mode and:</p>
+    <ul>
+      <li>Act rude or defiant</li>
+      <li>Break rules on purpose</li>
+      <li>Fail to finish tasks—run away or quit</li>
+      <li>Joke or tease inappropriately</li>
+      <li>Become overly compulsive or manipulative</li>
+    </ul>
+    <p><strong>Strategies to regain your best self</strong><br>
+    When you notice stress creeping in, try:</p>
+    <ul>
+      <li>Go have some fun—seek new experiences outside work</li>
+      <li>Get hands on—create or build something to channel energy</li>
+      <li>Move your body—prioritize physical activity and self-care</li>
+      <li>Find fellow Oranges—they’ll appreciate your candor and energy</li>
+      <li>Focus on one task—complete it before moving on</li>
+      <li>Prioritize what’s truly important</li>
+      <li>Make an impression—use your flair for innovation to inspire others</li>
+      <li>Reward yourself—celebrate small wins before chasing the next big goal</li>
+      <li>Compete—join games or challenges to satisfy your drive</li>
+    </ul>
+    <p><strong>Common communication pitfalls</strong><br>
+    Watch out for these overused Mover habits:</p>
+    <ul>
+      <li>Multi-tasking at the expense of depth</li>
+      <li>Coming across as self-centered</li>
+      <li>Bulldozing intensity that overwhelms others</li>
+      <li>“Ready, FIRE, Aim”—acting before planning</li>
+      <li>Interrupting others</li>
+    </ul>
+    <p><strong>Likely alignment on other personality systems</strong><br>
+    As an Orange Mover, you often map to:</p>
+    <ul>
+      <li>Hippocrates: Sanguine</li>
+      <li>Jungian Type: Intuition preference</li>
+      <li>Myers-Briggs: ESFP | ISFP | ESTP | ISTP</li>
+      <li>Keirsey: Dionysian (SP)</li>
+      <li>Lowry: Orange</li>
+      <li>DISC: Conscientiousness (C)</li>
+    </ul>
+  </section>`,
+
   Gold: `
-    <section class="feedback-section">
-      <h4>Planner (Gold) Feedback</h4>
-      <p>Golds “set the gold standard”; your driving force is responsibility. Conscientious and dependable, you follow established standards and aim to do the right thing.</p>
-      <h5>When shining, you are:</h5>
-      <ul>
-        <li>Prepared</li>
-        <li>Reliable</li>
-        <li>On-time</li>
-        <li>Appropriate</li>
-        <li>Rule-follower</li>
-        <li>Detail-oriented</li>
-        <li>Organized</li>
-      </ul>
-      <h5>You might say:</h5>
-      <ul>
-        <li>I am conventional</li>
-        <li>I highly regard family and home</li>
-        <li>I am accountable and thorough</li>
-        <li>I like to belong</li>
-        <li>I have social responsibility</li>
-        <li>I appreciate order and punctuality</li>
-      </ul>
-      <h5>When stressed, you may:</h5>
-      <ul>
-        <li>Complain with self-pity</li>
-        <li>Exhibit anxiety and worry</li>
-        <li>Judge yourself and others harshly</li>
-        <li>Become controlling and rigid</li>
-        <li>Display negativity</li>
-      </ul>
-      <h5>Strategies to regain balance:</h5>
-      <ul>
-        <li>Validate yourself</li>
-        <li>Get involved – find your place</li>
-        <li>Set realistic limits</li>
-        <li>Focus on what you can control</li>
-        <li>Start new traditions</li>
-        <li>Give yourself a break</li>
-        <li>Bring closure to past issues</li>
-        <li>Leave leeway in schedules</li>
-        <li>Lighten up and enjoy the process</li>
-      </ul>
-      <h5>Common Pitfalls:</h5>
-      <ul>
-        <li>Closed-mindedness</li>
-        <li>“Should” and “must” overuse</li>
-        <li>Martyrdom and complaining</li>
-        <li>Stuck on specifics</li>
-      </ul>
-      <h5>Alignment with other systems:</h5>
-      <ul>
-        <li>Hippocrates – PHLEGMATIC</li>
-        <li>Carl Jung – SENSATION</li>
-        <li>Myers-Briggs – ESTJ | ISTJ | ESFJ | ISFJ</li>
-        <li>Keirsey – EPIMETHEAN (SJ)</li>
-        <li>Lowry – Gold</li>
-        <li>DISC – Steadiness (S)</li>
-      </ul>
-    </section>
-  `
+  <section class="feedback-section">
+    <h4>Planner (Gold) Feedback</h4>
+    <p><strong>Who you are at your best</strong><br>
+    Your driving force is responsibility—you regularly “set the gold standard” and strive to be “as good as gold.” Conscientious and dependable, you want to do the right thing by following established standards and honoring your commitments.</p>
+    <h5>Attributes When Shining</h5>
+    <ul>
+      <li>Prepared and proactive</li>
+      <li>Reliable—others count on you</li>
+      <li>Punctual—you respect people’s time</li>
+      <li>Appropriate in every setting</li>
+      <li>Rule-following—you honor structure</li>
+      <li>Detail-oriented—you catch the small stuff</li>
+      <li>Organized—you bring order to chaos</li>
+    </ul>
+    <p><strong>How you describe yourself</strong><br>
+    You might catch yourself saying:</p>
+    <ul>
+      <li>“I am conventional and steady.”</li>
+      <li>“Family and home are my top priorities.”</li>
+      <li>“I am accountable, thorough, and precise.”</li>
+      <li>“I value belonging and loyalty.”</li>
+      <li>“I have a sense of social responsibility.”</li>
+      <li>“I reward dedication and consistency.”</li>
+      <li>“I appreciate order and punctuality.”</li>
+    </ul>
+    <p><strong>When you’re stressed or off-balance</strong><br>
+    Even the most organized Planner can slip into stress-mode and:</p>
+    <ul>
+      <li>Complain or act self-pitying</li>
+      <li>Worry excessively and exhibit anxiety</li>
+      <li>React physically to pressure (tension, headaches)</li>
+      <li>Judge yourself and others too harshly</li>
+      <li>Slip into “blind herd” mentality, following without question</li>
+      <li>Become overly controlling, rigid, or closed-minded</li>
+      <li>Display a negative attitude toward new ideas</li>
+    </ul>
+    <p><strong>Strategies to regain your best self</strong><br>
+    When you feel stress mounting, try:</p>
+    <ul>
+      <li>Validate yourself—acknowledge all you’ve accomplished</li>
+      <li>Find community—get involved in groups where you belong</li>
+      <li>Care for yourself—make “me time” a priority</li>
+      <li>Set realistic limits—recognize when “good enough” is enough</li>
+      <li>Focus on controllables—let go of what’s outside your influence</li>
+      <li>Create new traditions—update routines that feel draining</li>
+      <li>Give yourself a break—stop driving others as hard as you drive yourself</li>
+      <li>Close past loops—resolve lingering issues so you can move on</li>
+      <li>Build in leeway—avoid over-scheduling every minute</li>
+      <li>Lighten up—enjoy the process, not just the end result</li>
+    </ul>
+    <p><strong>Common communication pitfalls</strong><br>
+    Watch out for these overused Planner habits:</p>
+    <ul>
+      <li>Being closed-minded to change</li>
+      <li>Wagging your finger instead of guiding</li>
+      <li>Wearing “check-it-off” blinders, missing the big picture</li>
+      <li>Getting stuck on specifics and losing flexibility</li>
+      <li>Falling into martyrdom and complaining—“no one else does it right”</li>
+    </ul>
+    <p><strong>Likely alignment on other personality systems</strong><br>
+    As a Gold Planner, you often map to:</p>
+    <ul>
+      <li>Hippocrates: Phlegmatic</li>
+      <li>Jungian Type: Sensation preference</li>
+      <li>Myers-Briggs: ESTJ | ISTJ | ESFJ | ISFJ</li>
+      <li>Keirsey: Epimethean (SJ)</li>
+      <li>Lowry: Gold</li>
+      <li>DISC: Steadiness (S)</li>
+    </ul>
+  </section>`
 };
+
 
 // ————— Main setup —————
 document.addEventListener('DOMContentLoaded', () => {
