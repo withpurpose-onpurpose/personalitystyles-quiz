@@ -1,158 +1,48 @@
-// script-quiz.js
-
 // ————— Hard-coded quiz questions —————
 const QUESTIONS = [
   {
     id: 100,
     text: "What are you most likely to say?",
     options: [
-      {
-        id: "100.01",
-        description: `The purpose of life
-Is a life of purpose`,
-        color: "Blue"
-      },
-      {
-        id: "100.02",
-        description: `“Two things in life are infinite: the universe and human stupidity; and I'm not sure about the universe.”
-— Albert Einstein`,
-        color: "Green"
-      },
-      {
-        id: "100.03",
-        description: `The problem with temptation
-is that you may not get another chance.
-— Laurence Peter`,
-        color: "Orange"
-      },
-      {
-        id: "100.04",
-        description: `NOTICE!!! Lack of planning on your part does not constitute an emergency on my part`,
-        color: "Gold"
-      }
+      { id:"100.01", description:`The purpose of life\nIs a life of purpose`, color:"Blue" },
+      { id:"100.02", description:`“Two things in life are infinite: the universe and human stupidity; and I'm not sure about the universe.”\n— Albert Einstein`, color:"Green" },
+      { id:"100.03", description:`The problem with temptation\nis that you may not get another chance.\n— Laurence Peter`, color:"Orange" },
+      { id:"100.04", description:`NOTICE!!! Lack of planning on your part does not constitute an emergency on my part`, color:"Gold" }
     ]
   },
   {
     id: 200,
     text: "The best description of me in childhood is:",
     options: [
-      {
-        id: "200.01",
-        description: `Of all types of children, I had the most difficult time fitting into an academic routine.
-
-I learned by doing and experiencing rather than by listening and reading.
-
-I needed physical involvement in
-the learning process and was motivated by my own natural competitive nature and sense of fun.`,
-        color: "Orange"
-      },
-      {
-        id: "200.02",
-        description: `I appeared to be older than my years.
-
-I was focused on my greatest interests, and achieved more in subjects that were mentally stimulating.
-
-I was impatient with drill and routine.
-
-I questioned authority, and found it necessary to respect teachers before I could learn from them.`,
-        color: "Green"
-      },
-      {
-        id: "200.03",
-        description: `I was imaginative and creative.
-
-I flourished with encouragement rather than competition, and wanted others to like me.
-
-I reacted with great sensitivity to
-discordance or rejection and sought recognition.
-
-I responded best to my
-teachers who were warm and friendly.`,
-        color: "Blue"
-      },
-      {
-        id: "200.04",
-        description: `I wanted to follow the rules and regulations of the school.
-
-I understood and respected authority and was comfortable with academic routine.
-
-I was the easiest of all types of children to adapt to the educational
-system.`,
-        color: "Gold"
-      }
+      { id:"200.01", description:`Of all types of children, I had the most difficult time fitting into an academic routine.\n\nI learned by doing and experiencing rather than by listening and reading.\n\nI needed physical involvement in\nthe learning process and was motivated by my own natural competitive nature and sense of fun.`, color:"Orange" },
+      { id:"200.02", description:`I appeared to be older than my years.\n\nI was focused on my greatest interests, and achieved more in subjects that were mentally stimulating.\n\nI was impatient with drill and routine.\n\nI questioned authority, and found it necessary to respect teachers before I could learn from them.`, color:"Green" },
+      { id:"200.03", description:`I was imaginative and creative.\n\nI flourished with encouragement rather than competition, and wanted others to like me.\n\nI reacted with great sensitivity to\ndiscordance or rejection and sought recognition.\n\nI responded best to my\nteachers who were warm and friendly.`, color:"Blue" },
+      { id:"200.04", description:`I wanted to follow the rules and regulations of the school.\n\nI understood and respected authority and was comfortable with academic routine.\n\nI was the easiest of all types of children to adapt to the educational\nsystem.`, color:"Gold" }
     ]
   },
   {
     id: 300,
     text: "I am best described by:",
     options: [
-      {
-        id: "300.01",
-        description: `I act on a moment’s notice — Witty | Charming | Spontaneous
-I consider life as a game, here and now — Impulsive | Generous | Impactful
-I need fun, variety, stimulation and excitement — Optimistic | Eager | Bold
-I value skill, resourcefulness and courage — Physical | Immediate | Fraternal
-I am a natural trouble-shooter, a performer and a competitor.`,
-        color: "Orange"
-      },
-      {
-        id: "300.02",
-        description: `I seek knowledge and understanding — Analytical | Global | Conceptual
-I live my life by my own standard — Cool | Calm | Collected
-I need explanations and answers — Inventive | Logical | Perfectionistic
-I value intelligence, insight fairness and justice — Abstract | Hypothetical | Investigative
-I am a natural nonconformist, a visionary and a problem solver.`,
-        color: "Green"
-      },
-      {
-        id: "300.03",
-        description: `I need to feel unique & authentic — Enthusiastic | Sympathetic | Personal
-I look for meaning and significance in life — Warm | Communicative | Compassionate
-I need to contribute, to encourage and to care — Idealistic | Spiritual | Sincere
-I value integrity and unity in relationships — Peaceful | Flexible | Imaginative
-I am a natural romantic, a poet and a nurturer.`,
-        color: "Blue"
-      },
-      {
-        id: "300.04",
-        description: `I follow the rules and respect authority — Loyal | Dependable | Prepared
-I have a strong sense of what is right and wrong in life — Thorough | Sensible | Punctual
-I need to be useful and to belong — Faithful | Stable | Organized
-I value home, family and tradition — Caring | Concerned | Concrete
-I am a natural preserver, a good citizen and helpful.`,
-        color: "Gold"
-      }
+      { id:"300.01", description:`I act on a moment’s notice — Witty | Charming | Spontaneous\nI consider life as a game, here and now — Impulsive | Generous | Impactful\nI need fun, variety, stimulation and excitement — Optimistic | Eager | Bold\nI value skill, resourcefulness and courage — Physical | Immediate | Fraternal\nI am a natural trouble-shooter, a performer and a competitor.`, color:"Orange" },
+      { id:"300.02", description:`I seek knowledge and understanding — Analytical | Global | Conceptual\nI live my life by my own standard — Cool | Calm | Collected\nI need explanations and answers — Inventive | Logical | Perfectionistic\nI value intelligence, insight fairness and justice — Abstract | Hypothetical | Investigative\nI am a natural nonconformist, a visionary and a problem solver.`, color:"Green" },
+      { id:"300.03", description:`I need to feel unique & authentic — Enthusiastic | Sympathetic | Personal\nI look for meaning and significance in life — Warm | Communicative | Compassionate\nI need to contribute, to encourage and to care — Idealistic | Spiritual | Sincere\nI value integrity and unity in relationships — Peaceful | Flexible | Imaginative\nI am a natural romantic, a poet and a nurturer.`, color:"Blue" },
+      { id:"300.04", description:`I follow the rules and respect authority — Loyal | Dependable | Prepared\nI have a strong sense of what is right and wrong in life — Thorough | Sensible | Punctual\nI need to be useful and to belong — Faithful | Stable | Organized\nI value home, family and tradition — Caring | Concerned | Concrete\nI am a natural preserver, a good citizen and helpful.`, color:"Gold" }
     ]
   },
   {
     id: 400,
     text: "What brings me joy is:",
     options: [
-      {
-        id: "400.01",
-        description: `Being the Best — Excitement | Physical movement | Performing | Taking Action | Taking Risks | Trouble-shooting | Freedom`,
-        color: "Orange"
-      },
-      {
-        id: "400.02",
-        description: `Exploring new ideas — High achievement | Meeting Challenges | Seeking new knowledge | Solving problems | Doing what “can’t be done” | Creative freedom | Humor & irony`,
-        color: "Green"
-      },
-      {
-        id: "400.03",
-        description: `Acceptance | Affection | Conversations | Family | Friendships | Groups | Love | Music`,
-        color: "Blue"
-      },
-      {
-        id: "400.04",
-        description: `Time for family | Tradition | Doing the “right thing” | Acknowledgement | Belonging | Home | A sense of order | A task well done`,
-        color: "Gold"
-      }
+      { id:"400.01", description:`Being the Best — Excitement | Physical movement | Performing | Taking Action | Taking Risks | Trouble-shooting | Freedom`, color:"Orange" },
+      { id:"400.02", description:`Exploring new ideas — High achievement | Meeting Challenges | Seeking new knowledge | Solving problems | Doing what “can’t be done” | Creative freedom | Humor & irony`, color:"Green" },
+      { id:"400.03", description:`Acceptance | Affection | Conversations | Family | Friendships | Groups | Love | Music`, color:"Blue" },
+      { id:"400.04", description:`Time for family | Tradition | Doing the “right thing” | Acknowledgement | Belonging | Home | A sense of order | A task well done`, color:"Gold" }
     ]
   }
 ];
 
-// ————— Feedback blocks for each style —————
+// ————— Feedback blocks —————
 const FEEDBACK = {
   Green: `<section class="feedback-section">
     <h4>Thinker (Green) Feedback</h4>
@@ -172,7 +62,6 @@ const FEEDBACK = {
       <li>Validate your curiosity</li><li>Reach out to others</li>
     </ul>
   </section>`,
-
   Blue: `<section class="feedback-section">
     <h4>Connector (Blue) Feedback</h4>
     <p>Your driving force is relationship… “True Blue trooper.”</p>
@@ -190,7 +79,6 @@ const FEEDBACK = {
       <li>Set boundaries</li><li>Use your talents</li>
     </ul>
   </section>`,
-
   Orange: `<section class="feedback-section">
     <h4>Mover (Orange) Feedback</h4>
     <p>Your driving force is freedom… “Squeeze the juice” out of life.</p>
@@ -207,7 +95,6 @@ const FEEDBACK = {
       <li>Go have fun</li><li>Build something</li><li>Move your body</li>
     </ul>
   </section>`,
-
   Gold: `<section class="feedback-section">
     <h4>Planner (Gold) Feedback</h4>
     <p>Your driving force is responsibility… “Good as gold.”</p>
@@ -231,14 +118,12 @@ const FEEDBACK = {
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('wantEmail')
           .addEventListener('change', toggleEmailField);
-
   document.querySelector('.refetch-btn')
           .addEventListener('click', () => {
     document.getElementById('questions-container').innerHTML = '';
     renderQuestions();
     setupValidation();
   });
-
   renderQuestions();
   setupValidation();
 });
@@ -327,7 +212,6 @@ function showResults() {
   const blend = sorted.map(([c])=>c).join(' > ');
   const top   = sorted[0][0];
 
-  // render bars & feedback
   const rc = document.getElementById('result-container');
   rc.innerHTML = `
     <h2>Personality Quiz Results</h2>
@@ -345,7 +229,7 @@ function showResults() {
     <button id="print-btn">🖨 Print Results</button>
   `;
   const bars = rc.querySelector('.bars');
-  const max  = sorted[0][1] || 1;
+  const max  = sorted[0][1]||1;
   sorted.forEach(([c,v]) => {
     bars.insertAdjacentHTML('beforeend', `
       <div class="bar-wrap">
@@ -356,48 +240,37 @@ function showResults() {
     `);
   });
 
-  // inject top-color feedback
+  // top-style feedback
   rc.insertAdjacentHTML('beforeend', FEEDBACK[top]);
 
-  // general communication section
+  // general communication
   rc.insertAdjacentHTML('beforeend', `
     <section class="feedback-section general">
       <h4>General Communication with All Styles</h4>
       <p>We all process input differently. To increase emotional intelligence and build stronger relationships, be aware of these styles:</p>
-      <h5>Orange</h5>
-      <p>Tell it like it is… (spontaneous, direct, gut-driven)</p>
-      <h5>Blue</h5>
-      <p>Warm up to the topic… (heart-focused, expressive, nuance-driven)</p>
-      <h5>Gold</h5>
-      <p>Step-by-step… (“should” & “must,” closure-oriented)</p>
-      <h5>Green</h5>
-      <p>Straight to the facts… (logic over empathy, “big why?”)</p>
+      <h5>Orange</h5><p>Tell it like it is… (spontaneous, direct)</p>
+      <h5>Blue</h5><p>Warm up… (heart-focused, expressive)</p>
+      <h5>Gold</h5><p>Step-by-step… (“should,” “must,” closure-oriented)</p>
+      <h5>Green</h5><p>Straight to the facts… (logic over empathy)</p>
     </section>
   `);
 
-  // hide form / show results / wire print
-  document.getElementById('quiz-form').style.display = 'none';
+  document.getElementById('quiz-form').style.display='none';
   rc.classList.remove('hidden');
   document.getElementById('print-btn')
-          .addEventListener('click', () => window.print());
+          .addEventListener('click', ()=>window.print());
 
-  // send text-only email if requested
   if (want && email) {
     const subj = encodeURIComponent('Your Personality Quiz Results');
     let body = `Hi ${name},\n\nYour results:\n\n`;
-    sorted.forEach(([c,v]) => {
-      const label = {
-        Blue: 'Connector (Blue)',
-        Green: 'Thinker (Green)',
-        Gold: 'Planner (Gold)',
-        Orange: 'Mover (Orange)'
-      }[c];
-      body += `${label}: ${v}\n`;
+    sorted.forEach(([c,v])=>{
+      const labels = {Blue:'Connector (Blue)',Green:'Thinker (Green)',
+                      Gold:'Planner (Gold)',Orange:'Mover (Orange)'};
+      body += `${labels[c]}: ${v}\n`;
     });
     body += `\nBlend: ${blend}\n\nPowered by Laura Cooley\nlaura@withpurpose-onpurpose.com\nwww.withpurpose-onpurpose.com\nBased on Personality Lingo by Mary Miscisin\n`;
-    window.location.href =
-      `mailto:${email}?bcc=laura@withpurpose-onpurpose.com`
-      + `&subject=${subj}`
-      + `&body=${encodeURIComponent(body)}`;
+    window.location.href = `mailto:${email}?bcc=laura@withpurpose-onpurpose.com`
+                           + `&subject=${subj}`
+                           + `&body=${encodeURIComponent(body)}`;
   }
 }
