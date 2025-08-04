@@ -1,73 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Personality Styles Quiz</title>
   <!-- Poppins + your CSS -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap"
-        rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <header>
+    <h1>Personality Styles Quiz</h1>
+    <p>
+      <a href="https://www.amazon.com/Personality-Lingo-Transform-Relationships-Communication/dp/1502718383?tag=thezipsyndica-20" target="_blank">
+        Based on Personality Lingo® by Mary Miscisin
+      </a>
+    </p>
+  </header>
 
-<header>
-  <h1>Personality Styles Quiz</h1>
-  <p>
-    Based on
-    <a href="https://www.amazon.com/Personality-Lingo-Transform-Relationships-Communication/dp/1502718383?tag=thezipsyndica-20"
-       target="_blank">
-      Personality Lingo® by Mary Miscisin
-    </a>
-  </p>
-</header>
+  <main class="container">
+    <form id="quiz-form">
+      <div class="form-group">
+        <label for="name">Name <span class="required">*</span></label>
+        <input type="text" id="name" name="name" required>
+      </div>
 
-<div class="container">
-  <form id="quiz-form">
-    <div class="form-group">
-      <label>
-        Name <span class="required">*</span><br>
-        <input id="name" name="name" type="text" required>
-      </label>
-    </div>
-    <div class="form-group">
-      <label>
-        <input id="wantEmail" type="checkbox">
-        Send results to my email
-      </label>
-    </div>
-    <div class="form-group hidden" id="email-label">
-      <label>
-        Email <span class="required">*</span><br>
-        <input id="email" name="email" type="email">
-      </label>
-    </div>
-    <div class="form-group">
-      <label>
-        Company<br>
-        <input name="company" type="text">
-      </label>
-    </div>
-    <div class="form-group">
-      <label>
-        Job Title<br>
-        <input name="jobTitle" type="text">
-      </label>
-    </div>
+      <div class="form-group">
+        <label>
+          <input type="checkbox" id="wantEmail"> Email me my results
+        </label>
+      </div>
+      <div class="form-group hidden" id="email-group">
+        <label for="email">Email <span class="required">*</span></label>
+        <input type="email" id="email" name="email">
+      </div>
 
-    <div id="questions-container"></div>
+      <div id="questions-container"></div>
 
-    <button type="submit" class="submit-btn">Submit Quiz</button>
-    <button type="button" class="refetch-btn">Reload Questions</button>
-  </form>
+      <button type="button" class="refetch-btn">Reload Questions</button>
+      <button type="submit" class="submit-btn" disabled>Submit Quiz</button>
+    </form>
 
-  <div id="result-container" class="hidden"></div>
-</div>
+    <div id="result-container" class="hidden"></div>
+  </main>
 
-<footer>
-  © 2025 withpurpose-onpurpose.com | Powered by Laura Cooley
-</footer>
+  <footer>
+    © 2025 withpurpose-onpurpose.com  |  Powered by Laura Cooley
+    <br>
+    <a href="admin-login.html" class="admin-link">🔒 Admin Login</a>
+  </footer>
 
-<script src="script-quiz.js"></script>
+  <script src="script-quiz.js"></script>
 </body>
 </html>
