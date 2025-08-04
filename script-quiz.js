@@ -337,17 +337,145 @@ function showResults() {
   document.getElementById('print-btn')
           .addEventListener('click', ()=>window.print());
 
-  if (want && email) {
+if (want && email) {
     const subj = encodeURIComponent('Your Personality Quiz Results');
-    let body = `Hi ${name},\n\nYour results:\n\n`;
-    sorted.forEach(([c,v])=>{
-      const labels = {Blue:'Connector (Blue)',Green:'Thinker (Green)',
-                      Gold:'Planner (Gold)',Orange:'Mover (Orange)'};
+
+    // 1) map for label names
+    const labels = {
+      Blue:   'Connector (Blue)',
+      Green:  'Thinker (Green)',
+      Gold:   'Planner (Gold)',
+      Orange: 'Mover (Orange)'
+    };
+
+    // 2) plain-text feedback lookup
+    const TEXT_FEEDBACK = {
+      Green:
+`Thinker (Green) Feedback:
+Who you are at your best:
+  • A natural problem-solver
+  • Independent and self-directed
+  • Tenacious in pursuit of answers
+  • Self-assured in your expertise
+  • Witty, with a dry sense of humor
+  • Logical and analytical
+  • Creative and ingenious
+
+When you’re stressed or off-balance:
+  • Analysis paralysis
+  • Withdrawal and aloofness
+  • Sarcastic remarks
+  • Silent treatment
+  • Perfectionism tied to anxiety
+  • Harsh self-criticism
+
+Get back on track:
+  • Balance critiques with encouragement
+  • Honor your need for independence
+  • Validate your curiosity—explore freely
+  • Check in on your physical well-being
+  • Pause to smile or breathe deeply
+  • Prioritize progress over perfection
+  • Invite yourself to make mistakes
+  • Reach out to a trusted friend`,
+      Blue:
+`Connector (Blue) Feedback:
+Who you are at your best:
+  • Friendly and welcoming
+  • Helpful and supportive
+  • Compassionate and considerate
+  • Cooperative and team-oriented
+  • Emotional and expressive
+  • Imaginative and creative
+  • Affectionate and warm
+
+When you’re stressed or off-balance:
+  • Seek attention through drama
+  • Tell white lies to save face
+  • Pretend to agree rather than speak up
+  • Withdraw from priorities
+  • Daydream excessively
+  • Cry or appear depressed
+  • Use passive-resistance
+  • Express frustration loudly
+
+Get back on track:
+  • Accept that negative emotions aren’t about you
+  • Practice saying “no” and setting boundaries
+  • Step back to let others grow
+  • Recognize struggle is part of growth
+  • Let go of need for universal approval
+  • Validate your own feelings
+  • Pause to think before you leap
+  • Take deliberate self-care breaks`,
+      Orange:
+`Mover (Orange) Feedback:
+Who you are at your best:
+  • Active and energized
+  • Instinctive take-charge personality
+  • Competitive and driven
+  • A skilled negotiator
+  • Spontaneous and adventurous
+  • A natural performer
+  • Expert at multi-tasking
+
+When you’re stressed or off-balance:
+  • Act rude or defiant
+  • Break rules on purpose
+  • Fail to complete tasks
+  • Joke inappropriately
+  • Become overly controlling
+
+Get back on track:
+  • Go have some fun—seek new experiences
+  • Channel energy into building something
+  • Move your body—prioritize physical self-care
+  • Connect with fellow Oranges
+  • Focus on completing one task
+  • Prioritize what truly matters
+  • Celebrate small wins
+  • Join games or competitions`,
+      Gold:
+`Planner (Gold) Feedback:
+Who you are at your best:
+  • Prepared and proactive
+  • Reliable—others count on you
+  • Punctual—you respect people’s time
+  • Appropriate and structured
+  • Detail-oriented and organized
+
+When you’re stressed or off-balance:
+  • Complain or act self-pitying
+  • Worry excessively
+  • Become rigid and closed-minded
+  • Exhibit harsh judgment
+
+Get back on track:
+  • Validate your accomplishments
+  • Set realistic limits
+  • Create new, energizing routines
+  • Build in leeway—avoid over-scheduling
+  • Enjoy the process, not just the result`
+    };
+
+    // 3) build your mail body
+    let body = `Hi ${name},\n\nHere are your results:\n\n`;
+    sorted.forEach(([c,v]) => {
       body += `${labels[c]}: ${v}\n`;
     });
-    body += `\nBlend: ${blend}\n\nPowered by Laura Cooley\nlaura@withpurpose-onpurpose.com\nwww.withpurpose-onpurpose.com\nBased on Personality Lingo by Mary Miscisin\n`;
-    window.location.href = `mailto:${email}?bcc=laura@withpurpose-onpurpose.com`
-                           + `&subject=${subj}`
-                           + `&body=${encodeURIComponent(body)}`;
+    body += `\nBlend: ${blend}\n\n`;
+
+    // 4) append the text feedback for your top style
+    body += `---\n${TEXT_FEEDBACK[top]}\n---\n\n`;
+
+    // 5) signature
+    body += `Powered by Laura Cooley\nlaura@withpurpose-onpurpose.com\nwww.withpurpose-onpurpose.com\nBased on Personality Lingo by Mary Miscisin\n`;
+
+    // 6) fire the mailto
+    window.location.href =
+      `mailto:${email}` +
+      `?bcc=laura@withpurpose-onpurpose.com` +
+      `&subject=${subj}` +
+      `&body=${encodeURIComponent(body)}`;
   }
 }
