@@ -43,75 +43,267 @@ const QUESTIONS = [
 ];
 
 // ————— Feedback blocks —————
-const FEEDBACK = {
-  Green: `<section class="feedback-section">
-    <h4>Thinker (Green) Feedback</h4>
-    <p>Your driving force is competency… Remember “Keen Green.”</p>
-    <h5>At your best:</h5>
-    <ul>
-      <li>Problem-solver</li><li>Independent</li><li>Tenacious</li>
-      <li>Self-assured</li><li>Witty</li><li>Logical & Analytical</li><li>Creative</li>
-    </ul>
-    <h5>When stressed:</h5>
-    <ul>
-      <li>Indecisive</li><li>Aloof</li><li>Perfection anxiety</li><li>Critical</li>
-    </ul>
-    <h5>Get back on track:</h5>
-    <ul>
-      <li>Balance critiques</li><li>Honor your independence</li>
-      <li>Validate your curiosity</li><li>Reach out to others</li>
-    </ul>
-  </section>`,
-  Blue: `<section class="feedback-section">
-    <h4>Connector (Blue) Feedback</h4>
-    <p>Your driving force is relationship… “True Blue trooper.”</p>
-    <h5>At your best:</h5>
-    <ul>
-      <li>Friendly</li><li>Helpful</li><li>Compassionate</li><li>Expressive</li>
-    </ul>
-    <h5>When stressed:</h5>
-    <ul>
-      <li>Attention-seeking</li><li>Withdrawn</li><li>Overemotional</li>
-    </ul>
-    <h5>Get back on track:</h5>
-    <ul>
-      <li>Accept negative emotions</li><li>Learn to say no</li>
-      <li>Set boundaries</li><li>Use your talents</li>
-    </ul>
-  </section>`,
-  Orange: `<section class="feedback-section">
-    <h4>Mover (Orange) Feedback</h4>
-    <p>Your driving force is freedom… “Squeeze the juice” out of life.</p>
-    <h5>At your best:</h5>
-    <ul>
-      <li>Active</li><li>Spontaneous</li><li>Risk-taker</li><li>Negotiator</li>
-    </ul>
-    <h5>When stressed:</h5>
-    <ul>
-      <li>Rule-breaker</li><li>Impulsive</li><li>Manipulative</li>
-    </ul>
-    <h5>Get back on track:</h5>
-    <ul>
-      <li>Go have fun</li><li>Build something</li><li>Move your body</li>
-    </ul>
-  </section>`,
-  Gold: `<section class="feedback-section">
-    <h4>Planner (Gold) Feedback</h4>
-    <p>Your driving force is responsibility… “Good as gold.”</p>
-    <h5>At your best:</h5>
-    <ul>
-      <li>Prepared</li><li>Reliable</li><li>Detail-oriented</li><li>Organized</li>
-    </ul>
-    <h5>When stressed:</h5>
-    <ul>
-      <li>Anxious</li><li>Rigid</li><li>Judgmental</li>
-    </ul>
-    <h5>Get back on track:</h5>
-    <ul>
-      <li>Validate yourself</li><li>Set realistic limits</li>
-      <li>Bring closure</li><li>Lighten up</li>
-    </ul>
-  </section>`
+const FEEDBACK_MAP = {
+  Green: `
+    <section class="feedback-section">
+      <h4>Thinker (Green) Feedback</h4>
+      <p>The driving force for Greens is competency. Naturally curious, you thirst for knowledge and information and like to come up with solutions and systems for solving problems and inventing a better future. Preferring to keep your emotions to yourself, you approach situations objectively. Remember “Keen Green.”</p>
+      <h5>When you’re at your best, you are:</h5>
+      <ul>
+        <li>Problem-solvers</li>
+        <li>Independent</li>
+        <li>Tenacious</li>
+        <li>Self-assured</li>
+        <li>Witty sense of humor</li>
+        <li>Logical, Analytical</li>
+        <li>Creative, Ingenious</li>
+      </ul>
+      <h5>You may see yourself as:</h5>
+      <ul>
+        <li>I am a designer and inventor</li>
+        <li>I contribute my best</li>
+        <li>I am an excellent analyst</li>
+        <li>I am principled</li>
+        <li>I enjoy complex systems</li>
+        <li>I value intelligence and competence</li>
+        <li>My attitudes are scientific</li>
+        <li>I think abstractly</li>
+      </ul>
+      <h5>When you’re tired or stressed, you may find yourself:</h5>
+      <ul>
+        <li>Behaving indecisively</li>
+        <li>Refusing to comply or cooperate</li>
+        <li>Withdrawing, aloofness</li>
+        <li>Put-downs, sarcastic remarks</li>
+        <li>Refusing to communicate (silent treatment)</li>
+        <li>Perfection tied to performance anxiety</li>
+        <li>Highly critical of self and others</li>
+      </ul>
+      <h5>Strategies to get back on track:</h5>
+      <ul>
+        <li>Balance your critiques</li>
+        <li>Honor your independence</li>
+        <li>Validate your interests – allow yourself to explore</li>
+        <li>Pay attention to your physical well-being</li>
+        <li>Smile</li>
+        <li>Prioritize</li>
+        <li>Invite yourself to make mistakes</li>
+        <li>Recognize you can only change yourself</li>
+        <li>Reach out to others</li>
+      </ul>
+      <h5>Common Communication Mistakes:</h5>
+      <ul>
+        <li>Pointing out mistakes first</li>
+        <li>Data dumping</li>
+        <li>Data diving</li>
+        <li>Humor at others’ expense</li>
+        <li>Unreasonable expectations</li>
+        <li>Living in your head</li>
+      </ul>
+      <h5>Alignment with other systems:</h5>
+      <ul>
+        <li>Hippocrates – CHOLERIC</li>
+        <li>Carl Jung – THINKING</li>
+        <li>Myers-Briggs – ENTJ | INTJ | ENTP | INTP</li>
+        <li>Keirsey – PROMETHEAN (NT)</li>
+        <li>Lowry – Green</li>
+        <li>DISC – Dominant (D)</li>
+      </ul>
+    </section>
+  `,
+  Blue: `
+    <section class="feedback-section">
+      <h4>Connector (Blue) Feedback</h4>
+      <p>Blues are “True Blue troopers”; your driving force is relationship. Before you decide, you check how it will affect everyone involved, often putting others’ needs ahead of your own.</p>
+      <h5>When you’re at your best, you are:</h5>
+      <ul>
+        <li>Friendly</li>
+        <li>Helpful</li>
+        <li>Compassionate, considerate</li>
+        <li>Cooperative</li>
+        <li>Emotional, expressive</li>
+        <li>Imaginative, creative</li>
+        <li>Affectionate</li>
+      </ul>
+      <h5>You might catch yourself saying:</h5>
+      <ul>
+        <li>I value personal relationships</li>
+        <li>I have a people-centered point of view</li>
+        <li>I value harmony and cooperation</li>
+        <li>I intuitively focus on personal strengths</li>
+        <li>I am naturally democratic</li>
+        <li>I enjoy activating people’s potential</li>
+        <li>I am an optimistic, dramatic spokesperson</li>
+      </ul>
+      <h5>When stressed or off-balance, you may:</h5>
+      <ul>
+        <li>Misbehave to get attention</li>
+        <li>Lie to save face</li>
+        <li>Pretend to agree</li>
+        <li>Withdraw, lose track of priorities</li>
+        <li>Daydream excessively</li>
+        <li>Cry often, appear depressed</li>
+        <li>Become passive-resistant</li>
+        <li>Yell or scream</li>
+      </ul>
+      <h5>Strategies to regain balance:</h5>
+      <ul>
+        <li>Accept “negative” emotions</li>
+        <li>Learn to say “no”</li>
+        <li>Do less “helping”</li>
+        <li>Recognize life’s struggles</li>
+        <li>Let it go – most people like you!</li>
+        <li>Validate yourself</li>
+        <li>Use your talents</li>
+        <li>Set boundaries</li>
+        <li>Look before leaping</li>
+        <li>Take care of yourself</li>
+        <li>Express your unique self</li>
+      </ul>
+      <h5>Common Communication Pitfalls:</h5>
+      <ul>
+        <li>Using emotional appeals</li>
+        <li>Mistaking intensity for anger</li>
+        <li>Taking things personally</li>
+        <li>Over-apologizing</li>
+        <li>Beating around the bush</li>
+      </ul>
+      <h5>Alignment with other systems:</h5>
+      <ul>
+        <li>Hippocrates – MELANCHOLIC</li>
+        <li>Carl Jung – FEELING</li>
+        <li>Myers-Briggs – ENFJ | INFJ | ENFP | INFP</li>
+        <li>Keirsey – APOLLONIAN (NF)</li>
+        <li>Lowry – Blue</li>
+        <li>DISC – Influence (I)</li>
+      </ul>
+    </section>
+  `,
+  Orange: `
+    <section class="feedback-section">
+      <h4>Mover (Orange) Feedback</h4>
+      <p>Oranges “squeeze the juice” out of life; your driving force is freedom. If you lack choices you’ll create them. Rules are just guidelines, and risk-taking is natural.</p>
+      <h5>When you’re at your best, you are:</h5>
+      <ul>
+        <li>Active</li>
+        <li>Take-Charge</li>
+        <li>Competitive</li>
+        <li>Negotiator</li>
+        <li>Spontaneous</li>
+        <li>Performer</li>
+        <li>Multi-tasker</li>
+      </ul>
+      <h5>You might catch yourself saying:</h5>
+      <ul>
+        <li>I thrive on action</li>
+        <li>I live in the here and now</li>
+        <li>I must have freedom to act</li>
+        <li>I welcome change and risks</li>
+        <li>I like variety</li>
+        <li>I seek fun and performance</li>
+        <li>I deal quickly with concrete problems</li>
+        <li>I am a flexible, practical diplomat</li>
+      </ul>
+      <h5>When stressed, you may:</h5>
+      <ul>
+        <li>Act rude or defiant</li>
+        <li>Break rules on purpose</li>
+        <li>Quit halfway</li>
+        <li>Joke inappropriately</li>
+        <li>Become compulsive, manipulative</li>
+      </ul>
+      <h5>Strategies to regain balance:</h5>
+      <ul>
+        <li>Go have some fun</li>
+        <li>Get hands on – build something</li>
+        <li>Move your body</li>
+        <li>Find fellow Oranges</li>
+        <li>Focus on one thing at a time</li>
+        <li>Prioritize</li>
+        <li>Make an impression</li>
+        <li>Reward yourself</li>
+        <li>Compete</li>
+      </ul>
+      <h5>Common Pitfalls:</h5>
+      <ul>
+        <li>Multi-tasking</li>
+        <li>Self-centeredness</li>
+        <li>Bulldozing intensity</li>
+        <li>Interrupting</li>
+        <li>“Ready, FIRE, aim”</li>
+      </ul>
+      <h5>Alignment with other systems:</h5>
+      <ul>
+        <li>Hippocrates – SANGUINE</li>
+        <li>Carl Jung – INTUITION</li>
+        <li>Myers-Briggs – ESFP | ISFP | ESTP | ISTP</li>
+        <li>Keirsey – DIONYSIAN (SP)</li>
+        <li>Lowry – Orange</li>
+        <li>DISC – Conscientiousness (C)</li>
+      </ul>
+    </section>
+  `,
+  Gold: `
+    <section class="feedback-section">
+      <h4>Planner (Gold) Feedback</h4>
+      <p>Golds “set the gold standard”; your driving force is responsibility. Conscientious and dependable, you follow established standards and aim to do the right thing.</p>
+      <h5>When shining, you are:</h5>
+      <ul>
+        <li>Prepared</li>
+        <li>Reliable</li>
+        <li>On-time</li>
+        <li>Appropriate</li>
+        <li>Rule-follower</li>
+        <li>Detail-oriented</li>
+        <li>Organized</li>
+      </ul>
+      <h5>You might say:</h5>
+      <ul>
+        <li>I am conventional</li>
+        <li>I highly regard family and home</li>
+        <li>I am accountable and thorough</li>
+        <li>I like to belong</li>
+        <li>I have social responsibility</li>
+        <li>I appreciate order and punctuality</li>
+      </ul>
+      <h5>When stressed, you may:</h5>
+      <ul>
+        <li>Complain with self-pity</li>
+        <li>Exhibit anxiety and worry</li>
+        <li>Judge yourself and others harshly</li>
+        <li>Become controlling and rigid</li>
+        <li>Display negativity</li>
+      </ul>
+      <h5>Strategies to regain balance:</h5>
+      <ul>
+        <li>Validate yourself</li>
+        <li>Get involved – find your place</li>
+        <li>Set realistic limits</li>
+        <li>Focus on what you can control</li>
+        <li>Start new traditions</li>
+        <li>Give yourself a break</li>
+        <li>Bring closure to past issues</li>
+        <li>Leave leeway in schedules</li>
+        <li>Lighten up and enjoy the process</li>
+      </ul>
+      <h5>Common Pitfalls:</h5>
+      <ul>
+        <li>Closed-mindedness</li>
+        <li>“Should” and “must” overuse</li>
+        <li>Martyrdom and complaining</li>
+        <li>Stuck on specifics</li>
+      </ul>
+      <h5>Alignment with other systems:</h5>
+      <ul>
+        <li>Hippocrates – PHLEGMATIC</li>
+        <li>Carl Jung – SENSATION</li>
+        <li>Myers-Briggs – ESTJ | ISTJ | ESFJ | ISFJ</li>
+        <li>Keirsey – EPIMETHEAN (SJ)</li>
+        <li>Lowry – Gold</li>
+        <li>DISC – Steadiness (S)</li>
+      </ul>
+    </section>
+  `
 };
 
 // ————— Main setup —————
